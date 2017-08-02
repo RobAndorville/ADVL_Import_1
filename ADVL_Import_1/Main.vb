@@ -771,6 +771,8 @@ Public Class Main
         ShowTextFile.ShowSelectedTextFile()
     End Sub
 
+
+
     Private Sub ShowTextFile_FormClosed(sender As Object, e As FormClosedEventArgs) Handles ShowTextFile.FormClosed
         ShowTextFile = Nothing
     End Sub
@@ -1277,6 +1279,17 @@ Public Class Main
             Sequence.FormatXmlText()
 
         End If
+    End Sub
+
+    Private Sub btnSelectAllInputFiles_Click(sender As Object, e As EventArgs) Handles btnSelectAllInputFiles.Click
+        'Select all input files in lstTextFiles
+
+        Dim I As Integer
+        For I = 0 To lstTextFiles.Items.Count - 1
+            lstTextFiles.SetSelected(I, True)
+        Next
+        UpdateSelTextFileList()
+
     End Sub
 
 #End Region 'Input Files Tab ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3702,6 +3715,12 @@ Public Class Main
     Private Sub txtNullValueString_TextChanged(sender As Object, e As EventArgs) Handles txtNullValueString.TextChanged
 
     End Sub
+
+    Private Sub lstTextFiles_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstTextFiles.SelectedIndexChanged
+
+    End Sub
+
+
 
 
 

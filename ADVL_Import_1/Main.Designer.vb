@@ -55,6 +55,7 @@ Partial Class Main
         Me.txtDescription = New System.Windows.Forms.TextBox()
         Me.txtName = New System.Windows.Forms.TextBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.btnSelectAllInputFiles = New System.Windows.Forms.Button()
         Me.btnAddInputFilesToSeq = New System.Windows.Forms.Button()
         Me.btnApplySelFile = New System.Windows.Forms.Button()
         Me.btnSelect = New System.Windows.Forms.Button()
@@ -559,6 +560,7 @@ Partial Class Main
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.btnSelectAllInputFiles)
         Me.TabPage2.Controls.Add(Me.btnAddInputFilesToSeq)
         Me.TabPage2.Controls.Add(Me.btnApplySelFile)
         Me.TabPage2.Controls.Add(Me.btnSelect)
@@ -578,6 +580,15 @@ Partial Class Main
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Input Files"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'btnSelectAllInputFiles
+        '
+        Me.btnSelectAllInputFiles.Location = New System.Drawing.Point(9, 205)
+        Me.btnSelectAllInputFiles.Name = "btnSelectAllInputFiles"
+        Me.btnSelectAllInputFiles.Size = New System.Drawing.Size(101, 22)
+        Me.btnSelectAllInputFiles.TabIndex = 19
+        Me.btnSelectAllInputFiles.Text = "Select All"
+        Me.btnSelectAllInputFiles.UseVisualStyleBackColor = True
         '
         'btnAddInputFilesToSeq
         '
@@ -2631,4 +2642,5 @@ Partial Class Main
     Friend WithEvents rbAppendRegExVar As RadioButton
     Friend WithEvents txtNullValueString As TextBox
     Friend WithEvents chkUseNullValueString As CheckBox
+    Friend WithEvents btnSelectAllInputFiles As Button
 End Class
