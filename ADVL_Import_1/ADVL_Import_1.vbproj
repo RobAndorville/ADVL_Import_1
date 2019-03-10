@@ -24,7 +24,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -66,10 +66,11 @@
     <ApplicationIcon>ADVL_Import_Icon1.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DE79043DBFC6676A7E64459F8E4CDB107B25F1A0</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4C8C6E41FCE8336E5FCEF2A6E92A73D4A6A4E31F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ADVL_Import_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -120,6 +121,12 @@
     <Compile Include="frmClipboardWindow.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmHtmlDisplay.Designer.vb">
+      <DependentUpon>frmHtmlDisplay.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmHtmlDisplay.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmImportSequence.Designer.vb">
       <DependentUpon>frmImportSequence.vb</DependentUpon>
     </Compile>
@@ -136,6 +143,18 @@
       <DependentUpon>frmShowTextFile.vb</DependentUpon>
     </Compile>
     <Compile Include="frmShowTextFile.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWebPage.Designer.vb">
+      <DependentUpon>frmWebPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmWebPage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmWebPageList.Designer.vb">
+      <DependentUpon>frmWebPageList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmWebPageList.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Import.vb" />
@@ -175,6 +194,9 @@
     <EmbeddedResource Include="frmClipboardWindow.resx">
       <DependentUpon>frmClipboardWindow.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmHtmlDisplay.resx">
+      <DependentUpon>frmHtmlDisplay.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmImportSequence.resx">
       <DependentUpon>frmImportSequence.vb</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +205,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmShowTextFile.resx">
       <DependentUpon>frmShowTextFile.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWebPage.resx">
+      <DependentUpon>frmWebPage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmWebPageList.resx">
+      <DependentUpon>frmWebPageList.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.vb</DependentUpon>

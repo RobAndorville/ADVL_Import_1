@@ -197,13 +197,8 @@
                 Main.Sequence.rtbSequence.SelectedText = "<ShowValue>Sequence status</ShowValue>" & vbCrLf
                 Main.Sequence.FormatXmlText()
             Case ""
-                'Main.MessageColor = Color.Red
-                'Main.AddMessage("Show Value button has been pressed with no value selected." & vbCrLf)
                 Main.Message.AddWarning("Show Value button has been pressed with no value selected." & vbCrLf)
             Case Else
-                'TDS_Import.ShowMessage("Show Value button has been pressed with unrecognised value selected: " & cmbShowValue.Text & vbCrLf, Color.Red)
-                'Main.MessageColor = Color.Red
-                'Main.AddMessage("Show Value button has been pressed with unrecognised value selected: " & cmbShowValue.Text & vbCrLf)
                 Main.Message.AddWarning("Show Value button has been pressed with unrecognised value selected: " & cmbShowValue.Text & vbCrLf)
         End Select
     End Sub
@@ -257,8 +252,6 @@
         Main.Sequence.rtbSequence.SelectedText = Format(Now, "d-MMM-yyyy H:mm:ss")
         Main.Sequence.FormatXmlText()
     End Sub
-
-
 
 #End Region 'Form Methods ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

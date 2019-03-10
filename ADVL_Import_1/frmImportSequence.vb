@@ -265,11 +265,6 @@
         Next
 
         'Remove blank lines
-        'Dim RegExString6 As String = "(?<=\r\n)\ +(?=\r\n)"
-        'Dim RegExString6 As String = "(?<=\r\n)\ +\r\n"
-        'Dim RegExString6 As String = "(?<=\r\n)\ *\r\n"
-        'Dim RegExString6 As String = "(?<=\r\n)(\ *\r\n)"
-        'Dim RegExString6 As String = "(?<=\r)\ *\r"
         Dim RegExString6 As String = "(?<=\n)\ *\n"
         Dim myRegEx6 As New System.Text.RegularExpressions.Regex(RegExString6)
         Dim myMatches6 As System.Text.RegularExpressions.MatchCollection
@@ -279,7 +274,6 @@
             rtbSequence.SelectedText = ""
         Next
 
-
         rtbSequence.SelectionStart = Posn
         rtbSequence.SelectionLength = SelLen
 
@@ -287,23 +281,6 @@
 
     Private Sub btnOpen_Click(sender As Object, e As EventArgs) Handles btnOpen.Click
         'Open a processing sequence file:
-
-        'OpenFileDialog1.InitialDirectory = TDS_Import.ProjectPath
-        'OpenFileDialog1.Filter = "Sequence |*.Sequence"
-        'OpenFileDialog1.FileName = ""
-
-        'If OpenFileDialog1.ShowDialog() = DialogResult.OK Then
-        '    txtName.Text = System.IO.Path.GetFileNameWithoutExtension(OpenFileDialog1.FileName)
-        '    'Read the XML file:
-        '    Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Load(TDS_Import.ProjectPath & "\" & txtName.Text & ".Sequence")
-        '    txtDescription.Text = xmlSeq.<ProcessingSequence>.<Description>.Value
-        '    rtbSequence.Text = xmlSeq.ToString
-        '    FormatXmlText()
-        '    'Update the settings in the TDS_Import form:
-        '    TDS_Import.Import.ImportSequenceName = txtName.Text
-        '    TDS_Import.txtSequence.Text = txtName.Text 'Update the Sequence name on the main form.
-        '    TDS_Import.Import.ImportSequenceDescription = txtDescription.Text
-        'End If
 
         Dim SelectedFileName As String = ""
 
@@ -363,28 +340,11 @@
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         'Save the Import Sequence in a file:
 
-        'Try
-        '    Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Parse(rtbSequence.Text)
-        '    xmlSeq.Save(TDS_Import.ProjectPath & "\" & txtName.Text & ".Sequence")
-
-        '    'Update the settings in the TDS_Import form:
-        '    TDS_Import.Import.ImportSequenceName = txtName.Text
-        '    TDS_Import.txtSequence.Text = txtName.Text 'Update the Sequence name on the main form.
-        '    TDS_Import.Import.ImportSequenceDescription = txtDescription.Text
-        'Catch ex As Exception
-        '    'Debug.Print(ex.Message)
-        '    TDS_Import.MessageColor = Color.Red
-        '    TDS_Import.AddMessage(ex.Message)
-        'End Try
-
         Try
             Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Parse(rtbSequence.Text)
 
             Dim SequenceFileName As String = ""
 
-            'SequenceFileName = Trim(txtName.Text) & ".Sequence"
-            'SequenceFileName = Trim(txtName.Text)
-            'If SequenceFileName.EndsWith(".Sequence") Then
             If Trim(txtName.Text).EndsWith(".Sequence") Then
                 SequenceFileName = Trim(txtName.Text)
             Else

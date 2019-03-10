@@ -84,7 +84,6 @@
 
 #Region " Form Display Methods - Code used to display this form." '----------------------------------------------------------------------------------------------------------------------------
 
-    'Private Sub frmTemplate_Load(sender As Object, e As EventArgs) Handles Me.Load
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles Me.Load
         RestoreFormSettings()   'Restore the form settings
 
@@ -102,7 +101,6 @@
         Me.Close() 'Close the form
     End Sub
 
-    'Private Sub frmTemplate_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
     Private Sub Form_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         If WindowState = FormWindowState.Normal Then
             SaveFormSettings()
