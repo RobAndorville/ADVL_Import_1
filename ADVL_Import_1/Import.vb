@@ -122,8 +122,21 @@
     'Private WithEvents XSeq As New TDS_Utilities.XSequence 'This is used to run a set of XML Sequence statements. These are used to control the data importing.
     Private WithEvents XSeq As New ADVL_Utilities_Library_1.XSequence 'This is used to run a set of XML Sequence statements. These are used to control the data importing.
 
+    Public ImportLoopXDoc As New System.Xml.XmlDocument 'Contains just the Import Loop part of an Import Sequence.
+
+    'The Import Loop may include these commands:
+    '  ReadTextCommand
+    '  ProcessingCommand
+    '  ModifyValues
+
+    Private WithEvents ImportLoopXSeq As New ADVL_Utilities_Library_1.XSequence 'Used to run the ImportLoop.
+    'Private ImportLoopStatus As New System.Collections.Specialized.StringCollection NOTE: Methods in this class only use ImportStatus.
+
     'Variables used to monitor the import process:
     Private ReadLineCount As Integer 'Variable used to keep a count of the lines read in a file.
+    Private ReadFileCount As Integer 'Variable used to keep a count of the files read in an import process.
+    Private ImportStartTime As DateTime 'The start time of the import process (one or more files).
+    Private ImportFileStartTime As DateTime 'The start time of the import of the current file.
 
     'List of the database types for which this class has predefined connection strings.
     Public Enum DatabaseTypeEnum
@@ -180,6 +193,7 @@
     'ReadTextNLines             The number of lines parameter used in the Read Text methods.
     'ReadTextString             The string parameter used in the Read Text methods.
 
+    'CancelImport               The import process is cancelled if this property is set to True.
 
 
     'Private mProjectPath As String = ""
@@ -194,7 +208,8 @@
 
     'IMPORT SEQUENCE
     Private mImportSequenceName As String = ""
-    Property ImportSequenceName() As String
+    'Property ImportSequenceName() As String
+    Property ImportSequenceName As String
         Get
             Return mImportSequenceName
         End Get
@@ -204,12 +219,40 @@
     End Property
 
     Private mImportSequenceDescription As String = ""
-    Property ImportSequenceDescription() As String
+    'Property ImportSequenceDescription() As String
+    Property ImportSequenceDescription As String
         Get
             Return mImportSequenceDescription
         End Get
         Set(ByVal value As String)
             mImportSequenceDescription = value
+        End Set
+    End Property
+
+    'IMPORT LOOP
+    Private _importLoopName As String = "" 'The name of the Import Loop Sequence.
+    Property ImportLoopName As String
+        Get
+            Return _importLoopName
+        End Get
+        Set(value As String)
+            _importLoopName = value
+            If _importLoopName = "" Then
+                ImportLoopXDoc = Nothing
+            Else
+                'Load the ImportLoopXDoc:
+                DataLocn.ReadXmlDocData(_importLoopName, ImportLoopXDoc)
+            End If
+        End Set
+    End Property
+
+    Private _importLoopDescription As String = "" 'A description of the Import Loop Sequence.
+    Property ImportLoopDescription
+        Get
+            Return _importLoopDescription
+        End Get
+        Set(value)
+            _importLoopDescription = value
         End Set
     End Property
 
@@ -739,6 +782,16 @@
     '    End Set
     'End Property
 
+    Private _cancelImport As Boolean 'The import process is cancelled if this property is set to True.
+    Property CancelImport As Boolean
+        Get
+            Return _cancelImport
+        End Get
+        Set(value As Boolean)
+            _cancelImport = value
+        End Set
+    End Property
+
 #End Region 'Properties
 
 #Region " General Methods"
@@ -894,6 +947,9 @@
                                      <ModifyValuesReplacementChars><%= ModifyValuesReplacementChars %></ModifyValuesReplacementChars>
                                      <ModifyValuesFixedValue><%= ModifyValuesFixedValue %></ModifyValuesFixedValue>
                                  </ModifyValues>
+                                 <!--IMPORT LOOP:-->
+                                 <ImportLoopName><%= ImportLoopName %></ImportLoopName>
+                                 <ImportLoopDescription><%= ImportLoopDescription %></ImportLoopDescription>
                              </Settings>
 
         'importSettings.Save(ProjectPath & "\" & "ImportSettings.xml")
@@ -1111,6 +1167,12 @@
         ModifyValuesFixedValue = importSettings.<Settings>.<ModifyValues>.<ModifyValuesFixedValue>.Value
         If ModifyValuesFixedValue = Nothing Then ModifyValuesFixedValue = ""
 
+        'Read Import Loop Name: ------------------------------------------------------------------------
+        ImportLoopName = importSettings.<Settings>.<ImportLoopName>.Value
+        If ImportLoopName = Nothing Then ImportLoopName = "" 'Debug.Print("ImportSequenceName is Nothing")
+        ImportLoopDescription = importSettings.<Settings>.<ImportLoopDescription>.Value
+        If ImportLoopDescription = Nothing Then ImportLoopDescription = ""
+
         'Else 'Import Settings xml file not found
         '    Debug.Print("No valid ProjectPath: " & ProjectPath & vbCrLf)
         'End If
@@ -1144,6 +1206,9 @@
         ModifyValuesCharsToReplace = ""
         ModifyValuesReplacementChars = ""
         ModifyValuesFixedValue = ""
+        ImportLoopName = ""
+        ImportLoopDescription = ""
+        ImportLoopXDoc = Nothing
 
     End Sub
 
@@ -1339,6 +1404,8 @@
             Next
         Else
             RaiseEvent ErrorMessage("RegEx List file not found: " & RegExListName & vbCrLf)
+            Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+            System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
         End If
 
     End Sub
@@ -1362,6 +1429,8 @@
             RaiseEvent Message("There is no text in the TextStore" & vbCrLf)
             Exit Sub
         End If
+
+        ClearDbDestValues() 'ADDED 3Jul19
 
         Try
             Dim myRegEx As New System.Text.RegularExpressions.Regex(RegEx(IndexNo).RegEx)
@@ -1396,6 +1465,8 @@
             RaiseEvent ErrorMessage("There is no text in the TextStore" & vbCrLf)
             Exit Sub
         End If
+
+        ClearDbDestValues() 'ADDED 3Jul19
 
         For I = 0 To RegExCount - 1
             'Process each RegEx:
@@ -1432,6 +1503,8 @@
             'Debug.Print("DbDestValues() = Nothing" & vbCrLf)
             'NOTE: Convert this code to a warning message event!!! -----------------------------------------------------------------------------------
             'ShowMessage("Running SaveTextMatch() subroutine. DbDestValues = Nothing!" & vbCrLf, Color.Red)
+            Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+            System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
         Else
             Dim I As Integer
             Dim strVarName As String
@@ -1584,6 +1657,8 @@
             Else
                 'MsgBox("Index number is too large!", MsgBoxStyle.Information, "Notice")
                 RaiseEvent ErrorMessage("DbDestInsertBlank(Index) error: Index number is too large! DbDest = nothing and Index <> 0")
+                Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
             End If
         Else
             Count = mDbDest.Count
@@ -1623,6 +1698,8 @@
                     'NOTE: Convert this code to a warning message event!!! ---------------------------------------------------------------------------------
                     MsgBox("Index number is too large!", MsgBoxStyle.Information, "Notice")
                     RaiseEvent ErrorMessage("DbDestInsertBlank(Index) error: Index number is too large! Index > Count")
+                    Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                    System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                 End If
             End If
         End If
@@ -1842,6 +1919,8 @@
             Next
         Else
             RaiseEvent ErrorMessage("Database Destinations List file not found: " & DbDestListName & vbCrLf)
+            Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+            System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
         End If
 
     End Sub
@@ -1915,6 +1994,8 @@
             If RegExVarRow = -1 Then
                 'RaiseEvent ErrorMessage("Modify values error: Append RevEx variable value: The variable could not be found: " & ModifyValuesRegExVarToAppend)
                 RaiseEvent ErrorMessage("Modify values error: Append RevEx variable value: The variable could not be found: " & ModifyValuesRegExVarValFrom)
+                Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                 Exit Sub
             End If
         End If
@@ -1941,6 +2022,8 @@
                                 'NOTE: Convert this code to a warning message event!!! -----------------------------------------------------------------------------------
                                 'ShowMessage("Convert_date error: Text to modify = Nothing: " & vbCrLf, Color.Red)
                                 RaiseEvent ErrorMessage("Convert_date error: Text to modify = Nothing")
+                                Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                                System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                             Else
                                 ConvertDate(ModifyValuesInputDateFormat, ModifyValuesOutputDateFormat, InputString, OutputString)
                             End If
@@ -2008,6 +2091,8 @@
                             'NOTE: Convert this code to a warning message event!!! -----------------------------------------------------------------------------------
                             'ShowMessage("Unrecognised Modify Values type: " & ModifyValuesType & vbCrLf, Color.Red)
                             RaiseEvent ErrorMessage("Unrecognised Modify Values type: " & ModifyValuesType)
+                            Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                            System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                         End If
                         DbDestValues(I - 1, K) = OutputString
                     Next
@@ -2156,6 +2241,7 @@
             GoToStartOfText()
 
             ReadLineCount = 0 'Reset ReadLineCount.
+            ReadFileCount = 1
 
             'ImportStatus.Remove("No_more_input_files")
             'ImportStatus.Remove("At_end_of_file")
@@ -2178,19 +2264,32 @@
             OpenTextFile()
             'RaiseEvent Notice(vbCrLf & vbCrLf & "New file opened: " & CurrentFilePath & vbCrLf & "Lines read: ")
             'RaiseEvent Message(vbCrLf & vbCrLf & "New file opened: " & CurrentFilePath & vbCrLf & "Lines read: " & vbCrLf)
-            RaiseEvent Message(vbCrLf & "New file opened: " & CurrentFilePath & vbCrLf & "Lines read: ")
+            'RaiseEvent Message(vbCrLf & "New file opened: " & CurrentFilePath & vbCrLf & "Lines read: ")
+            RaiseEvent Message("New file opened: " & CurrentFilePath & vbCrLf & "Lines read: ")
             GoToStartOfText()
 
             ReadLineCount = 0 'Reset ReadLineCount.
+            ReadFileCount += 1 'Increment the number of files that will be read.
 
             'ImportStatus.Remove("No_more_input_files")
             'ImportStatus.Remove("At_end_of_file")
             ImportStatusRemove("No_more_input_files")
             'ImportStatusRemove("No_more_text_files")
             ImportStatusRemove("At_end_of_file")
+
+            System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+            If CancelImport Then 'Add No_more_input_files flag to stop the Import process.
+                ImportStatus.Add("No_more_input_files")
+                RaiseEvent Message("Cancel Import detected in SelectNextFile(). ImportStatus set to No_more_input_files.")
+            End If
         Else
             ImportStatus.Add("No_more_input_files")
             'ImportStatus.Add("No_more_text_files")
+            Dim Duration As TimeSpan = Now - ImportStartTime
+            Dim SecondsPerFile As Single = Duration.TotalSeconds / ReadFileCount
+            RaiseEvent Message("Number of files imported:" & ReadFileCount)
+            RaiseEvent Message("Time taken:" & Duration.Hours & " hours  " & Duration.Minutes & " minutes  " & Duration.Seconds & " seconds  (" & Duration.TotalSeconds & " seconds)")
+            RaiseEvent Message("Average number of seconds taken to import each file :" & SecondsPerFile & vbCrLf)
         End If
 
     End Sub
@@ -2286,18 +2385,31 @@
                         'Exit Sub
                     Else
                         TextStore = textIn.ReadLine
-                        ReadLineCount = ReadLineCount + 1 'Increment ReadLineCount
+                        'ReadLineCount = ReadLineCount + 1 'Increment ReadLineCount
+                        ReadLineCount += 1 'Increment ReadLineCount
                         If textIn.EndOfStream = True Then
                             'SequenceStatus = "At_end_of_file"
                             ImportStatus.Add("At_end_of_file")
                             'Debug.Print("End of file reached")
                             'The last line has been read and the end of line has been flagged!
                         End If
+                        'System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+                        'If CancelImport Then 'Add At_end_of_file flag to stop the Import process.
+                        '    ImportStatus.Add("At_end_of_file")
+                        'End If
+                        If CancelImport Then 'Add No_more_input_files flag to stop the Import process.
+                            ImportStatus.Add("At_end_of_file")
+                            RaiseEvent Message("Cancel Import detected in ReadNextLineOfText(). ImportStatus set to At_end_of_file.")
+                        End If
                     End If
                 Else
                     'SequenceStatus = "At_end_of_file"
                     ImportStatus.Add("At_end_of_file")
                     'Debug.Print("End of file reached")
+                    'Dim Duration As TimeSpan = Now - ImportStartTime
+                    Dim Duration As TimeSpan = Now - ImportFileStartTime
+                    Dim LinesPerSecond As Single = ReadLineCount / Duration.Seconds
+                    RaiseEvent Message("Lines imported per second :" & LinesPerSecond & vbCrLf)
                 End If
 
             Else
@@ -3619,6 +3731,14 @@
                     RaiseEvent ErrorMessage(commandString & vbCrLf)
                     'RaiseEvent Warning("Insert Command Error: " & ex.Message & vbCrLf)
                     RaiseEvent ErrorMessage("Insert Command Error: " & ex.Message & vbCrLf)
+
+                    'Check if the StopImport flag has been set:
+                    'Application.DoEvents()
+                    Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                    System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+
+
+
                 End Try
             Next 'ValNo
         Next 'TabNo
@@ -3725,12 +3845,16 @@
 
     Public Sub RunXSequence(ByRef xDoc As System.Xml.XmlDocument)
         Debug.Print("Running Import.RunXSequence(xDoc)")
+        CancelImport = False
+        ImportStartTime = Now 'The start time of the import process (of one or more files).
+        ImportFileStartTime = ImportStartTime 'The start time of the import of the current file.
         XSeq.RunXSequence(xDoc, ImportStatus)
     End Sub
 
     Private Sub XSeq_ErrorMsg(ErrMsg As String) Handles XSeq.ErrorMsg
         'RaiseEvent Warning(ErrMsg)
         RaiseEvent ErrorMessage(ErrMsg)
+        Application.DoEvents() 'The will check if a CancelImport button has been pressed.
     End Sub
 
     'Private Sub XSeq_Instruction_Old(Path As String, Prop As String) Handles XSeq.Instruction_Old
@@ -3926,6 +4050,14 @@
                     SelectFirstFile()
                 ElseIf Info = "OpenNextFile" Then
                     'Debug.Print("Running SelectNextFile()")
+
+                    'Dim Duration As TimeSpan = Now - ImportStartTime
+                    Dim Duration As TimeSpan = Now - ImportFileStartTime
+                    Dim LinesPerSecond As Single = ReadLineCount / Duration.Seconds
+                    RaiseEvent Message("Lines imported per second :" & LinesPerSecond & vbCrLf)
+
+                    'ImportStartTime = Now 'Start timing the next file import
+                    ImportFileStartTime = Now 'Start timing the next file import
                     SelectNextFile()
                 ElseIf Info = "ReadNextLine" Then
                     'Debug.Print("Running ReadNextLineOfText()")
@@ -3934,6 +4066,8 @@
                         'RaiseEvent Notice(" " & ReadLineCount) 'Show the number of lines read
                         'RaiseEvent Message(" " & ReadLineCount & vbCrLf) 'Show the number of lines read
                         RaiseEvent Message(" " & ReadLineCount) 'Show the number of lines read
+                        Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                        System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                     End If
                 End If
 
@@ -3957,9 +4091,12 @@
                     CloseDatabase()
                 Else
                     RaiseEvent ErrorMessage("Unknown Processing Command: " & Info & vbCrLf)
+                    Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                    System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                 End If
 
-                'Modify Values: -----------------------------------------------------
+            'Modify Values: -----------------------------------------------------
+
             Case "ModifyValues:RegExVariable"
                 ModifyValuesRegExVariable = Info
             Case "ModifyValues:InputDateFormat"
@@ -4035,64 +4172,219 @@
                     ModifyValuesApply()
                 End If
 
+            'Import Loop: -------------------------------------------------------
+            Case "ImportLoopName"
+                ImportLoopName = Info 'This will also load the file into ImportLoopXDoc
+
+            Case "ImportLoopDescription"
+                ImportLoopDescription = Info 'A description of the Import Loop
+
+
+            '--------------------------------------------------------------------
+
             Case "EndOfSequence"
-                RaiseEvent Message(vbCrLf & "End of processing sequence" & vbCrLf) 'Show the number of lines read
+                'RaiseEvent Message(vbCrLf & "End of processing sequence" & vbCrLf) 'Show the number of lines read
+                'Dim Duration As TimeSpan = Now - ImportStartTime
+                'Dim LinesPerSecond As Single = ReadLineCount / Duration.Seconds
+                'RaiseEvent Message("Lines imported per second :" & LinesPerSecond & vbCrLf)
+                RaiseEvent Message("End of processing sequence" & vbCrLf)
+
 
             Case Else
                 RaiseEvent ErrorMessage("Unknown Locn: " & Locn & vbCrLf)
+                Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
         End Select
 
     End Sub
 
-    'Private Sub RunXSequence_Instruction(Path As String, Prop As String) Handles RunXSequence.Instruction
-    '    RaiseEvent Notice("Path: " & Path & "  Prop: " & Prop & vbCrLf)
-    'End Sub
+    Public Sub RunImportLoop()
+        'Run the ImkportLoopXSeq Sequence:
+        If ImportLoopXSeq Is Nothing Then
+            If ImportLoopName = "" Then
+                RaiseEvent ErrorMessage("The Import Loop sequence has not been loaded." & vbCrLf)
+                Exit Sub
+            Else
+                DataLocn.ReadXmlDocData(ImportLoopName, ImportLoopXDoc)
+            End If
+        End If
+
+        CancelImport = False
+        ImportStartTime = Now 'The start time of the import process (of one or more files).
+        ImportFileStartTime = ImportStartTime 'The start time of the import of the current file.
+        'XSeq.RunXSequence(xDoc, ImportStatus)
+        'ImportLoopXSeq.RunXSequence(ImportLoopXDoc, ImportStatus)
+        'Set up separate versions of ImportStatus etc for the ImportLoopXSeq. (ImportLoopXSeq may be run at the same time as XSeq.)
+        'ImportLoopXSeq.RunXSequence(ImportLoopXDoc, ImportLoopStatus)
+        ImportLoopXSeq.RunXSequence(ImportLoopXDoc, ImportStatus) 'Mothods in this class only use ImportStatus.
+    End Sub
+
+    Private Sub ImportLoopXSeq_ErrorMsg(ErrMsg As String) Handles ImportLoopXSeq.ErrorMsg
+        RaiseEvent ErrorMessage(ErrMsg)
+        Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+    End Sub
+
+    Private Sub ImportLoopXSeq_Instruction(Info As String, Locn As String) Handles ImportLoopXSeq.Instruction
+        'Execute each instruction produced by running the ImportLoopXSeq Sequence.
+
+        Select Case Locn
+            'Read Text Commands: -----------------------------------------------------
+            Case "ReadTextCommand"
+                'If Info = "OpenFirstFile" Then
+                '    SelectFirstFile()
+                If Info = "ReadNextLine" Then
+                    ReadNextLineOfText()
+                    If ReadLineCount Mod 200 = 0 Then
+                        RaiseEvent Message(" " & ReadLineCount) 'Show the number of lines read
+                        Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                        System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+                    End If
+                ElseIf Info = "OpenNextFile" Then
+                    Dim Duration As TimeSpan = Now - ImportFileStartTime
+                    Dim LinesPerSecond As Single = ReadLineCount / Duration.Seconds
+                    RaiseEvent Message("Lines imported per second :" & LinesPerSecond & vbCrLf)
+
+                    ImportFileStartTime = Now 'Start timing the next file import
+                    SelectNextFile()
+                    'ElseIf Info = "ReadNextLine" Then
+                    '    ReadNextLineOfText()
+                    '    If ReadLineCount Mod 200 = 0 Then
+                    '        RaiseEvent Message(" " & ReadLineCount) 'Show the number of lines read
+                    '        Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                    '        System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+                    '    End If
+                ElseIf Info = "OpenFirstFile" Then
+                    SelectFirstFile()
+                End If
+
+            'Processing Commands: ----------------------------------------------------
+            Case "ProcessingCommand"
+                If Info = "RunRegExList" Then
+                    RunRegExList()
+                ElseIf Info = "OpenDatabase" Then
+                    DatabaseType = DatabaseTypeEnum.Access2007To2013
+                    OpenDatabase()
+                ElseIf Info = "ProcessMatches" Then
+                    ProcessMatches()
+                ElseIf Info = "WriteToDatabase" Then
+                    WriteToDatabase()
+                ElseIf Info = "CloseDatabase" Then
+                    CloseDatabase()
+                Else
+                    RaiseEvent ErrorMessage("Unknown Processing Command: " & Info & vbCrLf)
+                    Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                    System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+                End If
+
+            'Modify Values: ----------------------------------------------------------
+            Case "ModifyValues:RegExVariable"
+                ModifyValuesRegExVariable = Info
+            Case "ModifyValues:InputDateFormat"
+                ModifyValuesInputDateFormat = Info
+            Case "ModifyValues:OutputDateFormat"
+                ModifyValuesOutputDateFormat = Info
+            Case "ModifyValues:CharactersToReplace"
+                ModifyValuesCharsToReplace = Info
+            Case "ModifyValues:ReplacementCharacters"
+                ModifyValuesReplacementChars = Info
+            Case "ModifyValues:FixedValue"
+                mModifyValuesFixedValue = Info
+            Case "ModifyValues:RegExVariableValueFrom"
+                _modifyValuesRegExVarValFrom = Info
+            Case "ModifyValues:ModifyType"
+                If Info = "Convert_date" Then
+                    ModifyValuesType = ModifyValuesTypes.ConvertDate
+                    ModifyValuesApply()
+                ElseIf Info = "Clear_value" Then
+                    ModifyValuesType = ModifyValuesTypes.ClearValue
+                    ModifyValuesApply()
+                ElseIf Info = "Replace_characters" Then
+                    ModifyValuesType = ModifyValuesTypes.ReplaceChars
+                    ModifyValuesApply()
+                ElseIf Info = "Append_fixed_value" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendFixedValue
+                    ModifyValuesApply()
+                ElseIf Info = "Append_RegEx_variable_value" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendRegExVarValue
+                    ModifyValuesApply()
+                ElseIf Info = "Append_file_name" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendFileName
+                    ModifyValuesApply()
+                ElseIf Info = "Append_file_directory" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendFileDir
+                    ModifyValuesApply()
+                ElseIf Info = "Append_file_path" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendFilePath
+                    ModifyValuesApply()
+                ElseIf Info = "Append_current_date" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendCurrentDate
+                    ModifyValuesApply()
+                ElseIf Info = "Append_current_time" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendCurrentTime
+                    ModifyValuesApply()
+                ElseIf Info = "Append_current_date_time" Then
+                    ModifyValuesType = ModifyValuesTypes.AppendCurrentDateTime
+                    ModifyValuesApply()
+                End If
+
+            'Input Data: -------------------------------------------------------------
+            Case "InputData:TextFileDirectory"
+                TextFileDir = Info
+            Case "InputData:TextFilesToProcess:SelectFileMode"
+                SelectFileMode = Info
+            Case "InputData:TextFilesToProcess:Command"
+                If Info = "ClearSelectedFileList" Then
+                    SelTextFilesClear()
+                End If
+            Case "InputData:TextFilesToProcess:TextFile"
+                SelTextFileAppend(Info)
+            Case "InputData:TextFilesToProcess:SelectionFilePath"
+                SelectionFileName = Info
+
+           'Database: ----------------------------------------------------------------
+            Case "Database:Path"
+                DatabasePath = Info
+            Case "Database:Type"
+                If Info = "Access2007To2013" Then
+                    DatabaseType = DatabaseTypeEnum.Access2007To2013
+                ElseIf Info = "User_defined_connection_string" Then
+                    DatabaseType = DatabaseTypeEnum.User_defined_connection_string
+                End If
+
+            'Database Destinations List: ---------------------------------------------
+            Case "DatabaseDestinationsList"
+                DbDestListName = Info
+                OpenDbDestListFile()
+
+            'Match Text RegEx List: --------------------------------------------------
+            Case "MatchTextRegExList"
+                RegExListName = Info
+                OpenRegExListFile()
+
+            '-------------------------------------------------------------------------
+            Case "EndOfSequence"
+                RaiseEvent Message("End of processing sequence" & vbCrLf)
+
+            Case Else
+                RaiseEvent ErrorMessage("Unknown Locn: " & Locn & vbCrLf)
+                Application.DoEvents() 'The will check if a CancelImport button has been pressed.
+                System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
+        End Select
+    End Sub
+
 
 #End Region 'Run Sequence Methods
 
 
-    'Public Sub AddMessage(ByVal strMsg As String)
-    '    'Add the message to the DebugMessages Form
-
-    '    'Check is the form is open:
-    '    If IsNothing(DebugMessages) Then
-    '        DebugMessages = New frmDebugMessages
-    '        DebugMessages.Show()
-    '    Else
-    '        DebugMessages.Show()
-    '    End If
-
-    '    Dim StrLen As Integer
-    '    Dim StrStart As Integer
-
-    '    StrStart = DebugMessages.rtbMessages.TextLength
-    '    StrLen = strMsg.Length
-
-    '    DebugMessages.rtbMessages.AppendText(strMsg)
-    '    DebugMessages.rtbMessages.Select(StrStart, StrLen)
-    '    'DebugMessages.rtbMessages.SelectionColor = MessageColor
-    '    DebugMessages.rtbMessages.SelectionColor = DebugMessages.MessageColor
-    '    'DebugMessages.rtbMessages.SelectionFont = New Font(MessageFontName, MessageFontSize, MessageFontStyle)
-    '    DebugMessages.rtbMessages.SelectionFont = New System.Drawing.Font(DebugMessages.MessageFontName, DebugMessages.MessageFontSize, DebugMessages.MessageFontStyle)
-
-    '    DebugMessages.Refresh() '
-
-    '    'Scroll to the end of the message window:
-    '    DebugMessages.rtbMessages.ScrollToCaret()
-
-    '    DebugMessages.BringToFront()
-    'End Sub
-
 #Region " Events"
 
-    'Public Event Status(ByVal StatusText As String) 'Send a status message
-
-    'Public Event Warning(ByVal WarningText As String) 'Send a warning message
     Public Event ErrorMessage(ByVal Message As String) 'Send an error message.
 
-    'Public Event Notice(ByVal NoticeText As String) 'Send a notice message
     Public Event Message(ByVal Message As String) 'Send a message
 
 #End Region 'Events
 
 End Class 'Import
+
+
+

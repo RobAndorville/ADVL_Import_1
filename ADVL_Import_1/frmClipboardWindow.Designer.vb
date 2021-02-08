@@ -22,11 +22,14 @@ Partial Class frmClipboardWindow
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.txtClipboard = New System.Windows.Forms.TextBox()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.btnClear = New System.Windows.Forms.Button()
         Me.btnPaste = New System.Windows.Forms.Button()
         Me.btnCharCodes = New System.Windows.Forms.Button()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.chkRunImportLoop = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'txtClipboard
@@ -58,6 +61,7 @@ Partial Class frmClipboardWindow
         Me.btnClear.Size = New System.Drawing.Size(58, 22)
         Me.btnClear.TabIndex = 9
         Me.btnClear.Text = "Clear"
+        Me.ToolTip1.SetToolTip(Me.btnClear, "Clear the text in the Clipboard Window")
         Me.btnClear.UseVisualStyleBackColor = True
         '
         'btnPaste
@@ -67,22 +71,35 @@ Partial Class frmClipboardWindow
         Me.btnPaste.Size = New System.Drawing.Size(125, 22)
         Me.btnPaste.TabIndex = 10
         Me.btnPaste.Text = "Paste from Clipboard"
+        Me.ToolTip1.SetToolTip(Me.btnPaste, "Paste the text in the Clipboard to the Clipboard Window and the Import Engine")
         Me.btnPaste.UseVisualStyleBackColor = True
         '
         'btnCharCodes
         '
-        Me.btnCharCodes.Location = New System.Drawing.Point(207, 12)
+        Me.btnCharCodes.Location = New System.Drawing.Point(313, 12)
         Me.btnCharCodes.Name = "btnCharCodes"
         Me.btnCharCodes.Size = New System.Drawing.Size(134, 22)
         Me.btnCharCodes.TabIndex = 11
         Me.btnCharCodes.Text = "Show Character Codes"
         Me.btnCharCodes.UseVisualStyleBackColor = True
         '
+        'chkRunImportLoop
+        '
+        Me.chkRunImportLoop.AutoSize = True
+        Me.chkRunImportLoop.Location = New System.Drawing.Point(207, 16)
+        Me.chkRunImportLoop.Name = "chkRunImportLoop"
+        Me.chkRunImportLoop.Size = New System.Drawing.Size(100, 17)
+        Me.chkRunImportLoop.TabIndex = 12
+        Me.chkRunImportLoop.Text = "Run import loop"
+        Me.ToolTip1.SetToolTip(Me.chkRunImportLoop, "Run import loop after pasting text")
+        Me.chkRunImportLoop.UseVisualStyleBackColor = True
+        '
         'frmClipboardWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(753, 589)
+        Me.Controls.Add(Me.chkRunImportLoop)
         Me.Controls.Add(Me.btnCharCodes)
         Me.Controls.Add(Me.btnPaste)
         Me.Controls.Add(Me.btnClear)
@@ -90,6 +107,7 @@ Partial Class frmClipboardWindow
         Me.Controls.Add(Me.txtClipboard)
         Me.Name = "frmClipboardWindow"
         Me.Text = "Clipboard Window"
+        Me.ToolTip1.SetToolTip(Me, "Paste the text in the Clipboard to the Clipboard Window and the Import Engine")
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -100,4 +118,6 @@ Partial Class frmClipboardWindow
     Friend WithEvents btnClear As Button
     Friend WithEvents btnPaste As Button
     Friend WithEvents btnCharCodes As Button
+    Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents chkRunImportLoop As CheckBox
 End Class

@@ -22,6 +22,7 @@ Partial Class frmSeqStatements
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.btnRunGroupIf = New System.Windows.Forms.Button()
         Me.txtRunGroupIf = New System.Windows.Forms.TextBox()
@@ -52,6 +53,7 @@ Partial Class frmSeqStatements
         Me.btnCurrentDate = New System.Windows.Forms.Button()
         Me.btnCurrentTime = New System.Windows.Forms.Button()
         Me.btnCurrentDateTime = New System.Windows.Forms.Button()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SuspendLayout()
         '
         'btnExit
@@ -71,6 +73,7 @@ Partial Class frmSeqStatements
         Me.btnRunGroupIf.Size = New System.Drawing.Size(118, 22)
         Me.btnRunGroupIf.TabIndex = 108
         Me.btnRunGroupIf.Text = "Run Group If"
+        Me.ToolTip1.SetToolTip(Me.btnRunGroupIf, "Insert a statement to run a Statement Group if the Status string matches")
         Me.btnRunGroupIf.UseVisualStyleBackColor = True
         '
         'txtRunGroupIf
@@ -89,6 +92,7 @@ Partial Class frmSeqStatements
         Me.btnSelectGroup.Size = New System.Drawing.Size(118, 22)
         Me.btnSelectGroup.TabIndex = 106
         Me.btnSelectGroup.Text = "Select Group"
+        Me.ToolTip1.SetToolTip(Me.btnSelectGroup, "Insert a statement to select a Statement Group")
         Me.btnSelectGroup.UseVisualStyleBackColor = True
         '
         'txtSelectGroup
@@ -107,6 +111,7 @@ Partial Class frmSeqStatements
         Me.btnRunGroup.Size = New System.Drawing.Size(118, 22)
         Me.btnRunGroup.TabIndex = 104
         Me.btnRunGroup.Text = "Run Group"
+        Me.ToolTip1.SetToolTip(Me.btnRunGroup, "Insert a statement to run the specified Statement Group")
         Me.btnRunGroup.UseVisualStyleBackColor = True
         '
         'txtRunGroup
@@ -125,6 +130,7 @@ Partial Class frmSeqStatements
         Me.btnCommandLine.Size = New System.Drawing.Size(118, 22)
         Me.btnCommandLine.TabIndex = 102
         Me.btnCommandLine.Text = "Add Command Line"
+        Me.ToolTip1.SetToolTip(Me.btnCommandLine, "Insert the specified Command statement")
         Me.btnCommandLine.UseVisualStyleBackColor = True
         '
         'cmbCommandLine
@@ -144,6 +150,7 @@ Partial Class frmSeqStatements
         Me.btnShowValue.Size = New System.Drawing.Size(118, 22)
         Me.btnShowValue.TabIndex = 100
         Me.btnShowValue.Text = "Show Value"
+        Me.ToolTip1.SetToolTip(Me.btnShowValue, "Insert a statement to show the selected values in the Messages window")
         Me.btnShowValue.UseVisualStyleBackColor = True
         '
         'cmbShowValue
@@ -172,6 +179,8 @@ Partial Class frmSeqStatements
         Me.btnShowMessageString.Size = New System.Drawing.Size(118, 22)
         Me.btnShowMessageString.TabIndex = 97
         Me.btnShowMessageString.Text = "Show Message String"
+        Me.ToolTip1.SetToolTip(Me.btnShowMessageString, "Insert a statement to show the specified text in the Messages window without appe" &
+        "nding CrLf characters")
         Me.btnShowMessageString.UseVisualStyleBackColor = True
         '
         'btnShowMessageLine
@@ -181,6 +190,8 @@ Partial Class frmSeqStatements
         Me.btnShowMessageLine.Size = New System.Drawing.Size(118, 22)
         Me.btnShowMessageLine.TabIndex = 96
         Me.btnShowMessageLine.Text = "Show Message Line"
+        Me.ToolTip1.SetToolTip(Me.btnShowMessageLine, "Insert a statement to show the specified line of text in the Messages window, app" &
+        "ended by CrLf characters")
         Me.btnShowMessageLine.UseVisualStyleBackColor = True
         '
         'txtMessageLine
@@ -199,6 +210,7 @@ Partial Class frmSeqStatements
         Me.btnAddComment.Size = New System.Drawing.Size(118, 22)
         Me.btnAddComment.TabIndex = 94
         Me.btnAddComment.Text = "Add Comment"
+        Me.ToolTip1.SetToolTip(Me.btnAddComment, "Insert a Comment Statement with the specified text")
         Me.btnAddComment.UseVisualStyleBackColor = True
         '
         'txtComment
@@ -217,6 +229,7 @@ Partial Class frmSeqStatements
         Me.btnGroupExit.Size = New System.Drawing.Size(118, 22)
         Me.btnGroupExit.TabIndex = 92
         Me.btnGroupExit.Text = "Exit group if status ="
+        Me.ToolTip1.SetToolTip(Me.btnGroupExit, "Insert an Exit Group Statement with a Status string condition")
         Me.btnGroupExit.UseVisualStyleBackColor = True
         '
         'txtExitGroupStatusText
@@ -244,6 +257,7 @@ Partial Class frmSeqStatements
         Me.btnAddGroup.Size = New System.Drawing.Size(73, 22)
         Me.btnAddGroup.TabIndex = 89
         Me.btnAddGroup.Text = "Add Group"
+        Me.ToolTip1.SetToolTip(Me.btnAddGroup, "Insert a Group Statement with the specified description")
         Me.btnAddGroup.UseVisualStyleBackColor = True
         '
         'txtGroupDescr
@@ -262,6 +276,7 @@ Partial Class frmSeqStatements
         Me.LoopExit.Size = New System.Drawing.Size(118, 22)
         Me.LoopExit.TabIndex = 87
         Me.LoopExit.Text = "Exit loop if status ="
+        Me.ToolTip1.SetToolTip(Me.LoopExit, "Insert an Exit Loop Statement with a Status string condition")
         Me.LoopExit.UseVisualStyleBackColor = True
         '
         'cmbExitLoopStatus
@@ -290,6 +305,7 @@ Partial Class frmSeqStatements
         Me.btnAddLoop.Size = New System.Drawing.Size(73, 22)
         Me.btnAddLoop.TabIndex = 84
         Me.btnAddLoop.Text = "Add Loop"
+        Me.ToolTip1.SetToolTip(Me.btnAddLoop, "Insert a Loop Statement with the specified description")
         Me.btnAddLoop.UseVisualStyleBackColor = True
         '
         'txtLoopDescr
@@ -308,6 +324,7 @@ Partial Class frmSeqStatements
         Me.btnCurrentDate.Size = New System.Drawing.Size(83, 22)
         Me.btnCurrentDate.TabIndex = 109
         Me.btnCurrentDate.Text = "Current Date"
+        Me.ToolTip1.SetToolTip(Me.btnCurrentDate, "Insert the date as a formatted string")
         Me.btnCurrentDate.UseVisualStyleBackColor = True
         '
         'btnCurrentTime
@@ -317,6 +334,7 @@ Partial Class frmSeqStatements
         Me.btnCurrentTime.Size = New System.Drawing.Size(83, 22)
         Me.btnCurrentTime.TabIndex = 110
         Me.btnCurrentTime.Text = "Current Time"
+        Me.ToolTip1.SetToolTip(Me.btnCurrentTime, "Insert the time as a formatted string")
         Me.btnCurrentTime.UseVisualStyleBackColor = True
         '
         'btnCurrentDateTime
@@ -326,6 +344,7 @@ Partial Class frmSeqStatements
         Me.btnCurrentDateTime.Size = New System.Drawing.Size(114, 22)
         Me.btnCurrentDateTime.TabIndex = 111
         Me.btnCurrentDateTime.Text = "Current DateTime"
+        Me.ToolTip1.SetToolTip(Me.btnCurrentDateTime, "Insert the Date/Time as a formatted string")
         Me.btnCurrentDateTime.UseVisualStyleBackColor = True
         '
         'frmSeqStatements
@@ -400,4 +419,5 @@ Partial Class frmSeqStatements
     Friend WithEvents btnCurrentDate As Button
     Friend WithEvents btnCurrentTime As Button
     Friend WithEvents btnCurrentDateTime As Button
+    Friend WithEvents ToolTip1 As ToolTip
 End Class
