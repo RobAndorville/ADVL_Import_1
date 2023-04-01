@@ -83,6 +83,10 @@ Public Class Main
     Public WithEvents SeqStatements As frmSeqStatements
 
     Public WithEvents WebPageList As frmWebPageList
+    Public WithEvents ProjectArchive As frmArchive 'Form used to view the files in a Project archive
+    Public WithEvents SettingsArchive As frmArchive 'Form used to view the files in a Settings archive
+    Public WithEvents DataArchive As frmArchive 'Form used to view the files in a Data archive
+    Public WithEvents SystemArchive As frmArchive 'Form used to view the files in a System archive
 
     Public WithEvents NewHtmlDisplay As frmHtmlDisplay
     Public HtmlDisplayFormList As New ArrayList 'Used for displaying multiple HtmlDisplay forms.
@@ -453,8 +457,14 @@ Public Class Main
                                <AdvlNetworkExePath><%= AdvlNetworkExePath %></AdvlNetworkExePath>
                                <ShowXMessages><%= ShowXMessages %></ShowXMessages>
                                <ShowSysMessages><%= ShowSysMessages %></ShowSysMessages>
+                               <WorkFlowFileName><%= WorkflowFileName %></WorkFlowFileName>
                                <!---->
                                <SelectedTabIndex><%= TabControl1.SelectedIndex %></SelectedTabIndex>
+                               <!---->
+                               <!--Match Text - Input Files Settings-->
+                               <FileNameEndsWith><%= txtEndsWith.Text %></FileNameEndsWith>
+                               <ContentRegEx><%= txtContentRegEx.Text %></ContentRegEx>
+                               <MaxFileSize><%= txtFileSize.Text %></MaxFileSize>
                                <!---->
                                <!--Match Text - RegEx Grid Settings-->
                                <RegExNameColumnWidth><%= DataGridView1.Columns(0).Width %></RegExNameColumnWidth>
@@ -470,6 +480,9 @@ Public Class Main
                                <!---->
                                <!--Import Sequence - Tab Settings-->
                                <UpdateSettingsTabs><%= chkUpdateSettingsTabs.Checked %></UpdateSettingsTabs>
+                               <!---->
+                               <!--Modify - Tab Settings-->
+                               <ModifyValueType><%= ModifyValueType %></ModifyValueType>
                                <!---->
                            </FormSettings>
 
@@ -506,7 +519,15 @@ Public Class Main
             If Settings.<FormSettings>.<ShowXMessages>.Value <> Nothing Then ShowXMessages = Settings.<FormSettings>.<ShowXMessages>.Value
             If Settings.<FormSettings>.<ShowSysMessages>.Value <> Nothing Then ShowSysMessages = Settings.<FormSettings>.<ShowSysMessages>.Value
 
+            If Settings.<FormSettings>.<WorkFlowFileName>.Value <> Nothing Then WorkflowFileName = Settings.<FormSettings>.<WorkFlowFileName>.Value
+
             If Settings.<FormSettings>.<SelectedTabIndex>.Value <> Nothing Then TabControl1.SelectedIndex = Settings.<FormSettings>.<SelectedTabIndex>.Value
+
+            'Match Text - Input Field Settings:
+            If Settings.<FormSettings>.<FileNameEndsWith>.Value <> Nothing Then txtEndsWith.Text = Settings.<FormSettings>.<FileNameEndsWith>.Value
+            If Settings.<FormSettings>.<ContentRegEx>.Value <> Nothing Then txtContentRegEx.Text = Settings.<FormSettings>.<ContentRegEx>.Value
+            If Settings.<FormSettings>.<MaxFileSize>.Value <> Nothing Then txtFileSize.Text = Settings.<FormSettings>.<MaxFileSize>.Value
+
             'Restore Match Text Tab Settings:
             If Settings.<FormSettings>.<RegExNameColumnWidth>.Value <> Nothing Then DataGridView1.Columns(0).Width = Settings.<FormSettings>.<RegExNameColumnWidth>.Value
             If Settings.<FormSettings>.<RegExDescrColumnWidth>.Value <> Nothing Then DataGridView1.Columns(1).Width = Settings.<FormSettings>.<RegExDescrColumnWidth>.Value
@@ -528,9 +549,86 @@ Public Class Main
             End If
 
             'Add code to read other saved setting here:
+            If Settings.<FormSettings>.<ModifyValueType>.Value <> Nothing Then
+                Select Case Settings.<FormSettings>.<ModifyValueType>.Value
+                    Case "ClearValue"
+                        rbClearValue.Checked = True
+                        txtModType.Text = "Clear the value"
+                        ModifyValueType = Import.ModifyValuesTypes.ClearValue
+
+                    Case "ConvertDate"
+                        rbConvertDate.Checked = True
+                        txtModType.Text = "Convert date"
+                        ModifyValueType = Import.ModifyValuesTypes.ConvertDate
+
+                    Case "ReplaceChars"
+                        rbReplaceChars.Checked = True
+                        txtModType.Text = "Replace characters"
+                        ModifyValueType = Import.ModifyValuesTypes.ReplaceChars
+
+                    Case "FixedValue"
+                        rbFixedValue.Checked = True
+                        txtModType.Text = "Fixed value"
+                        ModifyValueType = Import.ModifyValuesTypes.FixedValue
+
+                    Case "ApplyFileNameRegEx"
+                        rbApplyFileNameRegEx.Checked = True
+                        txtModType.Text = "Apply file name regex"
+                        ModifyValueType = Import.ModifyValuesTypes.ApplyFileNameRegEx
+
+                    Case "FileNameMatch"
+                        rbFileNameMatch.Checked = True
+                        txtModType.Text = "File name match"
+                        ModifyValueType = Import.ModifyValuesTypes.FileNameMatch
+
+                    Case "AppendFixedValue"
+                        rbAppendFixedValue.Checked = True
+                        txtModType.Text = "Append with fixed value"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendFixedValue
+
+                    Case "AppendRegExVarValue"
+                        rbAppendRegExVar.Checked = True
+                        txtModType.Text = "Append RegEx variable value"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendRegExVarValue
+
+                    Case "AppendFileName"
+                        rbAppendTextFileName.Checked = True
+                        txtModType.Text = "Append file name"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendFileName
+
+                    Case "AppendFileDir"
+                        rbAppendTextFileDirectory.Checked = True
+                        txtModType.Text = "Append file directory"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendFileDir
+
+                    Case "AppendFilePath"
+                        rbAppendTextFilePath.Checked = True
+                        txtModType.Text = "Append file path"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendFilePath
+
+                    Case "AppendCurrentDate"
+                        rbAppendCurrentDate.Checked = True
+                        txtModType.Text = "Append current date"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendCurrentDate
+
+                    Case "AppendCurrentTime"
+                        rbAppendCurrentTime.Checked = True
+                        txtModType.Text = "Append current time"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendCurrentTime
+
+                    Case "AppendCurrentDateTime"
+                        rbAppendCurrentDateTime.Checked = True
+                        txtModType.Text = "Append current date/time"
+                        ModifyValueType = Import.ModifyValuesTypes.AppendCurrentDateTime
+
+                    Case Else
+                        Message.AddWarning("Unknown Modify Value Type: " & Settings.<FormSettings>.<ModifyValueType>.Value & vbCrLf)
+
+                End Select
+            End If
 
             CheckFormPos()
-        End If
+            End If
     End Sub
 
     Private Sub CheckFormPos()
@@ -886,11 +984,12 @@ Public Class Main
 
         'Read the Application Information file: ---------------------------------------------
         ApplicationInfo.ApplicationDir = My.Application.Info.DirectoryPath.ToString 'Set the Application Directory property
-        'Get the Application Version Information:
-        ApplicationInfo.Version.Major = My.Application.Info.Version.Major
-        ApplicationInfo.Version.Minor = My.Application.Info.Version.Minor
-        ApplicationInfo.Version.Build = My.Application.Info.Version.Build
-        ApplicationInfo.Version.Revision = My.Application.Info.Version.Revision
+
+        ''Get the Application Version Information:
+        'ApplicationInfo.Version.Major = My.Application.Info.Version.Major
+        'ApplicationInfo.Version.Minor = My.Application.Info.Version.Minor
+        'ApplicationInfo.Version.Build = My.Application.Info.Version.Build
+        'ApplicationInfo.Version.Revision = My.Application.Info.Version.Revision
 
         If ApplicationInfo.ApplicationLocked Then
             MessageBox.Show("The application is locked. If the application is not already in use, remove the 'Application_Info.lock file from the application directory: " & ApplicationInfo.ApplicationDir, "Notice", MessageBoxButtons.OK)
@@ -927,7 +1026,12 @@ Public Class Main
 
         'Start showing messages here - Message system is set up.
         Message.AddText("------------------- Starting Application: ADVL Import ----------------- " & vbCrLf, "Heading")
-        Message.AddText("Application usage: Total duration = " & Format(ApplicationUsage.TotalDuration.TotalHours, "#.##") & " hours" & vbCrLf, "Normal")
+        'Message.AddText("Application usage: Total duration = " & Format(ApplicationUsage.TotalDuration.TotalHours, "#.##") & " hours" & vbCrLf, "Normal")
+        Dim TotalDuration As String = ApplicationUsage.TotalDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                           ApplicationUsage.TotalDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                           ApplicationUsage.TotalDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                           ApplicationUsage.TotalDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
+        Message.AddText("Application usage: Total duration = " & TotalDuration & vbCrLf, "Normal")
 
         'https://msdn.microsoft.com/en-us/library/z2d603cy(v=vs.80).aspx#Y550
         'Process any command line arguments:
@@ -946,9 +1050,12 @@ Public Class Main
             Project.ReadLastProjectInfo()
             'The Last_Project_Info.xml file contains:
             '  Project Name and Description. Settings Location Type and Settings Location Path.
-            Message.Add("Last project info has been read." & vbCrLf)
-            Message.Add("Project.Type.ToString  " & Project.Type.ToString & vbCrLf)
-            Message.Add("Project.Path  " & Project.Path & vbCrLf)
+            'Message.Add("Last project info has been read." & vbCrLf)
+            'Message.Add("Project.Type.ToString  " & Project.Type.ToString & vbCrLf)
+            'Message.Add("Project.Path  " & Project.Path & vbCrLf)
+            Message.Add("Last project details:" & vbCrLf)
+            Message.Add("Project Type:  " & Project.Type.ToString & vbCrLf)
+            Message.Add("Project Path:  " & Project.Path & vbCrLf)
 
             'At this point read the application start arguments, if any.
             'The selected project may be changed here.
@@ -1105,6 +1212,7 @@ Public Class Main
 
         '----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         RestoreFormSettings() 'Restore the form settings
+        OpenStartPage()
         Message.ShowXMessages = ShowXMessages
         Message.ShowSysMessages = ShowSysMessages
         RestoreProjectSettings() 'Restore the Project settings
@@ -1134,18 +1242,39 @@ Public Class Main
         'Timer3.Enabled = True
         'Timer3.Start()
 
+        'Get the Application Version Information:
+        If System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed Then
+            'Application is network deployed.
+            ApplicationInfo.Version.Number = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+            ApplicationInfo.Version.Major = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.Major
+            ApplicationInfo.Version.Minor = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.Minor
+            ApplicationInfo.Version.Build = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.Build
+            ApplicationInfo.Version.Revision = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.Revision
+            ApplicationInfo.Version.Source = "Publish"
+            Message.Add("Application version: " & System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString & vbCrLf)
+        Else
+            'Application is not network deployed.
+            ApplicationInfo.Version.Number = My.Application.Info.Version.ToString
+            ApplicationInfo.Version.Major = My.Application.Info.Version.Major
+            ApplicationInfo.Version.Minor = My.Application.Info.Version.Minor
+            ApplicationInfo.Version.Build = My.Application.Info.Version.Build
+            ApplicationInfo.Version.Revision = My.Application.Info.Version.Revision
+            ApplicationInfo.Version.Source = "Assembly"
+            Message.Add("Application version: " & My.Application.Info.Version.ToString & vbCrLf)
+        End If
+
     End Sub
 
     Private Sub InitialiseForm()
         'Initialise the form for a new project.
 
-        OpenStartPage()
+        Import.ClearSettings() 'Clear the Import settings
 
         Import.SettingsLocn = Project.SettingsLocn
         Import.DataLocn = Project.DataLocn
         Import.RestoreSettings()
-        'Initialise all the tab forms:
-        InitialiseTabs()
+
+        InitialiseTabs() 'Initialise all the tab forms
     End Sub
 
     Private Sub ShowProjectInfo()
@@ -1198,15 +1327,25 @@ Public Class Main
             chkConnect.Checked = False
         End If
 
-        txtTotalDuration.Text = Project.Usage.TotalDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
-                                  Project.Usage.TotalDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
-                                  Project.Usage.TotalDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
-                                  Project.Usage.TotalDuration.Seconds.ToString.PadLeft(2, "0"c)
+        'txtTotalDuration.Text = Project.Usage.TotalDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
+        '                          Project.Usage.TotalDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
+        '                          Project.Usage.TotalDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
+        '                          Project.Usage.TotalDuration.Seconds.ToString.PadLeft(2, "0"c)
 
-        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+        'txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+
+        txtTotalDuration.Text = Project.Usage.TotalDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                        Project.Usage.TotalDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                        Project.Usage.TotalDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                        Project.Usage.TotalDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
+
+        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                                  Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                                  Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                                  Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
     End Sub
 
     Private Sub btnExit_Click(sender As Object, e As EventArgs) Handles btnExit.Click
@@ -1452,6 +1591,7 @@ Public Class Main
         'Initialise Import Sequence Tab: --------------------------------------------------------------------------------------------------------------------------------------------------
         txtName.Text = Import.ImportSequenceName
         txtDescription.Text = Import.ImportSequenceDescription
+        XmlHtmDisplay1.Clear()  'ADDED 22Jan23
 
         'Load the Import Sequence file:
         If Import.ImportSequenceName <> "" Then
@@ -1470,6 +1610,7 @@ Public Class Main
         rbManual.Checked = True 'Select Manual file selection as default
 
         txtInputFileDir.Text = Import.TextFileDir
+        lstTextFiles.Items.Clear() 'ADDED 22Jan23
         If txtInputFileDir.Text <> "" Then
             FillLstTextFiles()
         End If
@@ -1574,7 +1715,10 @@ Public Class Main
         txtOutputDateFormat.Text = Import.ModifyValuesOutputDateFormat
         txtCharsToReplace.Text = Import.ModifyValuesCharsToReplace
         txtReplacementChars.Text = Import.ModifyValuesReplacementChars
-        txtFixedValue.Text = Import.ModifyValuesFixedValue
+        txtFixedVal.Text = Import.ModifyValuesFixedVal
+        txtFileNameRegEx.Text = Import.ModifyValuesFileNameRegEx
+        'txtAppendFixedValue.Text = Import.ModifyValuesFixedValue
+        txtAppendFixedValue.Text = Import.ModifyValuesAppendFixedValue
 
         Select Case Import.ModifyValuesType
             Case Import.ModifyValuesTypes.ConvertDate
@@ -1606,6 +1750,12 @@ Public Class Main
                 rbAppendRegExVar.Checked = True
             Case Import.ModifyValuesTypes.ClearValue
                 rbClearValue.Checked = True
+            Case Import.ModifyValuesTypes.FixedValue
+                rbFixedValue.Checked = True
+            Case Import.ModifyValuesTypes.ApplyFileNameRegEx
+                rbApplyFileNameRegEx.Checked = True
+            Case Import.ModifyValuesTypes.FileNameMatch
+                rbFileNameMatch.Checked = True
             Case Else
                 rbConvertDate.Checked = True
         End Select
@@ -1681,6 +1831,7 @@ Public Class Main
         'Initialise Import Loop Tab: ------------------------------------------------------------------------------------------------------------------------------------------------------
         txtImportLoopName.Text = Import.ImportLoopName
         txtImportLoopDescription.Text = Import.ImportLoopDescription
+        XmlHtmDisplay2.Clear() 'ADDED 22Jan23
 
         'Show the Import Loop:
         If Import.ImportLoopName = "" Then
@@ -1738,9 +1889,12 @@ Public Class Main
 #Region " Start Page Code" '=========================================================================================================================================
 
     Public Sub OpenStartPage()
-        'Open the StartPage.html file and display in the Workflow tab.
+        'Open the workflow page:
 
-        If Project.DataFileExists("StartPage.html") Then
+        If Project.DataFileExists(WorkflowFileName) Then
+            'Note: WorkflowFileName should have been restored when the application started.
+            DisplayWorkflow()
+        ElseIf Project.DataFileExists("StartPage.html") Then
             WorkflowFileName = "StartPage.html"
             DisplayWorkflow()
         Else
@@ -1749,6 +1903,15 @@ Public Class Main
             DisplayWorkflow()
         End If
 
+        ''Open the StartPage.html file and display in the Workflow tab.
+        'If Project.DataFileExists("StartPage.html") Then
+        '    WorkflowFileName = "StartPage.html"
+        '    DisplayWorkflow()
+        'Else
+        '    CreateStartPage()
+        '    WorkflowFileName = "StartPage.html"
+        '    DisplayWorkflow()
+        'End If
     End Sub
 
     'Public Sub DisplayStartPage()
@@ -2552,23 +2715,129 @@ Public Class Main
 
     Private Sub Project_Closing() Handles Project.Closing
         'The current project is closing.
+        CloseProject()
+        'SaveFormSettings() 'Save the form settings - they are saved in the Project before is closes.
+        'SaveProjectSettings() 'Update this subroutine if project settings need to be saved.
+        'Project.Usage.SaveUsageInfo()   'Save the current project usage information.
+        'Project.UnlockProject() 'Unlock the current project before it Is closed.
+        'If ConnectedToComNet Then DisconnectFromComNet()
+    End Sub
 
+    Private Sub CloseProject()
+        'Close the Project:
         SaveFormSettings() 'Save the form settings - they are saved in the Project before is closes.
         SaveProjectSettings() 'Update this subroutine if project settings need to be saved.
-        Project.Usage.SaveUsageInfo()   'Save the current project usage information.
+        Project.Usage.SaveUsageInfo() 'Save the current project usage information.
         Project.UnlockProject() 'Unlock the current project before it Is closed.
-        If ConnectedToComNet Then DisconnectFromComNet()
+        If ConnectedToComNet Then DisconnectFromComNet() 'ADDED 9Apr20
     End Sub
 
     Private Sub Project_Selected() Handles Project.Selected
         'A new project has been selected.
 
-        ApplicationInfo.SettingsLocn = Project.SettingsLocn
-        Import.SettingsLocn = Project.SettingsLocn
-        Import.DataLocn = Project.DataLocn
-        Import.RestoreSettings()
+        'ApplicationInfo.SettingsLocn = Project.SettingsLocn
+        'Import.SettingsLocn = Project.SettingsLocn
+        'Import.DataLocn = Project.DataLocn
+        'Import.RestoreSettings()
+        CloseCurrentProject()
 
-        RestoreFormSettings() 'This restores the Main form settings for the selected project.
+        OpenProject()
+
+        'RestoreFormSettings() 'This restores the Main form settings for the selected project.
+        'Project.ReadProjectInfoFile()
+
+        'Project.ReadParameters()
+        'Project.ReadParentParameters()
+        'If Project.ParentParameterExists("ProNetName") Then
+        '    Project.AddParameter("ProNetName", Project.ParentParameter("ProNetName").Value, Project.ParentParameter("ProNetName").Description) 'AddParameter will update the parameter if it already exists.
+        '    ProNetName = Project.Parameter("ProNetName").Value
+        'Else
+        '    ProNetName = Project.GetParameter("ProNetName")
+        'End If
+        'If Project.ParentParameterExists("ProNetPath") Then 'Get the parent parameter value - it may have been updated.
+        '    Project.AddParameter("ProNetPath", Project.ParentParameter("ProNetPath").Value, Project.ParentParameter("ProNetPath").Description) 'AddParameter will update the parameter if it already exists.
+        '    ProNetPath = Project.Parameter("ProNetPath").Value
+        'Else
+        '    ProNetPath = Project.GetParameter("ProNetPath") 'If the parameter does not exist, the value is set to ""
+        'End If
+        'Project.SaveParameters() 'These should be saved now - child projects look for parent parameters in the parameter file.
+
+        'Project.LockProject() 'Lock the project while it is open in this application.
+
+        'Project.Usage.StartTime = Now
+
+        'ApplicationInfo.SettingsLocn = Project.SettingsLocn
+        'Message.SettingsLocn = Project.SettingsLocn
+        'Message.Show() 'Added 18May19
+
+        ''Restore the new project settings:
+        'RestoreProjectSettings() 'Update this subroutine if project settings need to be restored.
+
+        'ShowProjectInfo()
+
+        '''Show the project information:
+        ''txtProjectName.Text = Project.Name
+        ''txtProjectDescription.Text = Project.Description
+        ''Select Case Project.Type
+        ''    Case ADVL_Utilities_Library_1.Project.Types.Directory
+        ''        txtProjectType.Text = "Directory"
+        ''    Case ADVL_Utilities_Library_1.Project.Types.Archive
+        ''        txtProjectType.Text = "Archive"
+        ''    Case ADVL_Utilities_Library_1.Project.Types.Hybrid
+        ''        txtProjectType.Text = "Hybrid"
+        ''    Case ADVL_Utilities_Library_1.Project.Types.None
+        ''        txtProjectType.Text = "None"
+        ''End Select
+
+        ''txtCreationDate.Text = Format(Project.CreationDate, "d-MMM-yyyy H:mm:ss")
+        ''txtLastUsed.Text = Format(Project.Usage.LastUsed, "d-MMM-yyyy H:mm:ss")
+        ''Select Case Project.SettingsLocn.Type
+        ''    Case ADVL_Utilities_Library_1.FileLocation.Types.Directory
+        ''        txtSettingsLocationType.Text = "Directory"
+        ''    Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
+        ''        txtSettingsLocationType.Text = "Archive"
+        ''End Select
+        ''txtSettingsPath.Text = Project.SettingsLocn.Path
+        ''Select Case Project.DataLocn.Type
+        ''    Case ADVL_Utilities_Library_1.FileLocation.Types.Directory
+        ''        txtDataLocationType.Text = "Directory"
+        ''    Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
+        ''        txtDataLocationType.Text = "Archive"
+        ''End Select
+        ''txtDataPath.Text = Project.DataLocn.Path
+
+        'If Project.ConnectOnOpen Then
+        '    ConnectToComNet() 'The Project is set to connect when it is opened.
+        'ElseIf ApplicationInfo.ConnectOnStartup Then
+        '    ConnectToComNet() 'The Application is set to connect when it is started.
+        'Else
+        '    'Don't connect to ComNet.
+        'End If
+
+    End Sub
+
+    Private Sub CloseCurrentProject()
+        'Close the current project and clear all settings before opening another project.
+
+        'Save and close current project:
+        SaveFormSettings() 'Save the form settings - they are saved in the Project before is closes.
+        SaveProjectSettings() 'Update this subroutine if project settings need to be saved.
+        Project.Usage.SaveUsageInfo() 'Save the current project usage information.
+        Project.UnlockProject() 'Unlock the current project before it Is closed.
+
+        If ConnectedToComNet Then DisconnectFromComNet() 'ADDED 21Jan23 TO BE CHECKED
+
+        OpenStartPage()  'Reset Workflow page
+
+        InitialiseForm()
+
+
+    End Sub
+
+
+    Private Sub OpenProject()
+        'Open the Project:
+        RestoreFormSettings()
         Project.ReadProjectInfoFile()
 
         Project.ReadParameters()
@@ -2600,37 +2869,6 @@ Public Class Main
 
         ShowProjectInfo()
 
-        ''Show the project information:
-        'txtProjectName.Text = Project.Name
-        'txtProjectDescription.Text = Project.Description
-        'Select Case Project.Type
-        '    Case ADVL_Utilities_Library_1.Project.Types.Directory
-        '        txtProjectType.Text = "Directory"
-        '    Case ADVL_Utilities_Library_1.Project.Types.Archive
-        '        txtProjectType.Text = "Archive"
-        '    Case ADVL_Utilities_Library_1.Project.Types.Hybrid
-        '        txtProjectType.Text = "Hybrid"
-        '    Case ADVL_Utilities_Library_1.Project.Types.None
-        '        txtProjectType.Text = "None"
-        'End Select
-
-        'txtCreationDate.Text = Format(Project.CreationDate, "d-MMM-yyyy H:mm:ss")
-        'txtLastUsed.Text = Format(Project.Usage.LastUsed, "d-MMM-yyyy H:mm:ss")
-        'Select Case Project.SettingsLocn.Type
-        '    Case ADVL_Utilities_Library_1.FileLocation.Types.Directory
-        '        txtSettingsLocationType.Text = "Directory"
-        '    Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
-        '        txtSettingsLocationType.Text = "Archive"
-        'End Select
-        'txtSettingsPath.Text = Project.SettingsLocn.Path
-        'Select Case Project.DataLocn.Type
-        '    Case ADVL_Utilities_Library_1.FileLocation.Types.Directory
-        '        txtDataLocationType.Text = "Directory"
-        '    Case ADVL_Utilities_Library_1.FileLocation.Types.Archive
-        '        txtDataLocationType.Text = "Archive"
-        'End Select
-        'txtDataPath.Text = Project.DataLocn.Path
-
         If Project.ConnectOnOpen Then
             ConnectToComNet() 'The Project is set to connect when it is opened.
         ElseIf ApplicationInfo.ConnectOnStartup Then
@@ -2638,9 +2876,7 @@ Public Class Main
         Else
             'Don't connect to ComNet.
         End If
-
     End Sub
-
     Private Sub btnParameters_Click(sender As Object, e As EventArgs) Handles btnParameters.Click
         Project.ShowParameters()
     End Sub
@@ -2687,41 +2923,274 @@ Public Class Main
 
     Private Sub btnOpenProject_Click(sender As Object, e As EventArgs) Handles btnOpenProject.Click
         If Project.Type = ADVL_Utilities_Library_1.Project.Types.Archive Then
-
+            If IsNothing(ProjectArchive) Then
+                ProjectArchive = New frmArchive
+                ProjectArchive.Show()
+                ProjectArchive.Title = "Project Archive"
+                ProjectArchive.Path = Project.Path
+            Else
+                ProjectArchive.Show()
+                ProjectArchive.BringToFront()
+            End If
         Else
             Process.Start(Project.Path)
         End If
     End Sub
 
+    Private Sub ProjectArchive_FormClosed(sender As Object, e As FormClosedEventArgs) Handles ProjectArchive.FormClosed
+        ProjectArchive = Nothing
+    End Sub
+
+
     Private Sub btnOpenSettings_Click(sender As Object, e As EventArgs) Handles btnOpenSettings.Click
         If Project.SettingsLocn.Type = ADVL_Utilities_Library_1.FileLocation.Types.Directory Then
             Process.Start(Project.SettingsLocn.Path)
+        ElseIf Project.SettingsLocn.Type = ADVL_Utilities_Library_1.FileLocation.Types.Archive Then
+            If IsNothing(SettingsArchive) Then
+                SettingsArchive = New frmArchive
+                SettingsArchive.Show()
+                SettingsArchive.Title = "Settings Archive"
+                SettingsArchive.Path = Project.SettingsLocn.Path
+            Else
+                SettingsArchive.Show()
+                SettingsArchive.BringToFront()
+            End If
         End If
+    End Sub
+
+    Private Sub SettingsArchive_FormClosed(sender As Object, e As FormClosedEventArgs) Handles SettingsArchive.FormClosed
+        SettingsArchive = Nothing
     End Sub
 
     Private Sub btnOpenData_Click(sender As Object, e As EventArgs) Handles btnOpenData.Click
         If Project.DataLocn.Type = ADVL_Utilities_Library_1.FileLocation.Types.Directory Then
             Process.Start(Project.DataLocn.Path)
+        ElseIf Project.DataLocn.Type = ADVL_Utilities_Library_1.FileLocation.Types.Archive Then
+            If IsNothing(DataArchive) Then
+                DataArchive = New frmArchive
+                DataArchive.Show()
+                DataArchive.Title = "Data Archive"
+                DataArchive.Path = Project.DataLocn.Path
+            Else
+                DataArchive.Show()
+                DataArchive.BringToFront()
+            End If
         End If
+    End Sub
+
+    Private Sub DataArchive_FormClosed(sender As Object, e As FormClosedEventArgs) Handles DataArchive.FormClosed
+        DataArchive = Nothing
     End Sub
 
     Private Sub btnOpenSystem_Click(sender As Object, e As EventArgs) Handles btnOpenSystem.Click
         If Project.SystemLocn.Type = ADVL_Utilities_Library_1.FileLocation.Types.Directory Then
             Process.Start(Project.SystemLocn.Path)
+        ElseIf Project.SystemLocn.Type = ADVL_Utilities_Library_1.FileLocation.Types.Archive Then
+            If IsNothing(SystemArchive) Then
+                SystemArchive = New frmArchive
+                SystemArchive.Show()
+                SystemArchive.Title = "System Archive"
+                SystemArchive.Path = Project.SystemLocn.Path
+            Else
+                SystemArchive.Show()
+                SystemArchive.BringToFront()
+            End If
         End If
+    End Sub
+
+    Private Sub SystemArchive_FormClosed(sender As Object, e As FormClosedEventArgs) Handles SystemArchive.FormClosed
+        SystemArchive = Nothing
     End Sub
 
     Private Sub btnOpenAppDir_Click(sender As Object, e As EventArgs) Handles btnOpenAppDir.Click
         Process.Start(ApplicationInfo.ApplicationDir)
     End Sub
 
+    Private Sub btnShowProjectInfo_Click(sender As Object, e As EventArgs) Handles btnShowProjectInfo.Click
+        'Show the current Project information:
+        Message.Add("--------------------------------------------------------------------------------------" & vbCrLf)
+        Message.Add("Project ------------------------ " & vbCrLf)
+        Message.Add("   Name: " & Project.Name & vbCrLf)
+        Message.Add("   Type: " & Project.Type.ToString & vbCrLf)
+        Message.Add("   Description: " & Project.Description & vbCrLf)
+        Message.Add("   Creation Date: " & Project.CreationDate & vbCrLf)
+        Message.Add("   ID: " & Project.ID & vbCrLf)
+        Message.Add("   Relative Path: " & Project.RelativePath & vbCrLf)
+        Message.Add("   Path: " & Project.Path & vbCrLf & vbCrLf)
+
+        Message.Add("Parent Project ----------------- " & vbCrLf)
+        Message.Add("   Name: " & Project.ParentProjectName & vbCrLf)
+        Message.Add("   Path: " & Project.ParentProjectPath & vbCrLf)
+
+        Message.Add("Application -------------------- " & vbCrLf)
+        Message.Add("   Name: " & Project.Application.Name & vbCrLf)
+        Message.Add("   Description: " & Project.Application.Description & vbCrLf)
+        Message.Add("   Path: " & Project.ApplicationDir & vbCrLf)
+
+        Message.Add("Settings ----------------------- " & vbCrLf)
+        Message.Add("   Settings Relative Location Type: " & Project.SettingsRelLocn.Type.ToString & vbCrLf)
+        Message.Add("   Settings Relative Location Path: " & Project.SettingsRelLocn.Path & vbCrLf)
+        Message.Add("   Settings Location Type: " & Project.SettingsLocn.Type.ToString & vbCrLf)
+        Message.Add("   Settings Location Path: " & Project.SettingsLocn.Path & vbCrLf)
+
+        Message.Add("Data --------------------------- " & vbCrLf)
+        Message.Add("   Data Relative Location Type: " & Project.DataRelLocn.Type.ToString & vbCrLf)
+        Message.Add("   Data Relative Location Path: " & Project.DataRelLocn.Path & vbCrLf)
+        Message.Add("   Data Location Type: " & Project.DataLocn.Type.ToString & vbCrLf)
+        Message.Add("   Data Location Path: " & Project.DataLocn.Path & vbCrLf)
+
+        Message.Add("System ------------------------- " & vbCrLf)
+        Message.Add("   System Relative Location Type: " & Project.SystemRelLocn.Type.ToString & vbCrLf)
+        Message.Add("   System Relative Location Path: " & Project.SystemRelLocn.Path & vbCrLf)
+        Message.Add("   System Location Type: " & Project.SystemLocn.Type.ToString & vbCrLf)
+        Message.Add("   System Location Path: " & Project.SystemLocn.Path & vbCrLf)
+        Message.Add("======================================================================================" & vbCrLf)
+
+    End Sub
+
+    Private Sub btnOpenParentDir_Click(sender As Object, e As EventArgs) Handles btnOpenParentDir.Click
+        'Open the Parent directory of the selected project.
+        Dim ParentDir As String = System.IO.Directory.GetParent(Project.Path).FullName
+        If System.IO.Directory.Exists(ParentDir) Then
+            Process.Start(ParentDir)
+        Else
+            Message.AddWarning("The parent directory was not found: " & ParentDir & vbCrLf)
+        End If
+    End Sub
+
+    Private Sub btnCreateArchive_Click(sender As Object, e As EventArgs) Handles btnCreateArchive.Click
+        'Create a Project Archive file.
+        If Project.Type = ADVL_Utilities_Library_1.Project.Types.Archive Then
+            Message.Add("The Project is an Archive type. It is already in an archived format." & vbCrLf)
+
+        Else
+            'The project is contained in the directory Project.Path.
+            'This directory and contents will be saved in a zip file in the parent directory with the same name but with extension .AdvlArchive.
+
+            Dim ParentDir As String = System.IO.Directory.GetParent(Project.Path).FullName
+            Dim ProjectArchiveName As String = System.IO.Path.GetFileName(Project.Path) & ".AdvlArchive"
+
+            If My.Computer.FileSystem.FileExists(ParentDir & "\" & ProjectArchiveName) Then 'The Project Archive file already exists.
+                Message.Add("The Project Archive file already exists: " & ParentDir & "\" & ProjectArchiveName & vbCrLf)
+            Else 'The Project Archive file does not exist. OK to create the Archive.
+                System.IO.Compression.ZipFile.CreateFromDirectory(Project.Path, ParentDir & "\" & ProjectArchiveName)
+
+                'Remove all Lock files:
+                Dim Zip As System.IO.Compression.ZipArchive
+                Zip = System.IO.Compression.ZipFile.Open(ParentDir & "\" & ProjectArchiveName, IO.Compression.ZipArchiveMode.Update)
+                Dim DeleteList As New List(Of String) 'List of entry names to delete
+                Dim myEntry As System.IO.Compression.ZipArchiveEntry
+                For Each entry As System.IO.Compression.ZipArchiveEntry In Zip.Entries
+                    If entry.Name = "Project.Lock" Then
+                        DeleteList.Add(entry.FullName)
+                    End If
+                Next
+                For Each item In DeleteList
+                    myEntry = Zip.GetEntry(item)
+                    myEntry.Delete()
+                Next
+                Zip.Dispose()
+
+                Message.Add("Project Archive file created: " & ParentDir & "\" & ProjectArchiveName & vbCrLf)
+            End If
+        End If
+    End Sub
+
+    Private Sub btnOpenArchive_Click(sender As Object, e As EventArgs) Handles btnOpenArchive.Click
+        'Open a Project Archive file.
+
+        'Use the OpenFileDialog to look for an .AdvlArchive file.      
+        OpenFileDialog1.Title = "Select an Archived Project File"
+        OpenFileDialog1.InitialDirectory = System.IO.Directory.GetParent(Project.Path).FullName 'Start looking in the ParentDir.
+        OpenFileDialog1.Filter = "Archived Project|*.AdvlArchive"
+        If OpenFileDialog1.ShowDialog = DialogResult.OK Then
+            Dim FileName As String = OpenFileDialog1.FileName
+            OpenArchivedProject(FileName)
+        End If
+    End Sub
+
+    Private Sub OpenArchivedProject(ByVal FilePath As String)
+        'Open the archived project at the specified path.
+
+        Dim Zip As System.IO.Compression.ZipArchive
+        Try
+            Zip = System.IO.Compression.ZipFile.OpenRead(FilePath)
+
+            Dim Entry As System.IO.Compression.ZipArchiveEntry = Zip.GetEntry("Project_Info_ADVL_2.xml")
+            If IsNothing(Entry) Then
+                Message.AddWarning("The file is not an Archived Andorville Project." & vbCrLf)
+                'Check if it is an Archive project type with a .AdvlProject extension.
+                'NOTE: These are already zip files so no need to archive.
+
+            Else
+                Message.Add("The file is an Archived Andorville Project." & vbCrLf)
+                Dim ParentDir As String = System.IO.Directory.GetParent(FilePath).FullName
+                Dim ProjectName As String = System.IO.Path.GetFileNameWithoutExtension(FilePath)
+                Message.Add("The Project will be expanded in the directory: " & ParentDir & vbCrLf)
+                Message.Add("The Project name will be: " & ProjectName & vbCrLf)
+                Zip.Dispose()
+                If System.IO.Directory.Exists(ParentDir & "\" & ProjectName) Then
+                    Message.AddWarning("The Project already exists: " & ParentDir & "\" & ProjectName & vbCrLf)
+                Else
+                    System.IO.Compression.ZipFile.ExtractToDirectory(FilePath, ParentDir & "\" & ProjectName) 'Extract the project from the archive                   
+                    Project.AddProjectToList(ParentDir & "\" & ProjectName)
+                    'Open the new project                 
+                    CloseProject()  'Close the current project
+                    Project.SelectProject(ParentDir & "\" & ProjectName) 'Select the project at the specifed path.
+                    OpenProject() 'Open the selected project.
+                End If
+            End If
+        Catch ex As Exception
+            Message.AddWarning("Error opening Archived Andorville Project: " & ex.Message & vbCrLf)
+        End Try
+    End Sub
+
+    Private Sub TabPage1_DragEnter(sender As Object, e As DragEventArgs) Handles TabPage1.DragEnter
+        'DragEnter: An object has been dragged into the Project Information tab.
+        'This code is required to get the link to the item(s) being dragged into Project Information:
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Link
+        End If
+    End Sub
+
+    Private Sub TabPage1_DragDrop(sender As Object, e As DragEventArgs) Handles TabPage1.DragDrop
+        'A file has been dropped into the Project Information tab.
+
+        Dim Path As String()
+        Path = e.Data.GetData(DataFormats.FileDrop)
+        Dim I As Integer
+
+        If Path.Count > 0 Then
+            If Path.Count > 1 Then
+                Message.AddWarning("More than one file has been dropped into the Project Information tab. Only the first one will be opened." & vbCrLf)
+            End If
+
+            Try
+                Dim ArchivedProjectPath As String = Path(0)
+                If ArchivedProjectPath.EndsWith(".AdvlArchive") Then
+                    Message.Add("The archived project will be opened: " & vbCrLf & ArchivedProjectPath & vbCrLf)
+                    OpenArchivedProject(ArchivedProjectPath)
+                Else
+                    Message.Add("The dropped file is not an archived project: " & vbCrLf & ArchivedProjectPath & vbCrLf)
+                End If
+            Catch ex As Exception
+                Message.AddWarning("Error opening dropped archived project. " & ex.Message & vbCrLf)
+            End Try
+        End If
+    End Sub
+
     Private Sub TabPage1_Enter(sender As Object, e As EventArgs) Handles TabPage1.Enter
         'Update the current duration:
 
-        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+        'txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+
+        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                                   Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                                   Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                                   Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
 
         Timer2.Interval = 5000 '5 seconds
         Timer2.Enabled = True
@@ -2735,10 +3204,15 @@ Public Class Main
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         'Update the current duration:
 
-        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
-                                   Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+        'txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
+        '                           Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+
+        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                           Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                           Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                           Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
     End Sub
 
 #End Region 'Project Information Tab ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2975,6 +3449,32 @@ Public Class Main
 
     End Sub
 
+    Private Sub btnSelectNoInputFiles_Click(sender As Object, e As EventArgs) Handles btnSelectNoInputFiles.Click
+        'Select no Iinput files.
+
+        Dim I As Integer
+        For I = 0 To lstTextFiles.Items.Count - 1
+            lstTextFiles.SetSelected(I, False)
+        Next
+        UpdateSelTextFileList()
+
+    End Sub
+
+    Private Sub btnSelEndsWith_Click(sender As Object, e As EventArgs) Handles btnSelEndsWith.Click
+        'Select file that end with the specified string.
+
+        Dim EndString As String = txtEndsWith.Text
+
+        Dim I As Integer
+        For I = 0 To lstTextFiles.Items.Count - 1
+            If lstTextFiles.Items(I).ToString.EndsWith(EndString) Then
+                lstTextFiles.SetSelected(I, True)
+            End If
+        Next
+
+
+    End Sub
+
 #End Region 'Input Files Tab ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -3148,6 +3648,7 @@ Public Class Main
         Else
             Import.SelectFirstFile() 'This selects the first file in the list, updates TextFilePath and opens the file.
             txtInputFile.Text = Import.CurrentFilePath
+            txtFileName.Text = System.IO.Path.GetFileName(Import.CurrentFilePath)
 
             If RecordSequence = True Then 'Record this step in the processing sequence.
                 'Sequence.rtbSequence.SelectedText = "  <ReadTextCommand>" & "OpenFirstFile" & "</ReadTextCommand>" & vbCrLf
@@ -3167,6 +3668,7 @@ Public Class Main
             txtInputFile.Text = ""
         Else
             txtInputFile.Text = Import.CurrentFilePath
+            txtFileName.Text = System.IO.Path.GetFileName(Import.CurrentFilePath)
         End If
 
         If RecordSequence = True Then 'Record this step in the processing sequence.
@@ -4379,25 +4881,29 @@ Public Class Main
     End Sub
 
     Private Sub DataGridView2_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView2.CellClick
-        Dim SelRow As Integer
 
-        'Highlight the selected row:
-        SelRow = DataGridView2.SelectedCells(0).RowIndex
-        DataGridView2.Rows(SelRow).Selected = True
+        Try
+            Dim SelRow As Integer
+            'Highlight the selected row:
+            SelRow = DataGridView2.SelectedCells(0).RowIndex
+            DataGridView2.Rows(SelRow).Selected = True
+            If DbDestIndex <> SelRow Then
+                'Save the previously selected Database Destination data:
+                Dim TempDbDest As Import.strucDbDest
+                TempDbDest.RegExVariable = DataGridView2.Rows(DbDestIndex).Cells(0).Value
+                TempDbDest.Type = DataGridView2.Rows(DbDestIndex).Cells(1).Value
+                TempDbDest.TableName = DataGridView2.Rows(DbDestIndex).Cells(2).Value
+                TempDbDest.FieldName = DataGridView2.Rows(DbDestIndex).Cells(3).Value
+                TempDbDest.StatusField = DataGridView2.Rows(DbDestIndex).Cells(4).Value
+                Import.DbDestModify(DbDestIndex, TempDbDest)
+            End If
 
-        If DbDestIndex <> SelRow Then
-            'Save the previously selected Database Destination data:
-            Dim TempDbDest As Import.strucDbDest
-            TempDbDest.RegExVariable = DataGridView2.Rows(DbDestIndex).Cells(0).Value
-            TempDbDest.Type = DataGridView2.Rows(DbDestIndex).Cells(1).Value
-            TempDbDest.TableName = DataGridView2.Rows(DbDestIndex).Cells(2).Value
-            TempDbDest.FieldName = DataGridView2.Rows(DbDestIndex).Cells(3).Value
-            TempDbDest.StatusField = DataGridView2.Rows(DbDestIndex).Cells(4).Value
-            Import.DbDestModify(DbDestIndex, TempDbDest)
-        End If
+            DbDestIndex = SelRow
+            ListChanged = True
+        Catch ex As Exception
+            Message.AddWarning(ex.Message & vbCrLf)
+        End Try
 
-        DbDestIndex = SelRow
-        ListChanged = True
     End Sub
 
 
@@ -4573,7 +5079,8 @@ Public Class Main
 
             Case Import.ModifyValuesTypes.AppendFixedValue
                 Import.ModifyValuesType = Import.ModifyValuesTypes.AppendFixedValue
-                Import.ModifyValuesFixedValue = txtFixedValue.Text
+                'Import.ModifyValuesFixedValue = txtAppendFixedValue.Text
+                Import.ModifyValuesAppendFixedValue = txtAppendFixedValue.Text
                 Import.ModifyValuesApply()
 
             Case Import.ModifyValuesTypes.AppendRegExVarValue
@@ -4695,7 +5202,7 @@ Public Class Main
         ElseIf rbReplaceChars.Checked = True Then
             TestReplaceChars()
         ElseIf rbClearValue.Checked = True Then
-            txtTestOutputString.Text = txtFixedValue.Text
+            txtTestOutputString.Text = txtAppendFixedValue.Text
         Else
 
         End If
@@ -4803,6 +5310,9 @@ Public Class Main
         Import.ModifyValuesOutputDateFormat = txtOutputDateFormat.Text
     End Sub
 
+    Private Sub txtCharsToReplace_TextChanged(sender As Object, e As EventArgs) Handles txtCharsToReplace.TextChanged
+
+    End Sub
     Private Sub txtCharsToReplace_LostFocus(sender As Object, e As EventArgs) Handles txtCharsToReplace.LostFocus
         Import.ModifyValuesCharsToReplace = txtCharsToReplace.Text
     End Sub
@@ -4811,11 +5321,181 @@ Public Class Main
         Import.ModifyValuesReplacementChars = txtReplacementChars.Text
     End Sub
 
-    Private Sub txtFixedValue_LostFocus(sender As Object, e As EventArgs)
-        Import.ModifyValuesFixedValue = txtFixedValue.Text
+    Private Sub txtAppendFixedValue_LostFocus(sender As Object, e As EventArgs) Handles txtAppendFixedValue.TextChanged
+        'Import.ModifyValuesFixedValue = txtAppendFixedValue.Text
+        Import.ModifyValuesAppendFixedValue = txtAppendFixedValue.Text
     End Sub
 
+    Private Sub txtFixedVal_TextChanged(sender As Object, e As EventArgs) Handles txtFixedVal.TextChanged
+
+    End Sub
+
+    Private Sub txtFixedVal_LostFocus(sender As Object, e As EventArgs) Handles txtFixedVal.LostFocus
+
+    End Sub
+
+    Private Sub txtFileNameRegEx_TextChanged(sender As Object, e As EventArgs) Handles txtFileNameRegEx.TextChanged
+
+    End Sub
+
+    Private Sub txtFileNameRegEx_LostFocus(sender As Object, e As EventArgs) Handles txtFileNameRegEx.LostFocus
+        Import.ModifyValuesFileNameRegEx = txtFileNameRegEx.Text
+    End Sub
+
+    Private Sub btnTestFileNameRegEx_Click(sender As Object, e As EventArgs) Handles btnTestFileNameRegEx.Click
+        'Test the File Name RegEx.
+        Try
+            Dim RegExPattern As String = txtFileNameRegEx.Text
+            Dim myRegEx As New System.Text.RegularExpressions.Regex(RegExPattern)
+            Dim myMatch As System.Text.RegularExpressions.Match = myRegEx.Match(txtFileName.Text)
+            If myMatch.Success Then
+                txtFileNameMatch.Text = myMatch.Groups("FileNameMatch").ToString
+            Else
+                txtFileNameMatch.Text = ""
+                Message.AddWarning("No match!" & vbCrLf)
+            End If
+        Catch ex As Exception
+            Message.AddWarning(ex.Message & vbCrLf)
+        End Try
+
+    End Sub
+
+
     Private Sub btnAddModifyToSeq_Click(sender As Object, e As EventArgs) Handles btnAddModifyToSeq.Click
+        'Save the Modify Values setting in the current Processing Sequence
+
+        Dim I As Integer
+        Dim ModCode As New System.Text.StringBuilder
+
+        If IsNothing(Sequence) Then
+            Message.AddWarning("The Edit Import Sequence form is not open." & vbCrLf & "Press the Edit button on the Import Sequence tab to show this form." & vbCrLf)
+        Else
+            'OLD: Write new instructions to the Sequence text.
+            'Construct the Modify code in ModCode
+            Dim Posn As Integer
+            Posn = Sequence.XmlHtmDisplay1.SelectionStart
+            'Sequence.XmlHtmDisplay1.SelectedText = "<ModifyValues>" & vbCrLf
+            ModCode.Append("<ModifyValues>" & vbCrLf)
+
+            'NOTE: Not all modifications need the RegExVariable value. This is only specified when requried.
+            'Sequence.XmlHtmDisplay1.SelectedText = "  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf
+
+            If rbClearValue.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Clear_value</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Clear_value</ModifyType>" & vbCrLf)
+
+            ElseIf rbConvertDate.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <InputDateFormat>" & Trim(txtInputDateFormat.Text) & "</InputDateFormat>" & vbCrLf
+                ModCode.Append("  <InputDateFormat>" & Trim(txtInputDateFormat.Text) & "</InputDateFormat>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <OutputDateFormat>" & Trim(txtOutputDateFormat.Text) & "</OutputDateFormat>" & vbCrLf
+                ModCode.Append("  <OutputDateFormat>" & Trim(txtOutputDateFormat.Text) & "</OutputDateFormat>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Convert_date</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Convert_date</ModifyType>" & vbCrLf)
+
+            ElseIf rbReplaceChars.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <CharactersToReplace>" & Trim(txtCharsToReplace.Text) & "</CharactersToReplace>" & vbCrLf
+                ModCode.Append("  <CharactersToReplace>" & Trim(txtCharsToReplace.Text) & "</CharactersToReplace>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ReplacementCharacters>" & Trim(txtReplacementChars.Text) & "</ReplacementCharacters>" & vbCrLf
+                ModCode.Append("  <ReplacementCharacters>" & Trim(txtReplacementChars.Text) & "</ReplacementCharacters>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Replace_characters</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Replace_characters</ModifyType>" & vbCrLf)
+
+            ElseIf rbFixedValue.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <FixedVal>" & txtFixedVal.Text & "</FixedVal>" & vbCrLf
+                ModCode.Append("  <FixedVal>" & txtFixedVal.Text & "</FixedVal>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Fixed_val</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Fixed_val</ModifyType>" & vbCrLf)
+
+            ElseIf rbApplyFileNameRegEx.Checked Then
+                'NOTE: Apply File Name RegEx - This updates txtFileNameMatch - RegExVariable is not used.
+                'Sequence.XmlHtmDisplay1.SelectedRtf = Sequence.XmlHtmDisplay1.XmlToRtf("  <FileNameRegEx>" & txtFileNameRegEx.Text.Trim & "</FileNameRegEx>" & vbCrLf, False)
+                'ModCode.Append("  <FileNameRegEx>" & txtFileNameRegEx.Text.Trim & "</FileNameRegEx>" & vbCrLf)
+                'Dim RegExStr As String = txtFileNameRegEx.Text.Trim.Replace("<", "&lt;")
+                'Dim RegExStr As String = txtFileNameRegEx.Text.Trim
+                Dim RegExStr As String = txtFileNameRegEx.Text.Trim.Replace("<", "&lt;").Replace(">", "&gt;")
+                ModCode.Append("  <FileNameRegEx>" & RegExStr & "</FileNameRegEx>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Apply_file_name_regex</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Apply_file_name_regex</ModifyType>" & vbCrLf)
+
+            ElseIf rbFileNameMatch.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <FileNameMatch>" & txtFileNameMatch.Text & "</FileNameMatch>" & vbCrLf
+                'ModCode.Append("  <FileNameMatch>" & txtFileNameMatch.Text & "</FileNameMatch>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>File_name_match</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>File_name_match</ModifyType>" & vbCrLf)
+
+
+            ElseIf rbAppendFixedValue.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <AppendFixedValue>" & txtAppendFixedValue.Text & "</AppendFixedValue>" & vbCrLf
+                ModCode.Append("  <AppendFixedValue>" & txtAppendFixedValue.Text & "</AppendFixedValue>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_fixed_value</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_fixed_value</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendRegExVar.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <RegExVariableValueFrom>" & Trim(txtAppendRegExVar.Text) & "</RegExVariableValueFrom>" & vbCrLf
+                ModCode.Append("  <RegExVariableValueFrom>" & Trim(txtAppendRegExVar.Text) & "</RegExVariableValueFrom>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_RegEx_variable_value</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_RegEx_variable_value</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendTextFileName.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_file_name</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_file_name</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendTextFileDirectory.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_file_directory</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_file_directory</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendTextFilePath.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_file_path</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_file_path</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendCurrentDate.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_current_date</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_current_date</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendCurrentTime.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_current_time</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_current_time</ModifyType>" & vbCrLf)
+
+            ElseIf rbAppendCurrentDateTime.Checked Then
+                ModCode.Append("  <RegExVariable>" & Trim(txtRegExVariable.Text) & "</RegExVariable>" & vbCrLf)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_current_date_time</ModifyType>" & vbCrLf
+                ModCode.Append("  <ModifyType>Append_current_date_time</ModifyType>" & vbCrLf)
+
+            End If
+
+            'Sequence.XmlHtmDisplay1.SelectedText = "</ModifyValues>" & vbCrLf
+            ModCode.Append("</ModifyValues>" & vbCrLf)
+
+            'Sequence.FormatXmlText()
+
+            Sequence.XmlHtmDisplay1.SelectedRtf = Sequence.XmlHtmDisplay1.XmlToRtf(ModCode.ToString, False)
+            'Sequence.FormatXmlText()
+
+            'Message.Add("ModCode: " & vbCrLf & ModCode.ToString & vbCrLf)
+            'Message.Add(vbCrLf & Sequence.XmlHtmDisplay1.XmlToRtf(ModCode.ToString, False) & vbCrLf & vbCrLf)
+
+            'Sequence.FormatXmlText() 'This corrects the indents 'THIS PRODUCES AND ERROR (BELOW)
+            'The 'FileNameMatch' start tag on line 10 position 22 does not match the end tag of 'FileNameRegEx'. Line 10, position 48.
+
+            'FixXmlText(Sequence.XmlHtmDisplay1.Text)
+            Sequence.FormatXmlText()
+
+        End If
+    End Sub
+
+    Private Sub btnAddModifyToSeq_Click_OLD(sender As Object, e As EventArgs)
         'Save the Modify Values setting in the current Processing Sequence
 
         Dim I As Integer
@@ -4850,9 +5530,29 @@ Public Class Main
                 Sequence.XmlHtmDisplay1.SelectedText = "  <ReplacementCharacters>" & Trim(txtReplacementChars.Text) & "</ReplacementCharacters>" & vbCrLf
                 'Sequence.rtbSequence.SelectedText = "  <ModifyType>Replace_characters</ModifyType>" & vbCrLf
                 Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Replace_characters</ModifyType>" & vbCrLf
+
+            ElseIf rbFixedValue.Checked Then
+                Sequence.XmlHtmDisplay1.SelectedText = "  <FixedVal>" & txtFixedVal.Text & "</FixedVal>" & vbCrLf
+                Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Fixed_val</ModifyType>" & vbCrLf
+
+            ElseIf rbApplyFileNameRegEx.Checked Then
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <FileNameRegEx>" & txtFileNameRegEx.Text & "</FileNameRegEx>" & vbCrLf
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <FileNameRegEx>" & txtFileNameRegEx.Text.Trim & "</FileNameRegEx>" & vbCrLf
+                Sequence.XmlHtmDisplay1.SelectedRtf = Sequence.XmlHtmDisplay1.XmlToRtf("  <FileNameRegEx>" & txtFileNameRegEx.Text.Trim & "</FileNameRegEx>" & vbCrLf, False)
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <FileNameRegEx>" & System.Xml.XmlConvert.EncodeName(txtFileNameRegEx.Text) & "</FileNameRegEx>" & vbCrLf
+                Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Apply_file_name_regex</ModifyType>" & vbCrLf
+
+
+
+            ElseIf rbFileNameMatch.Checked Then
+                Sequence.XmlHtmDisplay1.SelectedText = "  <FileNameMatch>" & txtFileNameMatch.Text & "</FileNameMatch>" & vbCrLf
+                Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>File_name_match</ModifyType>" & vbCrLf
+
+
             ElseIf rbAppendFixedValue.Checked Then
                 'Sequence.rtbSequence.SelectedText = "  <FixedValue>" & txtFixedValue.Text & "</FixedValue>" & vbCrLf
-                Sequence.XmlHtmDisplay1.SelectedText = "  <FixedValue>" & txtFixedValue.Text & "</FixedValue>" & vbCrLf
+                'Sequence.XmlHtmDisplay1.SelectedText = "  <FixedValue>" & txtAppendFixedValue.Text & "</FixedValue>" & vbCrLf
+                Sequence.XmlHtmDisplay1.SelectedText = "  <AppendFixedValue>" & txtAppendFixedValue.Text & "</AppendFixedValue>" & vbCrLf
                 'Sequence.rtbSequence.SelectedText = "  <ModifyType>Append_fixed_value</ModifyType>" & vbCrLf
                 Sequence.XmlHtmDisplay1.SelectedText = "  <ModifyType>Append_fixed_value</ModifyType>" & vbCrLf
             ElseIf rbAppendRegExVar.Checked Then
@@ -4909,6 +5609,26 @@ Public Class Main
         End If
     End Sub
 
+    Private Sub rbFixedValue_CheckedChanged(sender As Object, e As EventArgs) Handles rbFixedValue.CheckedChanged
+        If rbFixedValue.Checked Then
+            txtModType.Text = "Fixed value"
+            ModifyValueType = Import.ModifyValuesTypes.FixedValue
+        End If
+    End Sub
+
+    Private Sub rbApplyFileNameRegEx_CheckedChanged(sender As Object, e As EventArgs) Handles rbApplyFileNameRegEx.CheckedChanged
+        If rbApplyFileNameRegEx.Checked Then
+            txtModType.Text = "Apply file name regex"
+            ModifyValueType = Import.ModifyValuesTypes.ApplyFileNameRegEx
+        End If
+    End Sub
+
+    Private Sub rbFileNameMatch_CheckedChanged(sender As Object, e As EventArgs) Handles rbFileNameMatch.CheckedChanged
+        If rbFileNameMatch.Checked Then
+            txtModType.Text = "File name match"
+            ModifyValueType = Import.ModifyValuesTypes.FileNameMatch
+        End If
+    End Sub
 
     Private Sub rbAppendFixedValue_CheckedChanged(sender As Object, e As EventArgs) Handles rbAppendFixedValue.CheckedChanged
         If rbAppendFixedValue.Checked Then
@@ -5606,11 +6326,45 @@ Public Class Main
                     Message.AddWarning("Add code to handle ProjectID parameter at StartUp!" & vbCrLf)
                 'Note the AppNet will usually select a project using ProjectPath.
 
+                'Case "ProjectPath"
+                '    If Project.OpenProjectPath(Data) = True Then
+                '        ProjectSelected = True 'Project has been opened OK.
+                '    Else
+                '        ProjectSelected = False 'Project could not be opened.
+                '    End If
+
                 Case "ProjectPath"
                     If Project.OpenProjectPath(Data) = True Then
                         ProjectSelected = True 'Project has been opened OK.
+                        'THE PROJECT IS LOCKED IN THE Form.Load EVENT:
+
+                        ApplicationInfo.SettingsLocn = Project.SettingsLocn
+                        Message.SettingsLocn = Project.SettingsLocn 'Set up the Message object
+                        Message.Show() 'Added 18May19
+
+                        'txtTotalDuration.Text = Project.Usage.TotalDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
+                        '              Project.Usage.TotalDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
+                        '              Project.Usage.TotalDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
+                        '              Project.Usage.TotalDuration.Seconds.ToString.PadLeft(2, "0"c)
+
+                        'txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & ":" &
+                        '               Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & ":" &
+                        '               Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & ":" &
+                        '               Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c)
+
+                        txtTotalDuration.Text = Project.Usage.TotalDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                                        Project.Usage.TotalDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                                        Project.Usage.TotalDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                                        Project.Usage.TotalDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
+
+                        txtCurrentDuration.Text = Project.Usage.CurrentDuration.Days.ToString.PadLeft(5, "0"c) & "d:" &
+                                       Project.Usage.CurrentDuration.Hours.ToString.PadLeft(2, "0"c) & "h:" &
+                                       Project.Usage.CurrentDuration.Minutes.ToString.PadLeft(2, "0"c) & "m:" &
+                                       Project.Usage.CurrentDuration.Seconds.ToString.PadLeft(2, "0"c) & "s"
+
                     Else
                         ProjectSelected = False 'Project could not be opened.
+                        Message.AddWarning("Project could not be opened at path: " & Data & vbCrLf)
                     End If
 
                 Case "ConnectionName"
@@ -5811,6 +6565,27 @@ Public Class Main
 
     Private Sub lstTextFiles_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstTextFiles.SelectedIndexChanged
 
+        'TextBox1.Text = lstTextFiles.SelectedItem.ToString
+        If lstTextFiles.Focused Then
+            If IsNothing(lstTextFiles.SelectedItem) Then
+
+            Else
+                txtFileDate.Text = System.IO.File.GetCreationTime(lstTextFiles.SelectedItem.ToString)
+            End If
+        End If
+    End Sub
+
+    Private Sub lstTextFiles_Click(sender As Object, e As EventArgs) Handles lstTextFiles.Click
+        'The mouse has been clicked in lstTextFiles.
+
+        'TextBox1.Text = lstTextFiles.SelectedValue
+        'TextBox1.Text = lstTextFiles.
+
+    End Sub
+
+    Private Sub lstTextFiles_MouseClick(sender As Object, e As MouseEventArgs) Handles lstTextFiles.MouseClick
+
+
     End Sub
 
     'Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
@@ -5944,7 +6719,7 @@ Public Class Main
     End Sub
 
     Private Sub btnGetImportSettings_Click(sender As Object, e As EventArgs) Handles btnGetImportSettings.Click
-        'Show the Import settings. - The settings willbe shown on the tab pages.
+        'Show the Import settings. - The settings will be shown on the tab pages.
         'The Import settings are stored in the Import object. 
         'The form tabs are used to design the import parameters and are only applied to the Import object when an import sequence is run or the settings are applied.
         'This method shows the Import settings on the form tabs.
@@ -6264,6 +7039,8 @@ Public Class Main
             txtImportLoopDescription.Text = xmlSeq.<ProcessingSequence>.<Description>.Value
             XmlHtmDisplay2.Rtf = XmlHtmDisplay2.XmlToRtf(xmlSeq.ToString, True)
 
+            Import.ImportLoopName = Trim(txtImportLoopName.Text) 'This will load the file into ImportLoopXDoc
+
         End If
     End Sub
 
@@ -6427,6 +7204,658 @@ Public Class Main
         SendProjectInfo(ProjectPath) 'Send the path of the new project to the Network application. The new project will be added to the list of projects.
     End Sub
 
+    Private Sub XmlHtmDisplay1_ErrorMessage(Msg As String) Handles XmlHtmDisplay1.ErrorMessage
+        Message.AddWarning(Msg)
+    End Sub
+
+    Private Sub XmlHtmDisplay1_Message(Msg As String) Handles XmlHtmDisplay1.Message
+        Message.Add(Msg)
+    End Sub
+
+    'Private Sub btnClearSettings_Click(sender As Object, e As EventArgs)
+    '    'TESTING - Clear Settings
+    '    Import.ClearSettings()
+    'End Sub
+
+    'Private Sub btnInitTabs_Click(sender As Object, e As EventArgs)
+    '    'TESTING - Clear Settings
+    '    InitialiseTabs()
+    'End Sub
+
+    Private Sub btnFixXmlText_Click(sender As Object, e As EventArgs) Handles btnFixXmlText.Click
+
+        Message.Add(FixXmlText(txtXmlText.Text))
+
+
+        'If IsNothing(Sequence) Then
+
+        'Else
+        '    Message.Add(FixXmlText(txtXmlText.Text)
+        'End If
+
+    End Sub
+
+    'TO DO: Fix the function so that an extra CrLf no longer needs to be appended to the XmlText
+    Public Function FixXmlText(XmlText As String) As String
+        'Fix an XML string so that it can be loaded correcly using the LoadXml method of a System.Xml.XmlDocument
+        'Replace "<" in an element value with "&lt;"
+        'Replace ">" in an element value with "&gt;"
+
+        'XML Terminology:
+        'XML declaration <?xml version="1.0" encoding="UTF-8"?>
+        'Comments begin with <!-- and end with -->.
+        'Start-tag <Element>
+        'End-tag </Element>
+        'Empty-element tag (Element />
+        'Content  The characters between the start-tag and end-tag, if any, are the element's content, and may contain markup, including other elements, which are called child elements.
+        'Predefined entities:
+        '&lt; represents "<";
+        '&gt; represents ">";
+        '&amp; represents "&";
+        '&apos; represents "'";
+        '&quot; represents '"'.
+
+        Dim FixedXmlText As New System.Text.StringBuilder
+        Dim StartPos As Integer
+        Dim EndPos As Integer
+        Dim ScanPos As Integer = 0
+        Dim LastPos As Integer = XmlText.Length
+
+        If XmlText.Trim.StartsWith("<?xml") Then
+            StartPos = XmlText.IndexOf("<?xml")
+            EndPos = XmlText.IndexOf("?>", StartPos)
+            FixedXmlText.Append(XmlText.Substring(StartPos, EndPos - StartPos + 2))
+            ScanPos = EndPos + 2
+        End If
+        FixedXmlText.Append(ProcessContent(XmlText, ScanPos, LastPos))
+        Return FixedXmlText.ToString
+    End Function
+
+    'TO DO: Fix the function so that an extra CrLf no longer needs to be appended to the XmlText
+    Private Function ProcessContent(ByRef XmlText As String, FromIndex As Integer, ToIndex As Integer) As String
+        'Process the XML content in the XmlText string between FromIndex and ToIndex.
+        'THIS VERSION SEARCHES FOR MATCHING End-Tags
+        '
+        'Content alternatives:
+        'Content only
+        '<!---->                                        One or more comments
+        '<Element />                                    One or more empty element tags
+        '<Element></Element>                            One or more empty elements
+        '<Element>Content</Element>                     One or more elements containing content
+        '<Element>                                      One or more elements containing child elements
+        '  <ChildElement>ChildContent</ChildElement>
+        '</Element>
+
+        Dim StartScan As Integer = FromIndex 'The start of the current content scan
+        Dim ScanIndex As Integer = FromIndex 'The current scan position
+        Dim LtCharIndex As Integer 'The index position of the next < character
+        Dim GtCharIndex As Integer 'The index position of the next > character
+        Dim FixedXmlText As New System.Text.StringBuilder 'This is used to build the fixed XML text for the content if it contains XML tags
+        Dim StartTagText As String = "" 'The text of a found Start-tag. The text may include attributes following the name.
+        Dim EndNameIndex As Integer 'The index position of the end of the StartTagName. If the StartTagText contains attributes, the StartTagName will be followed by a space then the attributes.
+        Dim StartTagName As String = "" 'The name of a found Start-tag
+        Dim EndTagIndex As Integer 'The index of an End-tag
+        Dim StartTagCount As Integer = 1 'The nesting level of the StartTag
+        Dim EndTagCount As Integer = 1 'The nesting level of the EndTag
+        Dim StartSearch As Integer 'StartSearch index used for counting other Start-Tags named StartTagName
+        Dim NextSearch As Integer 'Search for the next Start-Tag named StartTagName
+        Dim SearchIndex As Integer
+        Dim Match As Boolean
+        Dim TagLevelMatch As Boolean 'If True, the Start-Tag and End-Tag have matching levels.
+        Dim SearchEndTagFrom As Integer 'The index to start the End-tag search from
+        'Dim ContentFound As Boolean = False 'True if Element Content was found.
+        Dim ElementFound As Boolean = False 'True if an Element or a Comment was found.
+        Dim EndSearch As Boolean 'If True, End the Search to find the End-Tag
+
+        'Message.Add("ProcessContent: FromIndex = " & FromIndex & " ToIndex = " & ToIndex & vbCrLf)
+
+        'While ScanIndex <= ToIndex
+        While ScanIndex < ToIndex
+            'Find the first pair of < > characters
+            LtCharIndex = XmlText.IndexOf("<", ScanIndex) 'Find the start of the next Element
+            If LtCharIndex = -1 Then '< char not found
+                If ToIndex - ScanIndex = 2 Then
+                    If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                        'Message.Add("At end of line. Exit While" & vbCrLf)
+                        'FixedXmlText.Append(vbCrLf)
+                        Exit While
+                    End If
+                End If
+                'The characters between FromIndex and ToIndex are Content
+                'NOTE: StartScan and FromIndex should be the same here: StartScan only advances if the Content contains one or more comments or elements.
+                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                FixedXmlText.Append(Content)
+                'Message.Add("< char not found. Content string returned: " & Content & " ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                ScanIndex = ToIndex + 1
+            ElseIf LtCharIndex >= ToIndex Then
+                'Check if the remaining characters are CrLf:
+                If ToIndex - ScanIndex = 2 Then
+                    If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                        'Message.Add("At end of line." & vbCrLf)
+                        'FixedXmlText.Append(vbCrLf)
+                        Exit While
+                    End If
+                End If
+                'Check if the remaining characters are blank:
+                If XmlText.Substring(ScanIndex, ToIndex - ScanIndex).Trim = "" Then
+                    'Message.Add("The remaining characters are blank." & vbCrLf)
+                    Exit While
+                End If
+                'Check if the remaining characters with blanks removed are CrLf:
+                'Check if the remaining characters are blank:
+                If XmlText.Substring(ScanIndex, ToIndex - ScanIndex).Trim = vbCrLf Then
+                    'Message.Add("The remaining characters with blanks removed are CrLf." & vbCrLf)
+                    Exit While
+                End If
+                'The characters between FromIndex and ToIndex are Content
+                'NOTE: StartScan and FromIndex should be the same here
+                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                FixedXmlText.Append(Content)
+                'Message.Add("< char not found within Content range. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " FromIndex = " & FromIndex & " ToIndex = " & ToIndex & " LtCharIndex = " & LtCharIndex & vbCrLf)
+                'Message.Add("String between ScanIndex and ToIndex: " & XmlText.Substring(ScanIndex, ToIndex - ScanIndex) & vbCrLf)
+                ScanIndex = ToIndex + 1
+            Else
+                'The < character is within the Content range
+                'Search for a > character
+                GtCharIndex = XmlText.IndexOf(">", LtCharIndex + 1)
+                If GtCharIndex = -1 Then '> char not found
+                    If ToIndex - ScanIndex = 2 Then
+                        If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                            'Message.Add("At end of line." & vbCrLf)
+                            'FixedXmlText.Append(vbCrLf)
+                            Exit While
+                        End If
+                    End If
+                    'The characters between FromIndex and ToIndex are Content
+                    'NOTE: StartScan and FromIndex should be the same here
+                    Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                    FixedXmlText.Append(Content)
+                    'Message.Add("> char not found. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                    ScanIndex = ToIndex + 1
+                ElseIf GtCharIndex > ToIndex Then
+                    If ToIndex - ScanIndex = 2 Then
+                        If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                            'Message.Add("At end of line." & vbCrLf)
+                            'FixedXmlText.Append(vbCrLf)
+                            Exit While
+                        End If
+                    End If
+                    'The characters between FromIndex and ToIndex are Content
+                    'NOTE: StartScan and FromIndex should be the same here
+                    Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                    FixedXmlText.Append(Content)
+                    'Message.Add("> char not found within Content range. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                    ScanIndex = ToIndex + 1
+                Else
+                    'A start-tagChar and end-tagChar <> pair has been found.
+                    'The <> characters will contain a comment, an element name or be part of the element content.
+                    If XmlText.Substring(LtCharIndex, 4) = "<!--" Then 'This is the start of a comment
+                        If XmlText.Substring(GtCharIndex - 2, 3) = "-->" Then 'This is the end of a comment -------------------------------------------------------------  <--Comment-->  --------------------------------------------------------------
+                            FixedXmlText.Append(XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1) & vbCrLf) 'Add the Comment to the Fixed XML Text
+                            'FixedXmlText.Append(XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1) & vbCrLf) 'Add the Comment to the Fixed XML Text
+                            ScanIndex = GtCharIndex + 1
+                            StartScan = GtCharIndex + 1
+                            'Message.Add("Comment found and returned: " & XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1) & " ScanIndex = " & ScanIndex & vbCrLf)
+                        Else
+                            'This is not a comment.
+                            'The whole content must be the content of a single element
+                            'The characters between FromIndex and ToIndex are Content
+                            'NOTE: StartScan and FromIndex should be the same here
+                            Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                            FixedXmlText.Append(Content)
+                            'Message.Add("Comment not found. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                            ScanIndex = ToIndex + 1
+                        End If
+                    Else 'This is a start-tag, empty element or content of a single element
+                        If XmlText.Chars(GtCharIndex - 1) = "/" Then 'This is an empty element
+                            FixedXmlText.Append(XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1))
+                            ScanIndex = GtCharIndex + 1
+                            StartScan = GtCharIndex + 1
+                            'Message.Add("Empty element found and returned. ScanIndex = " & ScanIndex & vbCrLf)
+                        Else
+                            StartTagCount = 1
+                            EndTagCount = 0
+                            'StartSearch = LtCharIndex
+                            StartSearch = GtCharIndex + 1
+                            EndSearch = False
+                            While StartTagCount > EndTagCount And EndSearch = False
+                                'Continue searching for StartTag-EndTag tag pairs with the name StartTagName until matching tags are found (StartTagCount = EndTagCount).
+                                'StartTagName = XmlText.Substring(LtCharIndex + 1, GtCharIndex - LtCharIndex - 1) 'This is the name of the Start-tag
+                                StartTagText = XmlText.Substring(LtCharIndex + 1, GtCharIndex - LtCharIndex - 1) 'This is the text of the Start-tag
+                                EndNameIndex = StartTagText.IndexOf(" ")
+                                If EndNameIndex = -1 Then 'There is no space in StartTagText so it contains no attributes.
+                                    StartTagName = StartTagText
+                                Else
+                                    StartTagName = StartTagText.Substring(0, EndNameIndex)
+                                End If
+                                'Message.Add("StartTagName = " & StartTagName & vbCrLf)
+
+
+                                'Find the matching End-tag - The matching End-tag must have a matching TagName and a matching level.
+                                TagLevelMatch = False
+                                SearchEndTagFrom = GtCharIndex + 1
+                                While TagLevelMatch = False
+                                    'Message.Add("Searching for End-tag: " & "</" & StartTagName & ">" & vbCrLf)
+                                    'EndTagIndex = XmlText.IndexOf("</" & StartTagName & ">", GtCharIndex + 1)
+                                    EndTagIndex = XmlText.IndexOf("</" & StartTagName & ">", SearchEndTagFrom)
+                                    If EndTagIndex = -1 Then 'There is no matching End-tag
+                                        'This is not an element.
+                                        'The whole content must be the content of a single element
+                                        'The characters between FromIndex and ToIndex are Content
+                                        'NOTE: StartScan and FromIndex should be the same here
+                                        Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                                        FixedXmlText.Append(Content)
+                                        'Message.Add("Start-tag with no end-tag. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                                        ScanIndex = ToIndex + 1
+                                        EndSearch = True 'End the search for the End-Tag
+                                        Exit While 'There is no matching End-tag!
+                                    ElseIf EndTagIndex > ToIndex - StartTagName.Length - 1 Then 'The matching tag is outside of the Content
+                                        'This is not an element.
+                                        'The whole content must be the content of a single element
+                                        'The characters between FromIndex and ToIndex are Content
+                                        'NOTE: StartScan and FromIndex should be the same here
+                                        Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                                        FixedXmlText.Append(Content)
+                                        'Message.Add("Start-tag with no end-tag within Content range. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                                        ScanIndex = ToIndex + 1
+                                        EndSearch = True 'End the search for the End-Tag
+                                        Exit While 'There is no matching End-tag withing the Content range.
+                                    Else 'Matching End-tag found at EndTagIndex. 
+                                        EndTagCount += 1 'Increment the End Tag Count
+                                        'Search for any other Start-Tags named StartTagName between LtCharIndex and EndTagIndex
+                                        Match = True
+                                        'NextSearch = LtCharIndex
+                                        NextSearch = StartSearch 'Search for <StartTagName> (without attributes)
+                                        While Match = True 'Search for Start-Tags of the form: <StartTagName>
+                                            'SearchIndex = XmlText.IndexOf("<" & StartTagName & ">", NextSearch, EndTagIndex)
+                                            SearchIndex = XmlText.IndexOf("<" & StartTagName & ">", NextSearch, EndTagIndex - NextSearch)
+                                            If SearchIndex = -1 Then
+                                                Match = False
+                                            Else
+                                                NextSearch = SearchIndex + StartTagName.Length
+                                                StartTagCount += 1
+                                            End If
+                                        End While
+                                        Match = True
+                                        'NextSearch = LtCharIndex
+                                        NextSearch = StartSearch 'Set NextSearch back to StartSearch to search the same chars for <StartTagName ...(with attributes)
+                                        While Match = True 'Search for Start-Tags of the form: <StartTagName ...> (Start-Tag with attributes)
+                                            'SearchIndex = XmlText.IndexOf("<" & StartTagName & " ", NextSearch, EndTagIndex)
+                                            SearchIndex = XmlText.IndexOf("<" & StartTagName & " ", NextSearch, EndTagIndex - NextSearch)
+                                            If SearchIndex = -1 Then
+                                                Match = False
+                                            Else
+                                                NextSearch = SearchIndex + StartTagName.Length
+                                                StartTagCount += 1
+                                            End If
+                                        End While
+                                        StartSearch = EndTagIndex + 1 'All Start-Tags named StartTagName have been found to EndTagIndex : Update StartSearch - If more searches are needed, they will start from here.
+
+                                        'If StartTagCount > EndTagCount Then TagLevelMatch = False
+                                        If StartTagCount = EndTagCount Then
+                                            'Message.Add("TagLevelMatch is True." & vbCrLf)
+                                            TagLevelMatch = True
+
+                                            'Message.Add("Processing Content of <" & StartTagName & "> FromIndex: " & GtCharIndex + 1 & " ToIndex: " & EndTagIndex & vbCrLf)
+                                            'FixedXmlText.Append(vbCrLf & "<" & StartTagName & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">")
+                                            'FixedXmlText.Append(vbCrLf & "<" & StartTagName & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">")
+                                            'FixedXmlText.Append(vbCrLf & "<" & StartTagName & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">" & vbCrLf)
+                                            'FixedXmlText.Append("<" & StartTagName & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">" & vbCrLf)
+                                            'FixedXmlText.Append("<" & StartTagText & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">" & vbCrLf)
+                                            FixedXmlText.Append("<" & StartTagText & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">" & vbCrLf)
+                                            ScanIndex = EndTagIndex + StartTagName.Length + 3
+                                            ElementFound = True
+                                            'ScanIndex = EndTagIndex + StartTagName.Length + 2
+                                        Else
+                                            'Message.Add("TagLevelMatch is False. Search for next matching End-tag." & vbCrLf)
+                                            SearchEndTagFrom = EndTagIndex + StartTagName.Length + 3
+                                            'SearchEndTagFrom = EndTagIndex + StartTagName.Length + 2
+                                        End If
+                                        ''Message.Add("Processing Content of <" & StartTagName & "> FromIndex: " & GtCharIndex + 1 & " ToIndex: " & EndTagIndex & vbCrLf)
+                                        'FixedXmlText.Append(vbCrLf & "<" & StartTagName & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">")
+                                        'ScanIndex = EndTagIndex + StartTagName.Length + 3
+                                    End If
+                                End While
+                            End While
+                        End If
+                    End If
+                End If
+            End If
+        End While
+        'Return FixedXmlText.ToString
+        'Return vbCrLf & FixedXmlText.ToString
+        If ElementFound Then
+            Return vbCrLf & FixedXmlText.ToString
+        Else
+            Return FixedXmlText.ToString
+        End If
+
+    End Function
+
+
+    Private Function ProcessContent_OLD(ByRef XmlText As String, FromIndex As Integer, ToIndex As Integer) As String
+        'Process the XML content in the XmlText string between FromIndex and ToIndex.
+        '
+        'Content alternatives:
+        'Content only
+        '<!---->                                        One or more comments
+        '<Element />                                    One or more empty element tags
+        '<Element></Element>                            One or more empty elements
+        '<Element>Content</Element>                     One or more elements containing content
+        '<Element>                                      One or more elements containing child elements
+        '  <ChildElement>ChildContent</ChildElement>
+        '</Element>
+
+        Dim StartScan As Integer = FromIndex 'The start of the current content scan
+        Dim ScanIndex As Integer = FromIndex 'The current scan position
+        Dim LtCharIndex As Integer 'The index position of the next < character
+        Dim GtCharIndex As Integer 'The index position of the next > character
+        Dim FixedXmlText As New System.Text.StringBuilder 'This is used to build the fixed XML text for the content if it contains XML tags
+        Dim StartTagText As String = "" 'The text of a found Start-tag. The text may include attributes following the name.
+        Dim EndNameIndex As Integer 'The index position of the end of the StartTagName. If the StartTagText contains attributes, the StartTagName will be followed by a space then the attributes.
+        Dim StartTagName As String = "" 'The name of a found Start-tag
+        Dim EndTagIndex As Integer 'The index of an End-tag
+        Dim StartTagCount As Integer = 1 'The nesting level of the StartTag
+        Dim EndTagCount As Integer = 1 'The nesting level of the EndTag
+
+        'Message.Add("ProcessContent: FromIndex = " & FromIndex & " ToIndex = " & ToIndex & vbCrLf)
+
+        While ScanIndex <= ToIndex
+            'Find the first pair of < > characters
+            LtCharIndex = XmlText.IndexOf("<", ScanIndex) 'Find the start of the next Element
+            If LtCharIndex = -1 Then '< char not found
+                If ToIndex - ScanIndex = 2 Then
+                    If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                        'Message.Add("At end of line." & vbCrLf)
+                        FixedXmlText.Append(vbCrLf)
+                        Exit While
+                    End If
+                End If
+                'The characters between FromIndex and ToIndex are Content
+                'NOTE: StartScan and FromIndex should be the same here: StartScan only advances if the Content contains one or more comments or elements.
+                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                FixedXmlText.Append(Content)
+                'Message.Add("< char not found. Content string returned: " & Content & " ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                ScanIndex = ToIndex + 1
+            ElseIf LtCharIndex >= ToIndex Then
+                If ToIndex - ScanIndex = 2 Then
+                    If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                        'Message.Add("At end of line." & vbCrLf)
+                        FixedXmlText.Append(vbCrLf)
+                        Exit While
+                    End If
+                End If
+                'The characters between FromIndex and ToIndex are Content
+                'NOTE: StartScan and FromIndex should be the same here
+                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                FixedXmlText.Append(Content)
+                'Message.Add("< char not found within Content range. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                ScanIndex = ToIndex + 1
+            Else
+                'The < character is within the Content range
+                'Search for a > character
+                GtCharIndex = XmlText.IndexOf(">", LtCharIndex + 1)
+                If GtCharIndex = -1 Then '> char not found
+                    If ToIndex - ScanIndex = 2 Then
+                        If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                            'Message.Add("At end of line." & vbCrLf)
+                            FixedXmlText.Append(vbCrLf)
+                            Exit While
+                        End If
+                    End If
+                    'The characters between FromIndex and ToIndex are Content
+                    'NOTE: StartScan and FromIndex should be the same here
+                    Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                    FixedXmlText.Append(Content)
+                    'Message.Add("> char not found. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                    ScanIndex = ToIndex + 1
+                ElseIf GtCharIndex > ToIndex Then
+                    If ToIndex - ScanIndex = 2 Then
+                        If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                            'Message.Add("At end of line." & vbCrLf)
+                            FixedXmlText.Append(vbCrLf)
+                            Exit While
+                        End If
+                    End If
+                    'The characters between FromIndex and ToIndex are Content
+                    'NOTE: StartScan and FromIndex should be the same here
+                    Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                    FixedXmlText.Append(Content)
+                    'Message.Add("> char not found within Content range. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                    ScanIndex = ToIndex + 1
+                Else
+                    'A start-tag and end-tag pair has been found.
+                    'The <> characters will contain a comment, an element name or be part of the element content.
+                    If XmlText.Substring(LtCharIndex, 4) = "<!--" Then 'This is the start of a comment
+                        If XmlText.Substring(GtCharIndex - 2, 3) = "-->" Then 'This is the end of a comment
+                            FixedXmlText.Append(vbCrLf & XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1)) 'Add the Comment to the Fixed XML Text
+                            ScanIndex = GtCharIndex + 1
+                            StartScan = GtCharIndex + 1
+                            'Message.Add("Comment found and returned: " & XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1) & " ScanIndex = " & ScanIndex & vbCrLf)
+                        Else
+                            'This is not a comment.
+                            'The whole content must be the content of a single element
+                            'The characters between FromIndex and ToIndex are Content
+                            'NOTE: StartScan and FromIndex should be the same here
+                            Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                            FixedXmlText.Append(Content)
+                            'Message.Add("Comment not found. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                            ScanIndex = ToIndex + 1
+                        End If
+                    Else 'This is a start-tag, empty element or content of a single element
+                        If XmlText.Chars(GtCharIndex - 1) = "/" Then 'This is an empty element
+                            FixedXmlText.Append(XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1))
+                            ScanIndex = GtCharIndex + 1
+                            StartScan = GtCharIndex + 1
+                            'Message.Add("Empty element found and returned. ScanIndex = " & ScanIndex & vbCrLf)
+                        Else
+                            'StartTagName = XmlText.Substring(LtCharIndex + 1, GtCharIndex - LtCharIndex - 1) 'This is the name of the Start-tag
+                            StartTagText = XmlText.Substring(LtCharIndex + 1, GtCharIndex - LtCharIndex - 1) 'This is the text of the Start-tag
+                            EndNameIndex = StartTagText.IndexOf(" ")
+                            If EndNameIndex = -1 Then 'There is no space in StartTagText so ot contains no attributes.
+                                StartTagName = StartTagText
+                            Else
+                                StartTagName = StartTagText.Substring(0, EndNameIndex)
+                            End If
+                            Message.Add("StartTagName = " & StartTagName & vbCrLf)
+                            'Find the matching End-tag
+                            'Message.Add("Searching for End-tag: " & "</" & StartTagName & ">" & vbCrLf)
+                            EndTagIndex = XmlText.IndexOf("</" & StartTagName & ">", GtCharIndex + 1)
+                            If EndTagIndex = -1 Then 'There is no matching End-tag
+                                'This is not an element.
+                                'The whole content must be the content of a single element
+                                'The characters between FromIndex and ToIndex are Content
+                                'NOTE: StartScan and FromIndex should be the same here
+                                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                                FixedXmlText.Append(Content)
+                                'Message.Add("Start-tag with no end-tag. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                                ScanIndex = ToIndex + 1
+                            ElseIf EndTagIndex > ToIndex - StartTagName.Length - 1 Then 'The matching tag is outside of the Content
+                                'This is not an element.
+                                'The whole content must be the content of a single element
+                                'The characters between FromIndex and ToIndex are Content
+                                'NOTE: StartScan and FromIndex should be the same here
+                                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                                FixedXmlText.Append(Content)
+                                'Message.Add("Start-tag with no end-tag within Content range. Content string returned: " & Content & "  ScanIndex = " & ScanIndex & " ToIndex = " & ToIndex & vbCrLf)
+                                ScanIndex = ToIndex + 1
+                            Else 'Matching End-tag found.
+                                'Message.Add("Processing Content of <" & StartTagName & "> FromIndex: " & GtCharIndex + 1 & " ToIndex: " & EndTagIndex & vbCrLf)
+                                FixedXmlText.Append(vbCrLf & "<" & StartTagName & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">")
+                                ScanIndex = EndTagIndex + StartTagName.Length + 3
+                                'Message.Add("<" & StartTagName & "> " & "Start-tag and end-tag Found and processed. Content returned. ScanIndex = " & ScanIndex & vbCrLf)
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End While
+        Return FixedXmlText.ToString
+    End Function
+
+    ''NOTE: I am now using the recursive function: ProcessContent(From, To, XmlText)
+    'Private Function NextElement(ByRef XmlText As String, ByRef ScanPos As Integer) As String
+    '    'Process the next XML element from ScanPos
+    '    Dim StartPos As Integer
+    '    Dim EndPos As Integer
+    '    StartPos = XmlText.IndexOf("<", ScanPos) 'Find the start of the next Element
+    '    EndPos = XmlText.IndexOf(">", ScanPos + 1) 'Find the end of the Element start tag
+    '    If XmlText.Substring(StartPos, 4) = "<!--" Then  'This is a comment
+    '        ScanPos = EndPos + 1
+    '        Message.Add("Comment = " & XmlText.Substring(StartPos, EndPos - StartPos + 1) & vbCrLf)
+    '        Return XmlText.Substring(StartPos, EndPos - StartPos + 1) & vbCrLf
+    '    Else 'This is a Start tag <Element> or <Element />
+    '        If XmlText.Chars(EndPos - 1) = "/" Then 'This is an empty element
+    '            ScanPos = EndPos + 1
+    '            Message.Add("Empty Element = " & XmlText.Substring(StartPos, EndPos - StartPos + 1) & vbCrLf)
+    '            Return XmlText.Substring(StartPos, EndPos - StartPos + 1) & vbCrLf
+    '        Else
+    '            Dim ElementName As String
+    '            ElementName = XmlText.Substring(StartPos, EndPos - StartPos)
+    '            Message.Add("Element name = " & ElementName & vbCrLf)
+    '            'Found Start-tag: <ElementName>
+    '            'Find corresponding End-tag:
+    '            Dim EndTagPos As Integer
+    '            EndTagPos = XmlText.IndexOf("</" & ElementName & ">", EndPos + 1)
+    '            If EndTagPos = -1 Then 'There is no End-tag
+    '                ScanPos += 1
+
+    '            Else
+
+    '            End If
+
+    '        End If
+    '    End If
+
+    'End Function
+
+    Private Sub btnSelectMatch_Click(sender As Object, e As EventArgs) Handles btnSelectMatch.Click
+        'Select matching files.
+        'Apply the regex to the contents of each file.
+        'Select each file that has a regex match.
+
+        Dim myText As String
+        Dim FileSizeLimit As Integer = Val(txtFileSize.Text) * 1000
+        Dim myRegEx As New System.Text.RegularExpressions.Regex(txtContentRegEx.Text)
+
+        Dim I As Integer
+        Dim FilePath As String
+        For I = 1 To lstTextFiles.Items.Count
+            FilePath = lstTextFiles.Items(I - 1).ToString
+            Dim myFile As New System.IO.FileInfo(FilePath)
+            If myFile.Length > FileSizeLimit Then
+                Message.AddWarning("The file " & FilePath & " (" & myFile.Length / 1000 & " KB) is larger than the file size limit." & vbCrLf)
+            Else
+                Dim MyReader As System.IO.StreamReader = New IO.StreamReader(FilePath)
+                myText = MyReader.ReadToEnd
+                Dim myMatch As System.Text.RegularExpressions.Match = myRegEx.Match(myText)
+                If myMatch.Success Then
+                    'lstTextFiles.Items(I - 1).Selected = True
+                    lstTextFiles.SelectedIndices.Add(I - 1)
+                Else
+
+                End If
+
+            End If
+        Next
+        UpdateSelTextFileList()
+    End Sub
+
+    Private Sub btnDeSelectMatch_Click(sender As Object, e As EventArgs) Handles btnDeSelectMatch.Click
+        'DeSelect matching files.
+        'Apply the regex to the contents of each selected file.
+        'DeSelect each file that has a regex match.
+
+        Dim myText As String
+        Dim FileSizeLimit As Integer = Val(txtFileSize.Text) * 1000
+        Dim myRegEx As New System.Text.RegularExpressions.Regex(txtContentRegEx.Text)
+
+        Dim I As Integer
+        Dim FilePath As String
+        For I = 1 To lstTextFiles.Items.Count
+            If lstTextFiles.GetSelected(I - 1) Then
+                FilePath = lstTextFiles.Items(I - 1).ToString
+                Dim myFile As New System.IO.FileInfo(FilePath)
+                If myFile.Length > FileSizeLimit Then
+                    Message.AddWarning("The file " & FilePath & " (" & myFile.Length / 1000 & " KB) is larger than the file size limit." & vbCrLf)
+                Else
+                    Dim MyReader As System.IO.StreamReader = New IO.StreamReader(FilePath)
+                    myText = MyReader.ReadToEnd
+                    Dim myMatch As System.Text.RegularExpressions.Match = myRegEx.Match(myText)
+                    If myMatch.Success Then
+                        lstTextFiles.SetSelected(I - 1, False)
+                    Else
+
+                    End If
+                End If
+            End If
+        Next
+        UpdateSelTextFileList()
+
+    End Sub
+
+    Private Sub btnSelectDateMatch_Click(sender As Object, e As EventArgs) Handles btnSelectDateMatch.Click
+        'Select files with matching dates.
+
+        'Dim FileDate As Date = Date.Parse(txtFileDate.Text)
+        Dim FileDate As DateTime = DateTime.Parse(txtFileDate.Text)
+        Dim I As Integer
+
+        If rbNewer.Checked Then
+            If chkSame.Checked Then
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) >= FileDate Then lstTextFiles.SetSelected(I - 1, True)
+                Next
+            Else
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) > FileDate Then lstTextFiles.SetSelected(I - 1, True)
+                Next
+            End If
+        Else
+            If chkSame.Checked Then
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) <= FileDate Then lstTextFiles.SetSelected(I - 1, True)
+                Next
+            Else
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) < FileDate Then lstTextFiles.SetSelected(I - 1, True)
+                Next
+            End If
+        End If
+        UpdateSelTextFileList()
+    End Sub
+
+    Private Sub btnDeselectDateMatch_Click(sender As Object, e As EventArgs) Handles btnDeselectDateMatch.Click
+        'Deselect files with matching dates.
+
+        'Dim FileDate As Date = Date.Parse(txtFileDate.Text)
+        Dim FileDate As DateTime = DateTime.Parse(txtFileDate.Text)
+        Dim I As Integer
+
+        If rbNewer.Checked Then
+            If chkSame.Checked Then
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) >= FileDate Then lstTextFiles.SetSelected(I - 1, False)
+                Next
+            Else
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) > FileDate Then lstTextFiles.SetSelected(I - 1, False)
+                Next
+            End If
+        Else
+            If chkSame.Checked Then
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) <= FileDate Then lstTextFiles.SetSelected(I - 1, False)
+                Next
+            Else
+                For I = 1 To lstTextFiles.Items.Count
+                    If System.IO.File.GetCreationTime(lstTextFiles.Items(I - 1).ToString) < FileDate Then lstTextFiles.SetSelected(I - 1, False)
+                Next
+            End If
+        End If
+        UpdateSelTextFileList()
+    End Sub
+
 
 
 
@@ -6438,6 +7867,7 @@ Public Class Main
         Public ConnectionName As String
         Public Message As String
     End Class
+
 
 End Class
 

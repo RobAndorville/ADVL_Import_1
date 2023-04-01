@@ -75,7 +75,7 @@
         Dim Type As String 'ClearAll, SelectAll, AddMatches, RemoveMatches
         Dim ReadMode As String 'ReadAll, ReadLines, ReadChars
         Dim ReadNo As Integer 'The number of lines or characters to read from the files
-        Dim FileType As String 'txt, asc or used defined
+        Dim FileType As String 'txt, asc or user defined
         Dim RegEx As String 'The RegEx string used to match files.
     End Structure
 
@@ -241,8 +241,9 @@
                 ImportLoopXDoc = Nothing
             Else
                 'Load the ImportLoopXDoc:
+                If IsNothing(ImportLoopXDoc) Then ImportLoopXDoc = New System.Xml.XmlDocument 'Contains just the Import Loop part of an Import Sequence.
                 DataLocn.ReadXmlDocData(_importLoopName, ImportLoopXDoc)
-            End If
+                End If
         End Set
     End Property
 
@@ -685,6 +686,9 @@
         ClearValue
         ConvertDate
         ReplaceChars
+        FixedValue
+        ApplyFileNameRegEx
+        FileNameMatch
         AppendFixedValue
         AppendRegExVarValue
         AppendFileName
@@ -748,13 +752,45 @@
         End Set
     End Property
 
-    Dim mModifyValuesFixedValue As String = "" 'The value appended by the Append Fixed Value modification.
-    Property ModifyValuesFixedValue As String
+    Private _modifyValuesFixedVal As String 'The fixed value to assign to the RegEx variable
+    Property ModifyValuesFixedVal As String
         Get
-            Return mModifyValuesFixedValue
+            Return _modifyValuesFixedVal
         End Get
         Set(value As String)
-            mModifyValuesFixedValue = value
+            _modifyValuesFixedVal = value
+        End Set
+    End Property
+
+    Private _modifyValuesFileNameRegEx As String 'The Regular Expression used to extract the RegEx Varible value from the file name of the import file.
+    Property ModifyValuesFileNameRegEx As String
+        Get
+            Return _modifyValuesFileNameRegEx
+        End Get
+        Set(value As String)
+            _modifyValuesFileNameRegEx = value
+        End Set
+    End Property
+
+    Private _modifyValuesFileNameMatch As String 'The Match of the Regular Expression applied to the file name.
+    Property ModifyValuesFileNameMatch As String
+        Get
+            Return _modifyValuesFileNameMatch
+        End Get
+        Set(value As String)
+            _modifyValuesFileNameMatch = value
+        End Set
+    End Property
+
+
+    'Dim mModifyValuesFixedValue As String = "" 'The value appended by the Append Fixed Value modification.
+    Dim _modifyValuesAppendFixedValue As String = "" 'The value appended by the Append Fixed Value modification.
+    Property ModifyValuesAppendFixedValue As String
+        Get
+            Return _modifyValuesAppendFixedValue
+        End Get
+        Set(value As String)
+            _modifyValuesAppendFixedValue = value
         End Set
     End Property
 
@@ -945,12 +981,16 @@
                                      <ModifyValuesOutputDateFormat><%= ModifyValuesOutputDateFormat %></ModifyValuesOutputDateFormat>
                                      <ModifyValuesCharsToReplace><%= ModifyValuesCharsToReplace %></ModifyValuesCharsToReplace>
                                      <ModifyValuesReplacementChars><%= ModifyValuesReplacementChars %></ModifyValuesReplacementChars>
-                                     <ModifyValuesFixedValue><%= ModifyValuesFixedValue %></ModifyValuesFixedValue>
+                                     <ModifyValuesFixedVal><%= ModifyValuesFixedVal %></ModifyValuesFixedVal>
+                                     <ModifyValuesFileNameRegEx><%= ModifyValuesFileNameRegEx %></ModifyValuesFileNameRegEx>
+                                     <ModifyValuesAppendFixedValue><%= ModifyValuesAppendFixedValue %></ModifyValuesAppendFixedValue>
                                  </ModifyValues>
                                  <!--IMPORT LOOP:-->
                                  <ImportLoopName><%= ImportLoopName %></ImportLoopName>
                                  <ImportLoopDescription><%= ImportLoopDescription %></ImportLoopDescription>
                              </Settings>
+
+        '<ModifyValuesFixedValue><%= ModifyValuesFixedValue %></ModifyValuesFixedValue>
 
         'importSettings.Save(ProjectPath & "\" & "ImportSettings.xml")
 
@@ -1121,8 +1161,18 @@
             ModifyValuesType = ModifyValuesTypes.ConvertDate
         Else
             Select Case importSettings.<Settings>.<ModifyValues>.<ModifyValuesType>.Value
+                Case "ClearValue"
+                    ModifyValuesType = ModifyValuesTypes.ClearValue
                 Case "ConvertDate"
                     ModifyValuesType = ModifyValuesTypes.ConvertDate
+                Case "ReplaceChars"
+                    ModifyValuesType = ModifyValuesTypes.ReplaceChars
+                Case "FixedValue"
+                    ModifyValuesType = ModifyValuesTypes.FixedValue
+                Case "ApplyFileNameRegEx"
+                    ModifyValuesType = ModifyValuesTypes.ApplyFileNameRegEx
+                Case "FileNameMatch"
+                    ModifyValuesType = ModifyValuesTypes.FileNameMatch
                 'Case "CurrentDate"
                 Case "AppendCurrentDate"
                     ModifyValuesType = ModifyValuesTypes.AppendCurrentDate
@@ -1148,12 +1198,11 @@
                     ModifyValuesType = ModifyValuesTypes.ReplaceChars
                 Case "AppendRegExVarValue"
                     ModifyValuesType = ModifyValuesTypes.AppendRegExVarValue
-                Case "ClearValue"
-                    ModifyValuesType = ModifyValuesTypes.ClearValue
                 Case Else
                     ModifyValuesType = ModifyValuesTypes.ConvertDate
             End Select
         End If
+
         'ModifyValuesType = importSettings.<Settings>.<ModifyValues>.<ModifyValuesType>.Value
         'If ModifyValuesType = Nothing Then ModifyValuesType = ""
         ModifyValuesInputDateFormat = importSettings.<Settings>.<ModifyValues>.<ModifyValuesInputDateFormat>.Value
@@ -1164,8 +1213,14 @@
         If ModifyValuesCharsToReplace = Nothing Then ModifyValuesCharsToReplace = ""
         ModifyValuesReplacementChars = importSettings.<Settings>.<ModifyValues>.<ModifyValuesReplacementChars>.Value
         If ModifyValuesReplacementChars = Nothing Then ModifyValuesReplacementChars = ""
-        ModifyValuesFixedValue = importSettings.<Settings>.<ModifyValues>.<ModifyValuesFixedValue>.Value
-        If ModifyValuesFixedValue = Nothing Then ModifyValuesFixedValue = ""
+
+        If importSettings.<Settings>.<ModifyValues>.<ModifyValuesFixedVal>.Value <> Nothing Then ModifyValuesFixedVal = importSettings.<Settings>.<ModifyValues>.<ModifyValuesFixedVal>.Value
+        If importSettings.<Settings>.<ModifyValues>.<ModifyValuesFileNameRegEx>.Value <> Nothing Then ModifyValuesFileNameRegEx = importSettings.<Settings>.<ModifyValues>.<ModifyValuesFileNameRegEx>.Value
+
+        'ModifyValuesFixedValue = importSettings.<Settings>.<ModifyValues>.<ModifyValuesFixedValue>.Value
+        ModifyValuesAppendFixedValue = importSettings.<Settings>.<ModifyValues>.<ModifyValuesAppendFixedValue>.Value
+        'If ModifyValuesFixedValue = Nothing Then ModifyValuesFixedValue = ""
+        If ModifyValuesAppendFixedValue = Nothing Then ModifyValuesAppendFixedValue = ""
 
         'Read Import Loop Name: ------------------------------------------------------------------------
         ImportLoopName = importSettings.<Settings>.<ImportLoopName>.Value
@@ -1205,7 +1260,13 @@
         ModifyValuesOutputDateFormat = ""
         ModifyValuesCharsToReplace = ""
         ModifyValuesReplacementChars = ""
-        ModifyValuesFixedValue = ""
+
+        ModifyValuesFixedVal = ""
+        ModifyValuesFileNameRegEx = ""
+        ModifyValuesFileNameMatch = ""
+
+        'ModifyValuesFixedValue = ""
+        ModifyValuesAppendFixedValue = ""
         ImportLoopName = ""
         ImportLoopDescription = ""
         ImportLoopXDoc = Nothing
@@ -1479,6 +1540,7 @@
                     SaveTextMatch(myMatch)
                 Else
                     RaiseEvent Message("No Match: " & RegEx(I).Name)
+                    'RaiseEvent Message("TEXT: " & TextStore & vbCrLf)
                 End If
             Catch ex As Exception
                 RaiseEvent ErrorMessage(ex.GetType.ToString & vbCrLf)
@@ -2045,9 +2107,18 @@
                             End If
                             'ElseIf ModifyValuesType = "Fixed_value" Then
                             'ElseIf ModifyValuesType = ModifyValuesTypes.FixedValue Then
+                        ElseIf ModifyValuesType = ModifyValuesTypes.FixedValue Then 'Fixed Value
+                            'InputString will be blank. (The RegEx variable will be defined in Locations but not matched.)
+                            OutputString = ModifyValuesFixedVal
+
+                        ElseIf ModifyValuesType = ModifyValuesTypes.FileNameMatch Then 'Fixed Value: from FileNameRegEx applied to the file name. Example: extract the stock code from a Yahoo Finance file of stock prices.
+                            'InputString will be blank. (The RegEx variable will be defined in Locations but not matched.)
+                            OutputString = ModifyValuesFileNameMatch
+
                         ElseIf ModifyValuesType = ModifyValuesTypes.AppendFixedValue Then
                             'OutputString = ModifyValuesFixedValue
-                            OutputString = InputString & ModifyValuesFixedValue
+                            'OutputString = InputString & ModifyValuesFixedValue
+                            OutputString = InputString & ModifyValuesAppendFixedValue
                             'ElseIf ModifyValuesType = "Text_file_name" Then
                             'ElseIf ModifyValuesType = ModifyValuesTypes.FileName Then
                         ElseIf ModifyValuesType = ModifyValuesTypes.AppendRegExVarValue Then
@@ -2101,6 +2172,7 @@
         Next
     End Sub
 
+    'CODE NO LONGER USED??????:
     Public Sub TestModifyValuesApply(ByVal InputString As String, ByRef OutputString As String)
         'Test the modification on the specified InputString. The result is put in OutputString.
         'This method uses these properties:
@@ -2128,8 +2200,12 @@
             'Debug.Print("ModifyValuesCharsToReplace = " & ModifyValuesCharsToReplace & vbCrLf)
             'Debug.Print("ModifyValuesReplacementChars = " & ModifyValuesReplacementChars & vbCrLf)
             'Debug.Print("OutputString = " & OutputString & vbCrLf)
+
+
+
         ElseIf ModifyValuesType = "Fixed_value" Then
-            OutputString = ModifyValuesFixedValue
+            'OutputString = ModifyValuesFixedValue
+            OutputString = ModifyValuesAppendFixedValue
         ElseIf ModifyValuesType = "Text_file_name" Then
             If CurrentFilePath = "" Then
                 OutputString = ""
@@ -3687,7 +3763,7 @@
 
                 Try
                     InsertCount = InsertCount + 1
-                    'THE FOLLOWING CODE CAUSES AND ERROR:
+                    'THE FOLLOWING CODE CAUSES AN ERROR:
                     'If (InsertCount Mod 100) = 0 Then
                     '    'Debug.Print("Insert Count = " & InsertCount)
                     '    'NOTE: Convert this code to a  message event!!! ---------------------------------------------------------------------------------
@@ -4069,6 +4145,10 @@
                         Application.DoEvents() 'The will check if a CancelImport button has been pressed.
                         System.Threading.Thread.Sleep(100) 'This allows time for the CancelImport property to be updated.
                     End If
+                ElseIf Info = "ReadAll" Then
+                    ReadAllText()
+                Else
+                    RaiseEvent ErrorMessage("Unknown Read Text Command: " & Info & vbCrLf)
                 End If
 
             'Match Text RegEx List: --------------------------------------------------------
@@ -4107,8 +4187,19 @@
                 ModifyValuesCharsToReplace = Info
             Case "ModifyValues:ReplacementCharacters"
                 ModifyValuesReplacementChars = Info
-            Case "ModifyValues:FixedValue"
-                mModifyValuesFixedValue = Info
+
+            Case "ModifyValues:FixedVal"
+                ModifyValuesFixedVal = Info
+            Case "ModifyValues:FileNameRegEx"
+                ModifyValuesFileNameRegEx = Info
+                'NOTE: ModifyValuesFileNameMatch is set when Apply_file_name_regex is executed
+            'Case "ModifyValues:FileNameMatch"
+            '    ModifyValuesFileNameMatch = Info
+
+                'Case "ModifyValues:FixedValue"
+            Case "ModifyValues:AppendFixedValue"
+                'mModifyValuesFixedValue = Info
+                _modifyValuesAppendFixedValue = Info
             'Case "ModifyValues:RegExVariableToAppend"
             Case "ModifyValues:RegExVariableValueFrom"
                 '_modifyValuesRegExVarToAppend = Info
@@ -4126,6 +4217,26 @@
                     ModifyValuesType = ModifyValuesTypes.ReplaceChars
                     ModifyValuesApply()
                     'ElseIf Info = "Fixed_value" Then
+
+                ElseIf Info = "Fixed_val" Then
+                    ModifyValuesType = ModifyValuesTypes.FixedValue
+                    ModifyValuesApply()
+
+                ElseIf Info = "Apply_file_name_regex" Then
+                    'Apply the File Name RegEx
+                    'Dim RegExPattern As String = ModifyValuesFileNameRegEx
+                    Dim myRegEx As New System.Text.RegularExpressions.Regex(ModifyValuesFileNameRegEx)
+                    Dim myMatch As System.Text.RegularExpressions.Match = myRegEx.Match(System.IO.Path.GetFileName(CurrentFilePath))
+                    If myMatch.Success Then
+                        ModifyValuesFileNameMatch = myMatch.Groups("FileNameMatch").ToString
+                    Else
+                        RaiseEvent ErrorMessage("File name RegEx: No match on file name: " & System.IO.Path.GetFileName(CurrentFilePath) & vbCrLf)
+                    End If
+
+                ElseIf Info = "File_name_match" Then
+                    ModifyValuesType = ModifyValuesTypes.FileNameMatch
+                    ModifyValuesApply()
+
                 ElseIf Info = "Append_fixed_value" Then
                     'ModifyValuesType = "Fixed_value"
                     'ModifyValuesType = ModifyValuesTypes.FixedValue
@@ -4255,6 +4366,10 @@
                     '    End If
                 ElseIf Info = "OpenFirstFile" Then
                     SelectFirstFile()
+                ElseIf Info = "ReadAll" Then
+                    ReadAllText()
+                Else
+                    RaiseEvent ErrorMessage("Unknown Read Text Command: " & Info & vbCrLf)
                 End If
 
             'Processing Commands: ----------------------------------------------------
@@ -4287,10 +4402,14 @@
                 ModifyValuesCharsToReplace = Info
             Case "ModifyValues:ReplacementCharacters"
                 ModifyValuesReplacementChars = Info
-            Case "ModifyValues:FixedValue"
-                mModifyValuesFixedValue = Info
+                'Case "ModifyValues:FixedValue"
+            Case "ModifyValues:AppendFixedValue"
+                'mModifyValuesFixedValue = Info
+                _modifyValuesAppendFixedValue = Info
             Case "ModifyValues:RegExVariableValueFrom"
                 _modifyValuesRegExVarValFrom = Info
+            Case "ModifyValues:FileNameRegEx"
+                ModifyValuesFileNameRegEx = Info
             Case "ModifyValues:ModifyType"
                 If Info = "Convert_date" Then
                     ModifyValuesType = ModifyValuesTypes.ConvertDate
@@ -4301,6 +4420,24 @@
                 ElseIf Info = "Replace_characters" Then
                     ModifyValuesType = ModifyValuesTypes.ReplaceChars
                     ModifyValuesApply()
+
+                ElseIf Info = "Fixed_val" Then
+                    ModifyValuesType = ModifyValuesTypes.FixedValue
+
+                ElseIf Info = "Apply_file_name_regex" Then
+                    'Apply the File Name RegEx
+                    Dim myRegEx As New System.Text.RegularExpressions.Regex(ModifyValuesFileNameRegEx)
+                    Dim myMatch As System.Text.RegularExpressions.Match = myRegEx.Match(System.IO.Path.GetFileName(CurrentFilePath))
+                    If myMatch.Success Then
+                        ModifyValuesFileNameMatch = myMatch.Groups("FileNameMatch").ToString
+                    Else
+                        RaiseEvent ErrorMessage("File name RegEx: No match on file name: " & System.IO.Path.GetFileName(CurrentFilePath) & vbCrLf)
+                    End If
+
+                ElseIf Info = "File_name_match" Then
+                    ModifyValuesType = ModifyValuesTypes.FileNameMatch
+                    ModifyValuesApply()
+
                 ElseIf Info = "Append_fixed_value" Then
                     ModifyValuesType = ModifyValuesTypes.AppendFixedValue
                     ModifyValuesApply()

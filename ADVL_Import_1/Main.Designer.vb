@@ -65,7 +65,6 @@ Partial Class Main
         Me.btnFormat = New System.Windows.Forms.Button()
         Me.btnSaveImportSequence = New System.Windows.Forms.Button()
         Me.btnNewImportSequence = New System.Windows.Forms.Button()
-        Me.XmlHtmDisplay1 = New ADVL_Utilities_Library_1.XmlHtmDisplay(Me.components)
         Me.btnCancelImport = New System.Windows.Forms.Button()
         Me.btnGetImportSettings = New System.Windows.Forms.Button()
         Me.btnShowImportSettings = New System.Windows.Forms.Button()
@@ -76,7 +75,27 @@ Partial Class Main
         Me.Label27 = New System.Windows.Forms.Label()
         Me.txtDescription = New System.Windows.Forms.TextBox()
         Me.txtName = New System.Windows.Forms.TextBox()
+        Me.XmlHtmDisplay1 = New ADVL_Utilities_Library_1.XmlHtmDisplay(Me.components)
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.btnDeselectDateMatch = New System.Windows.Forms.Button()
+        Me.btnSelectDateMatch = New System.Windows.Forms.Button()
+        Me.rbOlder = New System.Windows.Forms.RadioButton()
+        Me.rbNewer = New System.Windows.Forms.RadioButton()
+        Me.chkSame = New System.Windows.Forms.CheckBox()
+        Me.txtFileDate = New System.Windows.Forms.TextBox()
+        Me.btnSelEndsWith = New System.Windows.Forms.Button()
+        Me.txtEndsWith = New System.Windows.Forms.TextBox()
+        Me.Label51 = New System.Windows.Forms.Label()
+        Me.btnSelectNoInputFiles = New System.Windows.Forms.Button()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Label50 = New System.Windows.Forms.Label()
+        Me.txtFileSize = New System.Windows.Forms.TextBox()
+        Me.Label49 = New System.Windows.Forms.Label()
+        Me.btnDeSelectMatch = New System.Windows.Forms.Button()
+        Me.btnSelectMatch = New System.Windows.Forms.Button()
+        Me.Label48 = New System.Windows.Forms.Label()
+        Me.txtContentRegEx = New System.Windows.Forms.TextBox()
         Me.btnCancelImport2 = New System.Windows.Forms.Button()
         Me.btnApplyAndRun = New System.Windows.Forms.Button()
         Me.btnApplyInputFileSettings = New System.Windows.Forms.Button()
@@ -198,6 +217,8 @@ Partial Class Main
         Me.btnSaveLocationList = New System.Windows.Forms.Button()
         Me.btnOpenLocationList = New System.Windows.Forms.Button()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.btnFixXmlText = New System.Windows.Forms.Button()
+        Me.txtXmlText = New System.Windows.Forms.TextBox()
         Me.txtModType = New System.Windows.Forms.TextBox()
         Me.Label39 = New System.Windows.Forms.Label()
         Me.btnAddModifyToSeq = New System.Windows.Forms.Button()
@@ -211,8 +232,20 @@ Partial Class Main
         Me.Label36 = New System.Windows.Forms.Label()
         Me.txtTestInputString = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.rbFileNameMatch = New System.Windows.Forms.RadioButton()
+        Me.Label47 = New System.Windows.Forms.Label()
+        Me.txtFileName = New System.Windows.Forms.TextBox()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.txtFileNameMatch = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.btnTestFileNameRegEx = New System.Windows.Forms.Button()
+        Me.txtFileNameRegEx = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.rbApplyFileNameRegEx = New System.Windows.Forms.RadioButton()
+        Me.txtFixedVal = New System.Windows.Forms.TextBox()
+        Me.rbFixedValue = New System.Windows.Forms.RadioButton()
         Me.Label37 = New System.Windows.Forms.Label()
-        Me.txtFixedValue = New System.Windows.Forms.TextBox()
+        Me.txtAppendFixedValue = New System.Windows.Forms.TextBox()
         Me.rbAppendFixedValue = New System.Windows.Forms.RadioButton()
         Me.rbAppendCurrentDate = New System.Windows.Forms.RadioButton()
         Me.txtAppendRegExVar = New System.Windows.Forms.TextBox()
@@ -249,17 +282,21 @@ Partial Class Main
         Me.btnCancelImport3 = New System.Windows.Forms.Button()
         Me.btnRunImportLoop = New System.Windows.Forms.Button()
         Me.btnClearImportLoop = New System.Windows.Forms.Button()
-        Me.XmlHtmDisplay2 = New ADVL_Utilities_Library_1.XmlHtmDisplay(Me.components)
         Me.btnOpenImportLoop = New System.Windows.Forms.Button()
         Me.Label40 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.txtImportLoopDescription = New System.Windows.Forms.TextBox()
         Me.txtImportLoopName = New System.Windows.Forms.TextBox()
+        Me.XmlHtmDisplay2 = New ADVL_Utilities_Library_1.XmlHtmDisplay(Me.components)
         Me.TabPage10 = New System.Windows.Forms.TabPage()
         Me.btnDbDest = New System.Windows.Forms.Button()
         Me.btnGridProp = New System.Windows.Forms.Button()
         Me.rtbDebugging = New System.Windows.Forms.RichTextBox()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.btnOpenParentDir = New System.Windows.Forms.Button()
+        Me.btnOpenArchive = New System.Windows.Forms.Button()
+        Me.btnCreateArchive = New System.Windows.Forms.Button()
+        Me.btnShowProjectInfo = New System.Windows.Forms.Button()
         Me.chkConnect = New System.Windows.Forms.CheckBox()
         Me.btnOpenProject = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -267,8 +304,6 @@ Partial Class Main
         Me.Label38 = New System.Windows.Forms.Label()
         Me.txtProNetName = New System.Windows.Forms.TextBox()
         Me.btnOpenAppDir = New System.Windows.Forms.Button()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.btnOpenSystem = New System.Windows.Forms.Button()
         Me.Label80 = New System.Windows.Forms.Label()
         Me.txtSystemLocationType = New System.Windows.Forms.TextBox()
@@ -316,6 +351,8 @@ Partial Class Main
         Me.TabPage11.SuspendLayout()
         Me.TabPage8.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.TabPage3.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -346,7 +383,7 @@ Partial Class Main
         'btnExit
         '
         Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnExit.Location = New System.Drawing.Point(795, 12)
+        Me.btnExit.Location = New System.Drawing.Point(786, 12)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(64, 22)
         Me.btnExit.TabIndex = 8
@@ -373,7 +410,7 @@ Partial Class Main
         Me.TabControl1.Location = New System.Drawing.Point(12, 40)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(847, 540)
+        Me.TabControl1.Size = New System.Drawing.Size(838, 851)
         Me.TabControl1.TabIndex = 49
         '
         'TabPage11
@@ -381,7 +418,7 @@ Partial Class Main
         Me.TabPage11.Controls.Add(Me.WebBrowser1)
         Me.TabPage11.Location = New System.Drawing.Point(4, 22)
         Me.TabPage11.Name = "TabPage11"
-        Me.TabPage11.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage11.Size = New System.Drawing.Size(830, 825)
         Me.TabPage11.TabIndex = 10
         Me.TabPage11.Text = "Workflow"
         Me.TabPage11.UseVisualStyleBackColor = True
@@ -394,7 +431,7 @@ Partial Class Main
         Me.WebBrowser1.Location = New System.Drawing.Point(3, 3)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(833, 508)
+        Me.WebBrowser1.Size = New System.Drawing.Size(824, 723)
         Me.WebBrowser1.TabIndex = 69
         '
         'TabPage8
@@ -403,7 +440,6 @@ Partial Class Main
         Me.TabPage8.Controls.Add(Me.btnFormat)
         Me.TabPage8.Controls.Add(Me.btnSaveImportSequence)
         Me.TabPage8.Controls.Add(Me.btnNewImportSequence)
-        Me.TabPage8.Controls.Add(Me.XmlHtmDisplay1)
         Me.TabPage8.Controls.Add(Me.btnCancelImport)
         Me.TabPage8.Controls.Add(Me.btnGetImportSettings)
         Me.TabPage8.Controls.Add(Me.btnShowImportSettings)
@@ -414,9 +450,10 @@ Partial Class Main
         Me.TabPage8.Controls.Add(Me.Label27)
         Me.TabPage8.Controls.Add(Me.txtDescription)
         Me.TabPage8.Controls.Add(Me.txtName)
+        Me.TabPage8.Controls.Add(Me.XmlHtmDisplay1)
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage8.Size = New System.Drawing.Size(830, 825)
         Me.TabPage8.TabIndex = 7
         Me.TabPage8.Text = "Import Sequence"
         Me.TabPage8.UseVisualStyleBackColor = True
@@ -458,6 +495,99 @@ Partial Class Main
         Me.btnNewImportSequence.TabIndex = 279
         Me.btnNewImportSequence.Text = "New"
         Me.btnNewImportSequence.UseVisualStyleBackColor = True
+        '
+        'btnCancelImport
+        '
+        Me.btnCancelImport.Location = New System.Drawing.Point(330, 6)
+        Me.btnCancelImport.Name = "btnCancelImport"
+        Me.btnCancelImport.Size = New System.Drawing.Size(88, 22)
+        Me.btnCancelImport.TabIndex = 54
+        Me.btnCancelImport.Text = "Cancel Import"
+        Me.btnCancelImport.UseVisualStyleBackColor = True
+        '
+        'btnGetImportSettings
+        '
+        Me.btnGetImportSettings.Location = New System.Drawing.Point(550, 6)
+        Me.btnGetImportSettings.Name = "btnGetImportSettings"
+        Me.btnGetImportSettings.Size = New System.Drawing.Size(120, 22)
+        Me.btnGetImportSettings.TabIndex = 47
+        Me.btnGetImportSettings.Text = "Get Import Settings"
+        Me.ToolTip1.SetToolTip(Me.btnGetImportSettings, "Update the form settings with the Import settings")
+        Me.btnGetImportSettings.UseVisualStyleBackColor = True
+        '
+        'btnShowImportSettings
+        '
+        Me.btnShowImportSettings.Location = New System.Drawing.Point(424, 6)
+        Me.btnShowImportSettings.Name = "btnShowImportSettings"
+        Me.btnShowImportSettings.Size = New System.Drawing.Size(120, 22)
+        Me.btnShowImportSettings.TabIndex = 46
+        Me.btnShowImportSettings.Text = "Show Import Settings"
+        Me.ToolTip1.SetToolTip(Me.btnShowImportSettings, "Show the Import settings in the Message window")
+        Me.btnShowImportSettings.UseVisualStyleBackColor = True
+        '
+        'btnEdit
+        '
+        Me.btnEdit.Location = New System.Drawing.Point(168, 6)
+        Me.btnEdit.Name = "btnEdit"
+        Me.btnEdit.Size = New System.Drawing.Size(48, 22)
+        Me.btnEdit.TabIndex = 45
+        Me.btnEdit.Text = "Edit"
+        Me.btnEdit.UseVisualStyleBackColor = True
+        '
+        'btnRun
+        '
+        Me.btnRun.Location = New System.Drawing.Point(276, 6)
+        Me.btnRun.Name = "btnRun"
+        Me.btnRun.Size = New System.Drawing.Size(48, 22)
+        Me.btnRun.TabIndex = 44
+        Me.btnRun.Text = "Run"
+        Me.btnRun.UseVisualStyleBackColor = True
+        '
+        'btnOpenSequence
+        '
+        Me.btnOpenSequence.Location = New System.Drawing.Point(6, 6)
+        Me.btnOpenSequence.Name = "btnOpenSequence"
+        Me.btnOpenSequence.Size = New System.Drawing.Size(48, 22)
+        Me.btnOpenSequence.TabIndex = 16
+        Me.btnOpenSequence.Text = "Open"
+        Me.btnOpenSequence.UseVisualStyleBackColor = True
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(3, 63)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(63, 13)
+        Me.Label26.TabIndex = 15
+        Me.Label26.Text = "Description:"
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(3, 37)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(38, 13)
+        Me.Label27.TabIndex = 14
+        Me.Label27.Text = "Name:"
+        '
+        'txtDescription
+        '
+        Me.txtDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtDescription.Location = New System.Drawing.Point(72, 60)
+        Me.txtDescription.Multiline = True
+        Me.txtDescription.Name = "txtDescription"
+        Me.txtDescription.Size = New System.Drawing.Size(752, 51)
+        Me.txtDescription.TabIndex = 13
+        '
+        'txtName
+        '
+        Me.txtName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtName.Location = New System.Drawing.Point(72, 34)
+        Me.txtName.Name = "txtName"
+        Me.txtName.Size = New System.Drawing.Size(752, 20)
+        Me.txtName.TabIndex = 12
         '
         'XmlHtmDisplay1
         '
@@ -605,105 +735,18 @@ Partial Class Main
         TextSettings15.PointSize = 10.0!
         XmlHtmDisplaySettings1.XValue = TextSettings15
         Me.XmlHtmDisplay1.Settings = XmlHtmDisplaySettings1
-        Me.XmlHtmDisplay1.Size = New System.Drawing.Size(833, 394)
+        Me.XmlHtmDisplay1.Size = New System.Drawing.Size(824, 609)
         Me.XmlHtmDisplay1.TabIndex = 278
         Me.XmlHtmDisplay1.Text = ""
         '
-        'btnCancelImport
-        '
-        Me.btnCancelImport.Location = New System.Drawing.Point(330, 6)
-        Me.btnCancelImport.Name = "btnCancelImport"
-        Me.btnCancelImport.Size = New System.Drawing.Size(88, 22)
-        Me.btnCancelImport.TabIndex = 54
-        Me.btnCancelImport.Text = "Cancel Import"
-        Me.btnCancelImport.UseVisualStyleBackColor = True
-        '
-        'btnGetImportSettings
-        '
-        Me.btnGetImportSettings.Location = New System.Drawing.Point(550, 6)
-        Me.btnGetImportSettings.Name = "btnGetImportSettings"
-        Me.btnGetImportSettings.Size = New System.Drawing.Size(120, 22)
-        Me.btnGetImportSettings.TabIndex = 47
-        Me.btnGetImportSettings.Text = "Get Import Settings"
-        Me.ToolTip1.SetToolTip(Me.btnGetImportSettings, "Update the form settings with the Import settings")
-        Me.btnGetImportSettings.UseVisualStyleBackColor = True
-        '
-        'btnShowImportSettings
-        '
-        Me.btnShowImportSettings.Location = New System.Drawing.Point(424, 6)
-        Me.btnShowImportSettings.Name = "btnShowImportSettings"
-        Me.btnShowImportSettings.Size = New System.Drawing.Size(120, 22)
-        Me.btnShowImportSettings.TabIndex = 46
-        Me.btnShowImportSettings.Text = "Show Import Settings"
-        Me.ToolTip1.SetToolTip(Me.btnShowImportSettings, "Show the Import settings in the Message window")
-        Me.btnShowImportSettings.UseVisualStyleBackColor = True
-        '
-        'btnEdit
-        '
-        Me.btnEdit.Location = New System.Drawing.Point(168, 6)
-        Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(48, 22)
-        Me.btnEdit.TabIndex = 45
-        Me.btnEdit.Text = "Edit"
-        Me.btnEdit.UseVisualStyleBackColor = True
-        '
-        'btnRun
-        '
-        Me.btnRun.Location = New System.Drawing.Point(276, 6)
-        Me.btnRun.Name = "btnRun"
-        Me.btnRun.Size = New System.Drawing.Size(48, 22)
-        Me.btnRun.TabIndex = 44
-        Me.btnRun.Text = "Run"
-        Me.btnRun.UseVisualStyleBackColor = True
-        '
-        'btnOpenSequence
-        '
-        Me.btnOpenSequence.Location = New System.Drawing.Point(6, 6)
-        Me.btnOpenSequence.Name = "btnOpenSequence"
-        Me.btnOpenSequence.Size = New System.Drawing.Size(48, 22)
-        Me.btnOpenSequence.TabIndex = 16
-        Me.btnOpenSequence.Text = "Open"
-        Me.btnOpenSequence.UseVisualStyleBackColor = True
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(3, 63)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(63, 13)
-        Me.Label26.TabIndex = 15
-        Me.Label26.Text = "Description:"
-        '
-        'Label27
-        '
-        Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(3, 37)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(38, 13)
-        Me.Label27.TabIndex = 14
-        Me.Label27.Text = "Name:"
-        '
-        'txtDescription
-        '
-        Me.txtDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtDescription.Location = New System.Drawing.Point(72, 60)
-        Me.txtDescription.Multiline = True
-        Me.txtDescription.Name = "txtDescription"
-        Me.txtDescription.Size = New System.Drawing.Size(758, 51)
-        Me.txtDescription.TabIndex = 13
-        '
-        'txtName
-        '
-        Me.txtName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtName.Location = New System.Drawing.Point(72, 34)
-        Me.txtName.Name = "txtName"
-        Me.txtName.Size = New System.Drawing.Size(758, 20)
-        Me.txtName.TabIndex = 12
-        '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.GroupBox4)
+        Me.TabPage2.Controls.Add(Me.btnSelEndsWith)
+        Me.TabPage2.Controls.Add(Me.txtEndsWith)
+        Me.TabPage2.Controls.Add(Me.Label51)
+        Me.TabPage2.Controls.Add(Me.btnSelectNoInputFiles)
+        Me.TabPage2.Controls.Add(Me.GroupBox3)
         Me.TabPage2.Controls.Add(Me.btnCancelImport2)
         Me.TabPage2.Controls.Add(Me.btnApplyAndRun)
         Me.TabPage2.Controls.Add(Me.btnApplyInputFileSettings)
@@ -723,10 +766,199 @@ Partial Class Main
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage2.Size = New System.Drawing.Size(830, 825)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Input Files"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.btnDeselectDateMatch)
+        Me.GroupBox4.Controls.Add(Me.btnSelectDateMatch)
+        Me.GroupBox4.Controls.Add(Me.rbOlder)
+        Me.GroupBox4.Controls.Add(Me.rbNewer)
+        Me.GroupBox4.Controls.Add(Me.chkSame)
+        Me.GroupBox4.Controls.Add(Me.txtFileDate)
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 355)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(146, 152)
+        Me.GroupBox4.TabIndex = 62
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "File Date:"
+        '
+        'btnDeselectDateMatch
+        '
+        Me.btnDeselectDateMatch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDeselectDateMatch.Location = New System.Drawing.Point(6, 119)
+        Me.btnDeselectDateMatch.Name = "btnDeselectDateMatch"
+        Me.btnDeselectDateMatch.Size = New System.Drawing.Size(133, 22)
+        Me.btnDeselectDateMatch.TabIndex = 67
+        Me.btnDeselectDateMatch.Text = "DeSelect Matching Files"
+        Me.btnDeselectDateMatch.UseVisualStyleBackColor = True
+        '
+        'btnSelectDateMatch
+        '
+        Me.btnSelectDateMatch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSelectDateMatch.Location = New System.Drawing.Point(6, 91)
+        Me.btnSelectDateMatch.Name = "btnSelectDateMatch"
+        Me.btnSelectDateMatch.Size = New System.Drawing.Size(133, 22)
+        Me.btnSelectDateMatch.TabIndex = 66
+        Me.btnSelectDateMatch.Text = "Select Matching Files"
+        Me.btnSelectDateMatch.UseVisualStyleBackColor = True
+        '
+        'rbOlder
+        '
+        Me.rbOlder.AutoSize = True
+        Me.rbOlder.Location = New System.Drawing.Point(68, 45)
+        Me.rbOlder.Name = "rbOlder"
+        Me.rbOlder.Size = New System.Drawing.Size(50, 17)
+        Me.rbOlder.TabIndex = 65
+        Me.rbOlder.TabStop = True
+        Me.rbOlder.Text = "Older"
+        Me.rbOlder.UseVisualStyleBackColor = True
+        '
+        'rbNewer
+        '
+        Me.rbNewer.AutoSize = True
+        Me.rbNewer.Location = New System.Drawing.Point(6, 45)
+        Me.rbNewer.Name = "rbNewer"
+        Me.rbNewer.Size = New System.Drawing.Size(56, 17)
+        Me.rbNewer.TabIndex = 63
+        Me.rbNewer.TabStop = True
+        Me.rbNewer.Text = "Newer"
+        Me.rbNewer.UseVisualStyleBackColor = True
+        '
+        'chkSame
+        '
+        Me.chkSame.AutoSize = True
+        Me.chkSame.Location = New System.Drawing.Point(6, 68)
+        Me.chkSame.Name = "chkSame"
+        Me.chkSame.Size = New System.Drawing.Size(53, 17)
+        Me.chkSame.TabIndex = 64
+        Me.chkSame.Text = "Same"
+        Me.chkSame.UseVisualStyleBackColor = True
+        '
+        'txtFileDate
+        '
+        Me.txtFileDate.Location = New System.Drawing.Point(6, 19)
+        Me.txtFileDate.Name = "txtFileDate"
+        Me.txtFileDate.Size = New System.Drawing.Size(133, 20)
+        Me.txtFileDate.TabIndex = 61
+        '
+        'btnSelEndsWith
+        '
+        Me.btnSelEndsWith.Location = New System.Drawing.Point(9, 327)
+        Me.btnSelEndsWith.Name = "btnSelEndsWith"
+        Me.btnSelEndsWith.Size = New System.Drawing.Size(101, 22)
+        Me.btnSelEndsWith.TabIndex = 60
+        Me.btnSelEndsWith.Text = "Select All"
+        Me.btnSelEndsWith.UseVisualStyleBackColor = True
+        '
+        'txtEndsWith
+        '
+        Me.txtEndsWith.Location = New System.Drawing.Point(6, 301)
+        Me.txtEndsWith.Name = "txtEndsWith"
+        Me.txtEndsWith.Size = New System.Drawing.Size(146, 20)
+        Me.txtEndsWith.TabIndex = 59
+        '
+        'Label51
+        '
+        Me.Label51.AutoSize = True
+        Me.Label51.Location = New System.Drawing.Point(6, 285)
+        Me.Label51.Name = "Label51"
+        Me.Label51.Size = New System.Drawing.Size(102, 13)
+        Me.Label51.TabIndex = 58
+        Me.Label51.Text = "FileName ends with:"
+        '
+        'btnSelectNoInputFiles
+        '
+        Me.btnSelectNoInputFiles.Location = New System.Drawing.Point(9, 233)
+        Me.btnSelectNoInputFiles.Name = "btnSelectNoInputFiles"
+        Me.btnSelectNoInputFiles.Size = New System.Drawing.Size(101, 22)
+        Me.btnSelectNoInputFiles.TabIndex = 57
+        Me.btnSelectNoInputFiles.Text = "Select None"
+        Me.btnSelectNoInputFiles.UseVisualStyleBackColor = True
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox3.Controls.Add(Me.Label50)
+        Me.GroupBox3.Controls.Add(Me.txtFileSize)
+        Me.GroupBox3.Controls.Add(Me.Label49)
+        Me.GroupBox3.Controls.Add(Me.btnDeSelectMatch)
+        Me.GroupBox3.Controls.Add(Me.btnSelectMatch)
+        Me.GroupBox3.Controls.Add(Me.Label48)
+        Me.GroupBox3.Controls.Add(Me.txtContentRegEx)
+        Me.GroupBox3.Location = New System.Drawing.Point(9, 645)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(812, 118)
+        Me.GroupBox3.TabIndex = 56
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "File Content Selection:"
+        '
+        'Label50
+        '
+        Me.Label50.AutoSize = True
+        Me.Label50.Location = New System.Drawing.Point(538, 48)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(21, 13)
+        Me.Label50.TabIndex = 21
+        Me.Label50.Text = "KB"
+        '
+        'txtFileSize
+        '
+        Me.txtFileSize.Location = New System.Drawing.Point(356, 45)
+        Me.txtFileSize.Name = "txtFileSize"
+        Me.txtFileSize.Size = New System.Drawing.Size(176, 20)
+        Me.txtFileSize.TabIndex = 20
+        '
+        'Label49
+        '
+        Me.Label49.AutoSize = True
+        Me.Label49.Location = New System.Drawing.Point(283, 50)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(67, 13)
+        Me.Label49.TabIndex = 19
+        Me.Label49.Text = "Ignore files >"
+        '
+        'btnDeSelectMatch
+        '
+        Me.btnDeSelectMatch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnDeSelectMatch.Location = New System.Drawing.Point(142, 45)
+        Me.btnDeSelectMatch.Name = "btnDeSelectMatch"
+        Me.btnDeSelectMatch.Size = New System.Drawing.Size(135, 22)
+        Me.btnDeSelectMatch.TabIndex = 18
+        Me.btnDeSelectMatch.Text = "DeSelect Matching Files"
+        Me.btnDeSelectMatch.UseVisualStyleBackColor = True
+        '
+        'btnSelectMatch
+        '
+        Me.btnSelectMatch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSelectMatch.Location = New System.Drawing.Point(9, 45)
+        Me.btnSelectMatch.Name = "btnSelectMatch"
+        Me.btnSelectMatch.Size = New System.Drawing.Size(127, 22)
+        Me.btnSelectMatch.TabIndex = 17
+        Me.btnSelectMatch.Text = "Select Matching Files"
+        Me.btnSelectMatch.UseVisualStyleBackColor = True
+        '
+        'Label48
+        '
+        Me.Label48.AutoSize = True
+        Me.Label48.Location = New System.Drawing.Point(6, 22)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(82, 13)
+        Me.Label48.TabIndex = 9
+        Me.Label48.Text = "Content RegEx:"
+        '
+        'txtContentRegEx
+        '
+        Me.txtContentRegEx.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtContentRegEx.Location = New System.Drawing.Point(94, 19)
+        Me.txtContentRegEx.Name = "txtContentRegEx"
+        Me.txtContentRegEx.Size = New System.Drawing.Size(712, 20)
+        Me.txtContentRegEx.TabIndex = 0
         '
         'btnCancelImport2
         '
@@ -779,7 +1011,7 @@ Partial Class Main
         'btnApplySelFile
         '
         Me.btnApplySelFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnApplySelFile.Location = New System.Drawing.Point(9, 404)
+        Me.btnApplySelFile.Location = New System.Drawing.Point(6, 797)
         Me.btnApplySelFile.Name = "btnApplySelFile"
         Me.btnApplySelFile.Size = New System.Drawing.Size(101, 22)
         Me.btnApplySelFile.TabIndex = 17
@@ -789,7 +1021,7 @@ Partial Class Main
         'btnSelect
         '
         Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSelect.Location = New System.Drawing.Point(9, 376)
+        Me.btnSelect.Location = New System.Drawing.Point(6, 769)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.Size = New System.Drawing.Size(101, 22)
         Me.btnSelect.TabIndex = 16
@@ -800,10 +1032,10 @@ Partial Class Main
         '
         Me.txtSelectionFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSelectionFile.Location = New System.Drawing.Point(122, 376)
+        Me.txtSelectionFile.Location = New System.Drawing.Point(119, 769)
         Me.txtSelectionFile.Multiline = True
         Me.txtSelectionFile.Name = "txtSelectionFile"
-        Me.txtSelectionFile.Size = New System.Drawing.Size(711, 48)
+        Me.txtSelectionFile.Size = New System.Drawing.Size(702, 48)
         Me.txtSelectionFile.TabIndex = 15
         '
         'btnShowFile
@@ -852,10 +1084,10 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lstTextFiles.FormattingEnabled = True
-        Me.lstTextFiles.Location = New System.Drawing.Point(122, 115)
+        Me.lstTextFiles.Location = New System.Drawing.Point(158, 115)
         Me.lstTextFiles.Name = "lstTextFiles"
         Me.lstTextFiles.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstTextFiles.Size = New System.Drawing.Size(711, 238)
+        Me.lstTextFiles.Size = New System.Drawing.Size(666, 511)
         Me.lstTextFiles.TabIndex = 10
         '
         'btnTextFileDir
@@ -880,10 +1112,10 @@ Partial Class Main
         '
         Me.txtInputFileDir.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtInputFileDir.Location = New System.Drawing.Point(122, 47)
+        Me.txtInputFileDir.Location = New System.Drawing.Point(105, 47)
         Me.txtInputFileDir.Multiline = True
         Me.txtInputFileDir.Name = "txtInputFileDir"
-        Me.txtInputFileDir.Size = New System.Drawing.Size(711, 62)
+        Me.txtInputFileDir.Size = New System.Drawing.Size(719, 62)
         Me.txtInputFileDir.TabIndex = 7
         '
         'TabPage3
@@ -893,7 +1125,7 @@ Partial Class Main
         Me.TabPage3.Controls.Add(Me.SplitContainer1)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage3.Size = New System.Drawing.Size(830, 825)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Output Files"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -941,8 +1173,8 @@ Partial Class Main
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label15)
         Me.SplitContainer1.Panel2.Controls.Add(Me.lstFields)
-        Me.SplitContainer1.Size = New System.Drawing.Size(856, 484)
-        Me.SplitContainer1.SplitterDistance = 225
+        Me.SplitContainer1.Size = New System.Drawing.Size(824, 697)
+        Me.SplitContainer1.SplitterDistance = 322
         Me.SplitContainer1.TabIndex = 11
         '
         'cmbDatabaseType
@@ -952,7 +1184,7 @@ Partial Class Main
         Me.cmbDatabaseType.FormattingEnabled = True
         Me.cmbDatabaseType.Location = New System.Drawing.Point(69, 34)
         Me.cmbDatabaseType.Name = "cmbDatabaseType"
-        Me.cmbDatabaseType.Size = New System.Drawing.Size(758, 21)
+        Me.cmbDatabaseType.Size = New System.Drawing.Size(749, 21)
         Me.cmbDatabaseType.TabIndex = 13
         '
         'Label12
@@ -985,7 +1217,7 @@ Partial Class Main
         'btnDatabase
         '
         Me.btnDatabase.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnDatabase.Location = New System.Drawing.Point(763, 6)
+        Me.btnDatabase.Location = New System.Drawing.Point(754, 6)
         Me.btnDatabase.Name = "btnDatabase"
         Me.btnDatabase.Size = New System.Drawing.Size(64, 22)
         Me.btnDatabase.TabIndex = 9
@@ -998,7 +1230,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDatabasePath.Location = New System.Drawing.Point(69, 8)
         Me.txtDatabasePath.Name = "txtDatabasePath"
-        Me.txtDatabasePath.Size = New System.Drawing.Size(688, 20)
+        Me.txtDatabasePath.Size = New System.Drawing.Size(679, 20)
         Me.txtDatabasePath.TabIndex = 8
         '
         'lstTables
@@ -1009,7 +1241,7 @@ Partial Class Main
         Me.lstTables.FormattingEnabled = True
         Me.lstTables.Location = New System.Drawing.Point(69, 64)
         Me.lstTables.Name = "lstTables"
-        Me.lstTables.Size = New System.Drawing.Size(758, 147)
+        Me.lstTables.Size = New System.Drawing.Size(749, 212)
         Me.lstTables.TabIndex = 7
         '
         'Label15
@@ -1029,7 +1261,7 @@ Partial Class Main
         Me.lstFields.FormattingEnabled = True
         Me.lstFields.Location = New System.Drawing.Point(69, 14)
         Me.lstFields.Name = "lstFields"
-        Me.lstFields.Size = New System.Drawing.Size(758, 225)
+        Me.lstFields.Size = New System.Drawing.Size(749, 329)
         Me.lstFields.TabIndex = 9
         '
         'TabPage4
@@ -1053,7 +1285,7 @@ Partial Class Main
         Me.TabPage4.Controls.Add(Me.btnFirstFile)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage4.Size = New System.Drawing.Size(830, 825)
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Read"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -1075,7 +1307,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.rtbReadText.Location = New System.Drawing.Point(3, 106)
         Me.rtbReadText.Name = "rtbReadText"
-        Me.rtbReadText.Size = New System.Drawing.Size(833, 405)
+        Me.rtbReadText.Size = New System.Drawing.Size(824, 620)
         Me.rtbReadText.TabIndex = 51
         Me.rtbReadText.Text = ""
         '
@@ -1130,7 +1362,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtString.Location = New System.Drawing.Point(403, 70)
         Me.txtString.Name = "txtString"
-        Me.txtString.Size = New System.Drawing.Size(427, 20)
+        Me.txtString.Size = New System.Drawing.Size(421, 20)
         Me.txtString.TabIndex = 49
         '
         'Label16
@@ -1302,7 +1534,7 @@ Partial Class Main
         Me.TabPage5.Controls.Add(Me.btnOpen)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage5.Size = New System.Drawing.Size(830, 825)
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Match Text"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -1320,7 +1552,7 @@ Partial Class Main
         'btnRunRegEx
         '
         Me.btnRunRegEx.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRunRegEx.Location = New System.Drawing.Point(3, 431)
+        Me.btnRunRegEx.Location = New System.Drawing.Point(4, 571)
         Me.btnRunRegEx.Name = "btnRunRegEx"
         Me.btnRunRegEx.Size = New System.Drawing.Size(80, 22)
         Me.btnRunRegEx.TabIndex = 95
@@ -1350,7 +1582,7 @@ Partial Class Main
         '
         Me.Label18.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(3, 377)
+        Me.Label18.Location = New System.Drawing.Point(4, 517)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(42, 13)
         Me.Label18.TabIndex = 92
@@ -1360,7 +1592,7 @@ Partial Class Main
         '
         Me.Label19.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(3, 492)
+        Me.Label19.Location = New System.Drawing.Point(4, 632)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(190, 13)
         Me.Label19.TabIndex = 91
@@ -1370,7 +1602,7 @@ Partial Class Main
         '
         Me.Label20.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(3, 469)
+        Me.Label20.Location = New System.Drawing.Point(4, 609)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(172, 13)
         Me.Label20.TabIndex = 90
@@ -1380,7 +1612,7 @@ Partial Class Main
         '
         Me.chkMatchExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkMatchExit.AutoSize = True
-        Me.chkMatchExit.Location = New System.Drawing.Point(199, 468)
+        Me.chkMatchExit.Location = New System.Drawing.Point(200, 608)
         Me.chkMatchExit.Name = "chkMatchExit"
         Me.chkMatchExit.Size = New System.Drawing.Size(58, 17)
         Me.chkMatchExit.TabIndex = 89
@@ -1391,7 +1623,7 @@ Partial Class Main
         '
         Me.chkNoMatchExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkNoMatchExit.AutoSize = True
-        Me.chkNoMatchExit.Location = New System.Drawing.Point(199, 491)
+        Me.chkNoMatchExit.Location = New System.Drawing.Point(200, 631)
         Me.chkNoMatchExit.Name = "chkNoMatchExit"
         Me.chkNoMatchExit.Size = New System.Drawing.Size(58, 17)
         Me.chkNoMatchExit.TabIndex = 88
@@ -1402,7 +1634,7 @@ Partial Class Main
         '
         Me.chkMatchStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkMatchStatus.AutoSize = True
-        Me.chkMatchStatus.Location = New System.Drawing.Point(263, 468)
+        Me.chkMatchStatus.Location = New System.Drawing.Point(264, 608)
         Me.chkMatchStatus.Name = "chkMatchStatus"
         Me.chkMatchStatus.Size = New System.Drawing.Size(82, 17)
         Me.chkMatchStatus.TabIndex = 87
@@ -1413,7 +1645,7 @@ Partial Class Main
         '
         Me.chkNoMatchStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkNoMatchStatus.AutoSize = True
-        Me.chkNoMatchStatus.Location = New System.Drawing.Point(263, 491)
+        Me.chkNoMatchStatus.Location = New System.Drawing.Point(264, 631)
         Me.chkNoMatchStatus.Name = "chkNoMatchStatus"
         Me.chkNoMatchStatus.Size = New System.Drawing.Size(82, 17)
         Me.chkNoMatchStatus.TabIndex = 86
@@ -1424,35 +1656,35 @@ Partial Class Main
         '
         Me.txtNoMatchStatus.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtNoMatchStatus.Location = New System.Drawing.Point(351, 489)
+        Me.txtNoMatchStatus.Location = New System.Drawing.Point(352, 629)
         Me.txtNoMatchStatus.Name = "txtNoMatchStatus"
-        Me.txtNoMatchStatus.Size = New System.Drawing.Size(479, 20)
+        Me.txtNoMatchStatus.Size = New System.Drawing.Size(473, 20)
         Me.txtNoMatchStatus.TabIndex = 85
         '
         'txtMatchStatus
         '
         Me.txtMatchStatus.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtMatchStatus.Location = New System.Drawing.Point(351, 463)
+        Me.txtMatchStatus.Location = New System.Drawing.Point(352, 603)
         Me.txtMatchStatus.Name = "txtMatchStatus"
-        Me.txtMatchStatus.Size = New System.Drawing.Size(479, 20)
+        Me.txtMatchStatus.Size = New System.Drawing.Size(473, 20)
         Me.txtMatchStatus.TabIndex = 84
         '
         'txtRegEx
         '
         Me.txtRegEx.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtRegEx.Location = New System.Drawing.Point(89, 374)
+        Me.txtRegEx.Location = New System.Drawing.Point(90, 514)
         Me.txtRegEx.Multiline = True
         Me.txtRegEx.Name = "txtRegEx"
-        Me.txtRegEx.Size = New System.Drawing.Size(741, 79)
+        Me.txtRegEx.Size = New System.Drawing.Size(735, 79)
         Me.txtRegEx.TabIndex = 83
         '
         'Label21
         '
         Me.Label21.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(3, 323)
+        Me.Label21.Location = New System.Drawing.Point(4, 463)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(63, 13)
         Me.Label21.TabIndex = 82
@@ -1462,17 +1694,17 @@ Partial Class Main
         '
         Me.txtRegExDescr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtRegExDescr.Location = New System.Drawing.Point(89, 320)
+        Me.txtRegExDescr.Location = New System.Drawing.Point(90, 460)
         Me.txtRegExDescr.Multiline = True
         Me.txtRegExDescr.Name = "txtRegExDescr"
-        Me.txtRegExDescr.Size = New System.Drawing.Size(741, 48)
+        Me.txtRegExDescr.Size = New System.Drawing.Size(735, 48)
         Me.txtRegExDescr.TabIndex = 81
         '
         'Label22
         '
         Me.Label22.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(3, 297)
+        Me.Label22.Location = New System.Drawing.Point(4, 437)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(38, 13)
         Me.Label22.TabIndex = 80
@@ -1482,15 +1714,15 @@ Partial Class Main
         '
         Me.txtRegExName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtRegExName.Location = New System.Drawing.Point(89, 294)
+        Me.txtRegExName.Location = New System.Drawing.Point(90, 434)
         Me.txtRegExName.Name = "txtRegExName"
-        Me.txtRegExName.Size = New System.Drawing.Size(741, 20)
+        Me.txtRegExName.Size = New System.Drawing.Size(735, 20)
         Me.txtRegExName.TabIndex = 79
         '
         'btnCancel
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCancel.Location = New System.Drawing.Point(608, 266)
+        Me.btnCancel.Location = New System.Drawing.Point(609, 406)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(64, 22)
         Me.btnCancel.TabIndex = 78
@@ -1500,7 +1732,7 @@ Partial Class Main
         'btnUpdate
         '
         Me.btnUpdate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnUpdate.Location = New System.Drawing.Point(538, 266)
+        Me.btnUpdate.Location = New System.Drawing.Point(539, 406)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(64, 22)
         Me.btnUpdate.TabIndex = 77
@@ -1510,7 +1742,7 @@ Partial Class Main
         'btnDel
         '
         Me.btnDel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDel.Location = New System.Drawing.Point(468, 266)
+        Me.btnDel.Location = New System.Drawing.Point(469, 406)
         Me.btnDel.Name = "btnDel"
         Me.btnDel.Size = New System.Drawing.Size(64, 22)
         Me.btnDel.TabIndex = 76
@@ -1520,7 +1752,7 @@ Partial Class Main
         'btnAdd
         '
         Me.btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnAdd.Location = New System.Drawing.Point(398, 266)
+        Me.btnAdd.Location = New System.Drawing.Point(399, 406)
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(64, 22)
         Me.btnAdd.TabIndex = 75
@@ -1530,7 +1762,7 @@ Partial Class Main
         'btnNext
         '
         Me.btnNext.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNext.Location = New System.Drawing.Point(318, 266)
+        Me.btnNext.Location = New System.Drawing.Point(319, 406)
         Me.btnNext.Name = "btnNext"
         Me.btnNext.Size = New System.Drawing.Size(64, 22)
         Me.btnNext.TabIndex = 74
@@ -1541,7 +1773,7 @@ Partial Class Main
         '
         Me.lblCount.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblCount.AutoSize = True
-        Me.lblCount.Location = New System.Drawing.Point(299, 271)
+        Me.lblCount.Location = New System.Drawing.Point(300, 411)
         Me.lblCount.Name = "lblCount"
         Me.lblCount.Size = New System.Drawing.Size(13, 13)
         Me.lblCount.TabIndex = 73
@@ -1551,7 +1783,7 @@ Partial Class Main
         '
         Me.lblOf.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblOf.AutoSize = True
-        Me.lblOf.Location = New System.Drawing.Point(275, 271)
+        Me.lblOf.Location = New System.Drawing.Point(276, 411)
         Me.lblOf.Name = "lblOf"
         Me.lblOf.Size = New System.Drawing.Size(18, 13)
         Me.lblOf.TabIndex = 72
@@ -1561,7 +1793,7 @@ Partial Class Main
         '
         Me.lblRegExNo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblRegExNo.AutoSize = True
-        Me.lblRegExNo.Location = New System.Drawing.Point(256, 271)
+        Me.lblRegExNo.Location = New System.Drawing.Point(257, 411)
         Me.lblRegExNo.Name = "lblRegExNo"
         Me.lblRegExNo.Size = New System.Drawing.Size(13, 13)
         Me.lblRegExNo.TabIndex = 71
@@ -1570,7 +1802,7 @@ Partial Class Main
         'btnPrev
         '
         Me.btnPrev.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnPrev.Location = New System.Drawing.Point(186, 266)
+        Me.btnPrev.Location = New System.Drawing.Point(187, 406)
         Me.btnPrev.Name = "btnPrev"
         Me.btnPrev.Size = New System.Drawing.Size(64, 22)
         Me.btnPrev.TabIndex = 70
@@ -1580,7 +1812,7 @@ Partial Class Main
         'btnMoveDown
         '
         Me.btnMoveDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMoveDown.Location = New System.Drawing.Point(89, 266)
+        Me.btnMoveDown.Location = New System.Drawing.Point(90, 406)
         Me.btnMoveDown.Name = "btnMoveDown"
         Me.btnMoveDown.Size = New System.Drawing.Size(80, 22)
         Me.btnMoveDown.TabIndex = 69
@@ -1590,7 +1822,7 @@ Partial Class Main
         'btnMoveUp
         '
         Me.btnMoveUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMoveUp.Location = New System.Drawing.Point(3, 266)
+        Me.btnMoveUp.Location = New System.Drawing.Point(4, 406)
         Me.btnMoveUp.Name = "btnMoveUp"
         Me.btnMoveUp.Size = New System.Drawing.Size(80, 22)
         Me.btnMoveUp.TabIndex = 68
@@ -1605,7 +1837,7 @@ Partial Class Main
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Location = New System.Drawing.Point(3, 124)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(827, 136)
+        Me.DataGridView1.Size = New System.Drawing.Size(821, 276)
         Me.DataGridView1.TabIndex = 67
         '
         'Label23
@@ -1633,7 +1865,7 @@ Partial Class Main
         Me.txtListDescription.Location = New System.Drawing.Point(129, 57)
         Me.txtListDescription.Multiline = True
         Me.txtListDescription.Name = "txtListDescription"
-        Me.txtListDescription.Size = New System.Drawing.Size(701, 48)
+        Me.txtListDescription.Size = New System.Drawing.Size(695, 48)
         Me.txtListDescription.TabIndex = 64
         '
         'txtRegExList
@@ -1642,7 +1874,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtRegExList.Location = New System.Drawing.Point(129, 31)
         Me.txtRegExList.Name = "txtRegExList"
-        Me.txtRegExList.Size = New System.Drawing.Size(701, 20)
+        Me.txtRegExList.Size = New System.Drawing.Size(695, 20)
         Me.txtRegExList.TabIndex = 63
         '
         'Label25
@@ -1714,7 +1946,7 @@ Partial Class Main
         Me.TabPage6.Controls.Add(Me.btnOpenLocationList)
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage6.Size = New System.Drawing.Size(830, 825)
         Me.TabPage6.TabIndex = 5
         Me.TabPage6.Text = "Locations"
         Me.TabPage6.UseVisualStyleBackColor = True
@@ -1732,7 +1964,7 @@ Partial Class Main
         'txtNullValueString
         '
         Me.txtNullValueString.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.txtNullValueString.Location = New System.Drawing.Point(505, 491)
+        Me.txtNullValueString.Location = New System.Drawing.Point(506, 701)
         Me.txtNullValueString.Name = "txtNullValueString"
         Me.txtNullValueString.Size = New System.Drawing.Size(107, 20)
         Me.txtNullValueString.TabIndex = 88
@@ -1741,7 +1973,7 @@ Partial Class Main
         '
         Me.chkUseNullValueString.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkUseNullValueString.AutoSize = True
-        Me.chkUseNullValueString.Location = New System.Drawing.Point(369, 493)
+        Me.chkUseNullValueString.Location = New System.Drawing.Point(370, 703)
         Me.chkUseNullValueString.Name = "chkUseNullValueString"
         Me.chkUseNullValueString.Size = New System.Drawing.Size(130, 17)
         Me.chkUseNullValueString.TabIndex = 87
@@ -1751,7 +1983,7 @@ Partial Class Main
         'btnMultipliers
         '
         Me.btnMultipliers.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMultipliers.Location = New System.Drawing.Point(280, 491)
+        Me.btnMultipliers.Location = New System.Drawing.Point(281, 701)
         Me.btnMultipliers.Name = "btnMultipliers"
         Me.btnMultipliers.Size = New System.Drawing.Size(67, 22)
         Me.btnMultipliers.TabIndex = 86
@@ -1761,7 +1993,7 @@ Partial Class Main
         'btnDeleteRow
         '
         Me.btnDeleteRow.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDeleteRow.Location = New System.Drawing.Point(226, 491)
+        Me.btnDeleteRow.Location = New System.Drawing.Point(227, 701)
         Me.btnDeleteRow.Name = "btnDeleteRow"
         Me.btnDeleteRow.Size = New System.Drawing.Size(48, 22)
         Me.btnDeleteRow.TabIndex = 85
@@ -1771,7 +2003,7 @@ Partial Class Main
         'btnAddRow
         '
         Me.btnAddRow.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnAddRow.Location = New System.Drawing.Point(180, 491)
+        Me.btnAddRow.Location = New System.Drawing.Point(181, 701)
         Me.btnAddRow.Name = "btnAddRow"
         Me.btnAddRow.Size = New System.Drawing.Size(40, 22)
         Me.btnAddRow.TabIndex = 84
@@ -1781,7 +2013,7 @@ Partial Class Main
         'btnMoveLocnDown
         '
         Me.btnMoveLocnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMoveLocnDown.Location = New System.Drawing.Point(78, 491)
+        Me.btnMoveLocnDown.Location = New System.Drawing.Point(79, 701)
         Me.btnMoveLocnDown.Name = "btnMoveLocnDown"
         Me.btnMoveLocnDown.Size = New System.Drawing.Size(96, 22)
         Me.btnMoveLocnDown.TabIndex = 83
@@ -1791,7 +2023,7 @@ Partial Class Main
         'btnMoveLocnUp
         '
         Me.btnMoveLocnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMoveLocnUp.Location = New System.Drawing.Point(5, 491)
+        Me.btnMoveLocnUp.Location = New System.Drawing.Point(6, 701)
         Me.btnMoveLocnUp.Name = "btnMoveLocnUp"
         Me.btnMoveLocnUp.Size = New System.Drawing.Size(67, 22)
         Me.btnMoveLocnUp.TabIndex = 82
@@ -1821,7 +2053,7 @@ Partial Class Main
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.Label31)
         Me.SplitContainer2.Panel2.Controls.Add(Me.DataGridView3)
-        Me.SplitContainer2.Size = New System.Drawing.Size(828, 371)
+        Me.SplitContainer2.Size = New System.Drawing.Size(819, 581)
         Me.SplitContainer2.SplitterDistance = 490
         Me.SplitContainer2.TabIndex = 81
         '
@@ -1829,7 +2061,7 @@ Partial Class Main
         '
         Me.cmbStatus.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbStatus.FormattingEnabled = True
-        Me.cmbStatus.Location = New System.Drawing.Point(379, 347)
+        Me.cmbStatus.Location = New System.Drawing.Point(379, 557)
         Me.cmbStatus.Name = "cmbStatus"
         Me.cmbStatus.Size = New System.Drawing.Size(88, 21)
         Me.cmbStatus.TabIndex = 70
@@ -1838,7 +2070,7 @@ Partial Class Main
         '
         Me.cmbField.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbField.FormattingEnabled = True
-        Me.cmbField.Location = New System.Drawing.Point(285, 347)
+        Me.cmbField.Location = New System.Drawing.Point(285, 557)
         Me.cmbField.Name = "cmbField"
         Me.cmbField.Size = New System.Drawing.Size(88, 21)
         Me.cmbField.TabIndex = 69
@@ -1847,7 +2079,7 @@ Partial Class Main
         '
         Me.cmbTable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbTable.FormattingEnabled = True
-        Me.cmbTable.Location = New System.Drawing.Point(191, 347)
+        Me.cmbTable.Location = New System.Drawing.Point(191, 557)
         Me.cmbTable.Name = "cmbTable"
         Me.cmbTable.Size = New System.Drawing.Size(88, 21)
         Me.cmbTable.TabIndex = 68
@@ -1856,7 +2088,7 @@ Partial Class Main
         '
         Me.cmbType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbType.FormattingEnabled = True
-        Me.cmbType.Location = New System.Drawing.Point(97, 347)
+        Me.cmbType.Location = New System.Drawing.Point(97, 557)
         Me.cmbType.Name = "cmbType"
         Me.cmbType.Size = New System.Drawing.Size(88, 21)
         Me.cmbType.TabIndex = 67
@@ -1865,7 +2097,7 @@ Partial Class Main
         '
         Me.cmbVariable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbVariable.FormattingEnabled = True
-        Me.cmbVariable.Location = New System.Drawing.Point(3, 347)
+        Me.cmbVariable.Location = New System.Drawing.Point(3, 557)
         Me.cmbVariable.Name = "cmbVariable"
         Me.cmbVariable.Size = New System.Drawing.Size(88, 21)
         Me.cmbVariable.TabIndex = 66
@@ -1887,7 +2119,7 @@ Partial Class Main
         Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView2.Location = New System.Drawing.Point(3, 16)
         Me.DataGridView2.Name = "DataGridView2"
-        Me.DataGridView2.Size = New System.Drawing.Size(484, 325)
+        Me.DataGridView2.Size = New System.Drawing.Size(484, 535)
         Me.DataGridView2.TabIndex = 62
         '
         'Label31
@@ -1907,7 +2139,7 @@ Partial Class Main
         Me.DataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView3.Location = New System.Drawing.Point(6, 16)
         Me.DataGridView3.Name = "DataGridView3"
-        Me.DataGridView3.Size = New System.Drawing.Size(321, 352)
+        Me.DataGridView3.Size = New System.Drawing.Size(312, 535)
         Me.DataGridView3.TabIndex = 63
         '
         'Label28
@@ -1926,7 +2158,7 @@ Partial Class Main
         Me.txtDbDestListDescr.Location = New System.Drawing.Point(142, 60)
         Me.txtDbDestListDescr.Multiline = True
         Me.txtDbDestListDescr.Name = "txtDbDestListDescr"
-        Me.txtDbDestListDescr.Size = New System.Drawing.Size(688, 48)
+        Me.txtDbDestListDescr.Size = New System.Drawing.Size(682, 48)
         Me.txtDbDestListDescr.TabIndex = 79
         '
         'Label29
@@ -1944,7 +2176,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDbDestList.Location = New System.Drawing.Point(142, 34)
         Me.txtDbDestList.Name = "txtDbDestList"
-        Me.txtDbDestList.Size = New System.Drawing.Size(688, 20)
+        Me.txtDbDestList.Size = New System.Drawing.Size(682, 20)
         Me.txtDbDestList.TabIndex = 77
         '
         'btnWrite
@@ -2013,6 +2245,8 @@ Partial Class Main
         '
         'TabPage7
         '
+        Me.TabPage7.Controls.Add(Me.btnFixXmlText)
+        Me.TabPage7.Controls.Add(Me.txtXmlText)
         Me.TabPage7.Controls.Add(Me.txtModType)
         Me.TabPage7.Controls.Add(Me.Label39)
         Me.TabPage7.Controls.Add(Me.btnAddModifyToSeq)
@@ -2023,10 +2257,30 @@ Partial Class Main
         Me.TabPage7.Controls.Add(Me.Label32)
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage7.Size = New System.Drawing.Size(830, 825)
         Me.TabPage7.TabIndex = 6
         Me.TabPage7.Text = "Modify"
         Me.TabPage7.UseVisualStyleBackColor = True
+        '
+        'btnFixXmlText
+        '
+        Me.btnFixXmlText.Location = New System.Drawing.Point(11, 710)
+        Me.btnFixXmlText.Name = "btnFixXmlText"
+        Me.btnFixXmlText.Size = New System.Drawing.Size(94, 21)
+        Me.btnFixXmlText.TabIndex = 80
+        Me.btnFixXmlText.Text = "Fix XML Text"
+        Me.btnFixXmlText.UseVisualStyleBackColor = True
+        '
+        'txtXmlText
+        '
+        Me.txtXmlText.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtXmlText.Location = New System.Drawing.Point(3, 738)
+        Me.txtXmlText.Multiline = True
+        Me.txtXmlText.Name = "txtXmlText"
+        Me.txtXmlText.Size = New System.Drawing.Size(824, 210)
+        Me.txtXmlText.TabIndex = 79
         '
         'txtModType
         '
@@ -2077,9 +2331,9 @@ Partial Class Main
         Me.GroupBox2.Controls.Add(Me.Label36)
         Me.GroupBox2.Controls.Add(Me.txtTestInputString)
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(11, 403)
+        Me.GroupBox2.Location = New System.Drawing.Point(11, 600)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(819, 104)
+        Me.GroupBox2.Size = New System.Drawing.Size(810, 104)
         Me.GroupBox2.TabIndex = 35
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Testing"
@@ -2123,7 +2377,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtTestOutputString.Location = New System.Drawing.Point(106, 45)
         Me.txtTestOutputString.Name = "txtTestOutputString"
-        Me.txtTestOutputString.Size = New System.Drawing.Size(703, 20)
+        Me.txtTestOutputString.Size = New System.Drawing.Size(694, 20)
         Me.txtTestOutputString.TabIndex = 15
         '
         'Label35
@@ -2154,7 +2408,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtTestInputString.Location = New System.Drawing.Point(106, 19)
         Me.txtTestInputString.Name = "txtTestInputString"
-        Me.txtTestInputString.Size = New System.Drawing.Size(703, 20)
+        Me.txtTestInputString.Size = New System.Drawing.Size(694, 20)
         Me.txtTestInputString.TabIndex = 12
         '
         'Panel1
@@ -2163,8 +2417,20 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.AutoScroll = True
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.rbFileNameMatch)
+        Me.Panel1.Controls.Add(Me.Label47)
+        Me.Panel1.Controls.Add(Me.txtFileName)
+        Me.Panel1.Controls.Add(Me.Label46)
+        Me.Panel1.Controls.Add(Me.txtFileNameMatch)
+        Me.Panel1.Controls.Add(Me.Label8)
+        Me.Panel1.Controls.Add(Me.btnTestFileNameRegEx)
+        Me.Panel1.Controls.Add(Me.txtFileNameRegEx)
+        Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.rbApplyFileNameRegEx)
+        Me.Panel1.Controls.Add(Me.txtFixedVal)
+        Me.Panel1.Controls.Add(Me.rbFixedValue)
         Me.Panel1.Controls.Add(Me.Label37)
-        Me.Panel1.Controls.Add(Me.txtFixedValue)
+        Me.Panel1.Controls.Add(Me.txtAppendFixedValue)
         Me.Panel1.Controls.Add(Me.rbAppendFixedValue)
         Me.Panel1.Controls.Add(Me.rbAppendCurrentDate)
         Me.Panel1.Controls.Add(Me.txtAppendRegExVar)
@@ -2187,34 +2453,155 @@ Partial Class Main
         Me.Panel1.Controls.Add(Me.rbConvertDate)
         Me.Panel1.Location = New System.Drawing.Point(11, 70)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(819, 323)
+        Me.Panel1.Size = New System.Drawing.Size(810, 524)
         Me.Panel1.TabIndex = 34
+        '
+        'rbFileNameMatch
+        '
+        Me.rbFileNameMatch.AutoSize = True
+        Me.rbFileNameMatch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFileNameMatch.Location = New System.Drawing.Point(12, 285)
+        Me.rbFileNameMatch.Name = "rbFileNameMatch"
+        Me.rbFileNameMatch.Size = New System.Drawing.Size(124, 17)
+        Me.rbFileNameMatch.TabIndex = 83
+        Me.rbFileNameMatch.TabStop = True
+        Me.rbFileNameMatch.Text = "File Name Match:"
+        Me.rbFileNameMatch.UseVisualStyleBackColor = True
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.Location = New System.Drawing.Point(189, 261)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(57, 13)
+        Me.Label47.TabIndex = 82
+        Me.Label47.Text = "File Name:"
+        '
+        'txtFileName
+        '
+        Me.txtFileName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFileName.Location = New System.Drawing.Point(252, 258)
+        Me.txtFileName.Name = "txtFileName"
+        Me.txtFileName.ReadOnly = True
+        Me.txtFileName.Size = New System.Drawing.Size(500, 20)
+        Me.txtFileName.TabIndex = 81
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Location = New System.Drawing.Point(161, 313)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(230, 13)
+        Me.Label46.TabIndex = 80
+        Me.Label46.Text = "RegEx Example: (?<FileNameMatch>[\w\d]+)\."
+        '
+        'txtFileNameMatch
+        '
+        Me.txtFileNameMatch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFileNameMatch.Location = New System.Drawing.Point(252, 284)
+        Me.txtFileNameMatch.Name = "txtFileNameMatch"
+        Me.txtFileNameMatch.ReadOnly = True
+        Me.txtFileNameMatch.Size = New System.Drawing.Size(500, 20)
+        Me.txtFileNameMatch.TabIndex = 79
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(156, 287)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(90, 13)
+        Me.Label8.TabIndex = 78
+        Me.Label8.Text = "File Name Match:"
+        '
+        'btnTestFileNameRegEx
+        '
+        Me.btnTestFileNameRegEx.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTestFileNameRegEx.Location = New System.Drawing.Point(757, 230)
+        Me.btnTestFileNameRegEx.Name = "btnTestFileNameRegEx"
+        Me.btnTestFileNameRegEx.Size = New System.Drawing.Size(42, 22)
+        Me.btnTestFileNameRegEx.TabIndex = 77
+        Me.btnTestFileNameRegEx.Text = "Test"
+        Me.ToolTip1.SetToolTip(Me.btnTestFileNameRegEx, "Apply the Modify Values settings to the Import Engine")
+        Me.btnTestFileNameRegEx.UseVisualStyleBackColor = True
+        '
+        'txtFileNameRegEx
+        '
+        Me.txtFileNameRegEx.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFileNameRegEx.Location = New System.Drawing.Point(252, 232)
+        Me.txtFileNameRegEx.Name = "txtFileNameRegEx"
+        Me.txtFileNameRegEx.Size = New System.Drawing.Size(500, 20)
+        Me.txtFileNameRegEx.TabIndex = 76
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(204, 235)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(42, 13)
+        Me.Label6.TabIndex = 75
+        Me.Label6.Text = "RegEx:"
+        '
+        'rbApplyFileNameRegEx
+        '
+        Me.rbApplyFileNameRegEx.AutoSize = True
+        Me.rbApplyFileNameRegEx.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbApplyFileNameRegEx.Location = New System.Drawing.Point(12, 231)
+        Me.rbApplyFileNameRegEx.Name = "rbApplyFileNameRegEx"
+        Me.rbApplyFileNameRegEx.Size = New System.Drawing.Size(161, 17)
+        Me.rbApplyFileNameRegEx.TabIndex = 74
+        Me.rbApplyFileNameRegEx.TabStop = True
+        Me.rbApplyFileNameRegEx.Text = "Apply File Name RegEx:"
+        Me.rbApplyFileNameRegEx.UseVisualStyleBackColor = True
+        '
+        'txtFixedVal
+        '
+        Me.txtFixedVal.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFixedVal.Location = New System.Drawing.Point(124, 199)
+        Me.txtFixedVal.Name = "txtFixedVal"
+        Me.txtFixedVal.Size = New System.Drawing.Size(675, 20)
+        Me.txtFixedVal.TabIndex = 73
+        '
+        'rbFixedValue
+        '
+        Me.rbFixedValue.AutoSize = True
+        Me.rbFixedValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbFixedValue.Location = New System.Drawing.Point(12, 199)
+        Me.rbFixedValue.Name = "rbFixedValue"
+        Me.rbFixedValue.Size = New System.Drawing.Size(95, 17)
+        Me.rbFixedValue.TabIndex = 72
+        Me.rbFixedValue.TabStop = True
+        Me.rbFixedValue.Text = "Fixed Value:"
+        Me.rbFixedValue.UseVisualStyleBackColor = True
         '
         'Label37
         '
         Me.Label37.AutoSize = True
         Me.Label37.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(6, 190)
+        Me.Label37.Location = New System.Drawing.Point(6, 350)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(422, 13)
         Me.Label37.TabIndex = 71
         Me.Label37.Text = "Append: -------------------------------------------------------------------------" &
     "------------------"
         '
-        'txtFixedValue
+        'txtAppendFixedValue
         '
-        Me.txtFixedValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.txtAppendFixedValue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFixedValue.Location = New System.Drawing.Point(126, 217)
-        Me.txtFixedValue.Name = "txtFixedValue"
-        Me.txtFixedValue.Size = New System.Drawing.Size(682, 20)
-        Me.txtFixedValue.TabIndex = 61
+        Me.txtAppendFixedValue.Location = New System.Drawing.Point(126, 377)
+        Me.txtAppendFixedValue.Name = "txtAppendFixedValue"
+        Me.txtAppendFixedValue.Size = New System.Drawing.Size(673, 20)
+        Me.txtAppendFixedValue.TabIndex = 61
         '
         'rbAppendFixedValue
         '
         Me.rbAppendFixedValue.AutoSize = True
         Me.rbAppendFixedValue.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendFixedValue.Location = New System.Drawing.Point(9, 217)
+        Me.rbAppendFixedValue.Location = New System.Drawing.Point(9, 377)
         Me.rbAppendFixedValue.Name = "rbAppendFixedValue"
         Me.rbAppendFixedValue.Size = New System.Drawing.Size(90, 17)
         Me.rbAppendFixedValue.TabIndex = 70
@@ -2226,7 +2613,7 @@ Partial Class Main
         '
         Me.rbAppendCurrentDate.AutoSize = True
         Me.rbAppendCurrentDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendCurrentDate.Location = New System.Drawing.Point(9, 292)
+        Me.rbAppendCurrentDate.Location = New System.Drawing.Point(9, 452)
         Me.rbAppendCurrentDate.Name = "rbAppendCurrentDate"
         Me.rbAppendCurrentDate.Size = New System.Drawing.Size(95, 17)
         Me.rbAppendCurrentDate.TabIndex = 66
@@ -2236,16 +2623,18 @@ Partial Class Main
         '
         'txtAppendRegExVar
         '
-        Me.txtAppendRegExVar.Location = New System.Drawing.Point(126, 243)
+        Me.txtAppendRegExVar.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtAppendRegExVar.Location = New System.Drawing.Point(126, 403)
         Me.txtAppendRegExVar.Name = "txtAppendRegExVar"
-        Me.txtAppendRegExVar.Size = New System.Drawing.Size(594, 20)
+        Me.txtAppendRegExVar.Size = New System.Drawing.Size(673, 20)
         Me.txtAppendRegExVar.TabIndex = 68
         '
         'rbAppendCurrentTime
         '
         Me.rbAppendCurrentTime.AutoSize = True
         Me.rbAppendCurrentTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendCurrentTime.Location = New System.Drawing.Point(126, 292)
+        Me.rbAppendCurrentTime.Location = New System.Drawing.Point(126, 452)
         Me.rbAppendCurrentTime.Name = "rbAppendCurrentTime"
         Me.rbAppendCurrentTime.Size = New System.Drawing.Size(93, 17)
         Me.rbAppendCurrentTime.TabIndex = 67
@@ -2257,7 +2646,7 @@ Partial Class Main
         '
         Me.rbAppendCurrentDateTime.AutoSize = True
         Me.rbAppendCurrentDateTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendCurrentDateTime.Location = New System.Drawing.Point(267, 292)
+        Me.rbAppendCurrentDateTime.Location = New System.Drawing.Point(267, 452)
         Me.rbAppendCurrentDateTime.Name = "rbAppendCurrentDateTime"
         Me.rbAppendCurrentDateTime.Size = New System.Drawing.Size(124, 17)
         Me.rbAppendCurrentDateTime.TabIndex = 65
@@ -2269,7 +2658,7 @@ Partial Class Main
         '
         Me.rbAppendTextFileName.AutoSize = True
         Me.rbAppendTextFileName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendTextFileName.Location = New System.Drawing.Point(9, 269)
+        Me.rbAppendTextFileName.Location = New System.Drawing.Point(9, 429)
         Me.rbAppendTextFileName.Name = "rbAppendTextFileName"
         Me.rbAppendTextFileName.Size = New System.Drawing.Size(105, 17)
         Me.rbAppendTextFileName.TabIndex = 62
@@ -2281,7 +2670,7 @@ Partial Class Main
         '
         Me.rbAppendTextFilePath.AutoSize = True
         Me.rbAppendTextFilePath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendTextFilePath.Location = New System.Drawing.Point(267, 269)
+        Me.rbAppendTextFilePath.Location = New System.Drawing.Point(267, 429)
         Me.rbAppendTextFilePath.Name = "rbAppendTextFilePath"
         Me.rbAppendTextFilePath.Size = New System.Drawing.Size(100, 17)
         Me.rbAppendTextFilePath.TabIndex = 64
@@ -2293,7 +2682,7 @@ Partial Class Main
         '
         Me.rbAppendTextFileDirectory.AutoSize = True
         Me.rbAppendTextFileDirectory.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendTextFileDirectory.Location = New System.Drawing.Point(126, 269)
+        Me.rbAppendTextFileDirectory.Location = New System.Drawing.Point(126, 429)
         Me.rbAppendTextFileDirectory.Name = "rbAppendTextFileDirectory"
         Me.rbAppendTextFileDirectory.Size = New System.Drawing.Size(124, 17)
         Me.rbAppendTextFileDirectory.TabIndex = 63
@@ -2305,7 +2694,7 @@ Partial Class Main
         '
         Me.rbAppendRegExVar.AutoSize = True
         Me.rbAppendRegExVar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbAppendRegExVar.Location = New System.Drawing.Point(9, 246)
+        Me.rbAppendRegExVar.Location = New System.Drawing.Point(9, 406)
         Me.rbAppendRegExVar.Name = "rbAppendRegExVar"
         Me.rbAppendRegExVar.Size = New System.Drawing.Size(111, 17)
         Me.rbAppendRegExVar.TabIndex = 69
@@ -2331,7 +2720,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtReplacementChars.Location = New System.Drawing.Point(124, 158)
         Me.txtReplacementChars.Name = "txtReplacementChars"
-        Me.txtReplacementChars.Size = New System.Drawing.Size(684, 20)
+        Me.txtReplacementChars.Size = New System.Drawing.Size(675, 20)
         Me.txtReplacementChars.TabIndex = 35
         '
         'txtCharsToReplace
@@ -2340,7 +2729,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtCharsToReplace.Location = New System.Drawing.Point(124, 132)
         Me.txtCharsToReplace.Name = "txtCharsToReplace"
-        Me.txtCharsToReplace.Size = New System.Drawing.Size(684, 20)
+        Me.txtCharsToReplace.Size = New System.Drawing.Size(675, 20)
         Me.txtCharsToReplace.TabIndex = 34
         '
         'lblReplacementChars
@@ -2379,7 +2768,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtOutputDateFormat.Location = New System.Drawing.Point(124, 82)
         Me.txtOutputDateFormat.Name = "txtOutputDateFormat"
-        Me.txtOutputDateFormat.Size = New System.Drawing.Size(684, 20)
+        Me.txtOutputDateFormat.Size = New System.Drawing.Size(675, 20)
         Me.txtOutputDateFormat.TabIndex = 30
         '
         'Label33
@@ -2397,7 +2786,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtInputDateFormat.Location = New System.Drawing.Point(124, 56)
         Me.txtInputDateFormat.Name = "txtInputDateFormat"
-        Me.txtInputDateFormat.Size = New System.Drawing.Size(684, 20)
+        Me.txtInputDateFormat.Size = New System.Drawing.Size(675, 20)
         Me.txtInputDateFormat.TabIndex = 28
         '
         'Label34
@@ -2427,7 +2816,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtRegExVariable.Location = New System.Drawing.Point(97, 42)
         Me.txtRegExVariable.Name = "txtRegExVariable"
-        Me.txtRegExVariable.Size = New System.Drawing.Size(733, 20)
+        Me.txtRegExVariable.Size = New System.Drawing.Size(724, 20)
         Me.txtRegExVariable.TabIndex = 31
         '
         'Label32
@@ -2450,7 +2839,7 @@ Partial Class Main
         Me.TabPage9.Controls.Add(Me.btnMultMoveUp)
         Me.TabPage9.Location = New System.Drawing.Point(4, 22)
         Me.TabPage9.Name = "TabPage9"
-        Me.TabPage9.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage9.Size = New System.Drawing.Size(830, 825)
         Me.TabPage9.TabIndex = 8
         Me.TabPage9.Text = "Multipliers"
         Me.TabPage9.UseVisualStyleBackColor = True
@@ -2459,7 +2848,7 @@ Partial Class Main
         '
         Me.cmbMultCode.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbMultCode.FormattingEnabled = True
-        Me.cmbMultCode.Location = New System.Drawing.Point(166, 484)
+        Me.cmbMultCode.Location = New System.Drawing.Point(166, 789)
         Me.cmbMultCode.Name = "cmbMultCode"
         Me.cmbMultCode.Size = New System.Drawing.Size(101, 21)
         Me.cmbMultCode.TabIndex = 8
@@ -2468,7 +2857,7 @@ Partial Class Main
         '
         Me.cmbMultVariable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cmbMultVariable.FormattingEnabled = True
-        Me.cmbMultVariable.Location = New System.Drawing.Point(59, 484)
+        Me.cmbMultVariable.Location = New System.Drawing.Point(59, 789)
         Me.cmbMultVariable.Name = "cmbMultVariable"
         Me.cmbMultVariable.Size = New System.Drawing.Size(101, 21)
         Me.cmbMultVariable.TabIndex = 7
@@ -2481,7 +2870,7 @@ Partial Class Main
         Me.DataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView4.Location = New System.Drawing.Point(9, 38)
         Me.DataGridView4.Name = "DataGridView4"
-        Me.DataGridView4.Size = New System.Drawing.Size(821, 440)
+        Me.DataGridView4.Size = New System.Drawing.Size(815, 745)
         Me.DataGridView4.TabIndex = 6
         '
         'btnMultDeleteRow
@@ -2527,15 +2916,15 @@ Partial Class Main
         Me.TabPage12.Controls.Add(Me.btnCancelImport3)
         Me.TabPage12.Controls.Add(Me.btnRunImportLoop)
         Me.TabPage12.Controls.Add(Me.btnClearImportLoop)
-        Me.TabPage12.Controls.Add(Me.XmlHtmDisplay2)
         Me.TabPage12.Controls.Add(Me.btnOpenImportLoop)
         Me.TabPage12.Controls.Add(Me.Label40)
         Me.TabPage12.Controls.Add(Me.Label44)
         Me.TabPage12.Controls.Add(Me.txtImportLoopDescription)
         Me.TabPage12.Controls.Add(Me.txtImportLoopName)
+        Me.TabPage12.Controls.Add(Me.XmlHtmDisplay2)
         Me.TabPage12.Location = New System.Drawing.Point(4, 22)
         Me.TabPage12.Name = "TabPage12"
-        Me.TabPage12.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage12.Size = New System.Drawing.Size(830, 825)
         Me.TabPage12.TabIndex = 11
         Me.TabPage12.Text = "Import Loop"
         Me.TabPage12.UseVisualStyleBackColor = True
@@ -2586,6 +2975,52 @@ Partial Class Main
         Me.btnClearImportLoop.TabIndex = 285
         Me.btnClearImportLoop.Text = "Clear"
         Me.btnClearImportLoop.UseVisualStyleBackColor = True
+        '
+        'btnOpenImportLoop
+        '
+        Me.btnOpenImportLoop.Location = New System.Drawing.Point(6, 5)
+        Me.btnOpenImportLoop.Name = "btnOpenImportLoop"
+        Me.btnOpenImportLoop.Size = New System.Drawing.Size(48, 22)
+        Me.btnOpenImportLoop.TabIndex = 283
+        Me.btnOpenImportLoop.Text = "Open"
+        Me.btnOpenImportLoop.UseVisualStyleBackColor = True
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Location = New System.Drawing.Point(3, 62)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(63, 13)
+        Me.Label40.TabIndex = 282
+        Me.Label40.Text = "Description:"
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Location = New System.Drawing.Point(3, 36)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(38, 13)
+        Me.Label44.TabIndex = 281
+        Me.Label44.Text = "Name:"
+        '
+        'txtImportLoopDescription
+        '
+        Me.txtImportLoopDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtImportLoopDescription.Location = New System.Drawing.Point(72, 59)
+        Me.txtImportLoopDescription.Multiline = True
+        Me.txtImportLoopDescription.Name = "txtImportLoopDescription"
+        Me.txtImportLoopDescription.Size = New System.Drawing.Size(752, 51)
+        Me.txtImportLoopDescription.TabIndex = 280
+        '
+        'txtImportLoopName
+        '
+        Me.txtImportLoopName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtImportLoopName.Location = New System.Drawing.Point(72, 33)
+        Me.txtImportLoopName.Name = "txtImportLoopName"
+        Me.txtImportLoopName.Size = New System.Drawing.Size(752, 20)
+        Me.txtImportLoopName.TabIndex = 279
         '
         'XmlHtmDisplay2
         '
@@ -2733,55 +3168,9 @@ Partial Class Main
         TextSettings30.PointSize = 10.0!
         XmlHtmDisplaySettings2.XValue = TextSettings30
         Me.XmlHtmDisplay2.Settings = XmlHtmDisplaySettings2
-        Me.XmlHtmDisplay2.Size = New System.Drawing.Size(833, 394)
+        Me.XmlHtmDisplay2.Size = New System.Drawing.Size(821, 832)
         Me.XmlHtmDisplay2.TabIndex = 284
         Me.XmlHtmDisplay2.Text = ""
-        '
-        'btnOpenImportLoop
-        '
-        Me.btnOpenImportLoop.Location = New System.Drawing.Point(6, 5)
-        Me.btnOpenImportLoop.Name = "btnOpenImportLoop"
-        Me.btnOpenImportLoop.Size = New System.Drawing.Size(48, 22)
-        Me.btnOpenImportLoop.TabIndex = 283
-        Me.btnOpenImportLoop.Text = "Open"
-        Me.btnOpenImportLoop.UseVisualStyleBackColor = True
-        '
-        'Label40
-        '
-        Me.Label40.AutoSize = True
-        Me.Label40.Location = New System.Drawing.Point(3, 62)
-        Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(63, 13)
-        Me.Label40.TabIndex = 282
-        Me.Label40.Text = "Description:"
-        '
-        'Label44
-        '
-        Me.Label44.AutoSize = True
-        Me.Label44.Location = New System.Drawing.Point(3, 36)
-        Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(38, 13)
-        Me.Label44.TabIndex = 281
-        Me.Label44.Text = "Name:"
-        '
-        'txtImportLoopDescription
-        '
-        Me.txtImportLoopDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtImportLoopDescription.Location = New System.Drawing.Point(72, 59)
-        Me.txtImportLoopDescription.Multiline = True
-        Me.txtImportLoopDescription.Name = "txtImportLoopDescription"
-        Me.txtImportLoopDescription.Size = New System.Drawing.Size(758, 51)
-        Me.txtImportLoopDescription.TabIndex = 280
-        '
-        'txtImportLoopName
-        '
-        Me.txtImportLoopName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtImportLoopName.Location = New System.Drawing.Point(72, 33)
-        Me.txtImportLoopName.Name = "txtImportLoopName"
-        Me.txtImportLoopName.Size = New System.Drawing.Size(758, 20)
-        Me.txtImportLoopName.TabIndex = 279
         '
         'TabPage10
         '
@@ -2790,7 +3179,7 @@ Partial Class Main
         Me.TabPage10.Controls.Add(Me.rtbDebugging)
         Me.TabPage10.Location = New System.Drawing.Point(4, 22)
         Me.TabPage10.Name = "TabPage10"
-        Me.TabPage10.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage10.Size = New System.Drawing.Size(830, 825)
         Me.TabPage10.TabIndex = 9
         Me.TabPage10.Text = "Debugging"
         Me.TabPage10.UseVisualStyleBackColor = True
@@ -2820,12 +3209,16 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.rtbDebugging.Location = New System.Drawing.Point(3, 31)
         Me.rtbDebugging.Name = "rtbDebugging"
-        Me.rtbDebugging.Size = New System.Drawing.Size(833, 482)
+        Me.rtbDebugging.Size = New System.Drawing.Size(824, 917)
         Me.rtbDebugging.TabIndex = 0
         Me.rtbDebugging.Text = ""
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnOpenParentDir)
+        Me.TabPage1.Controls.Add(Me.btnOpenArchive)
+        Me.TabPage1.Controls.Add(Me.btnCreateArchive)
+        Me.TabPage1.Controls.Add(Me.btnShowProjectInfo)
         Me.TabPage1.Controls.Add(Me.chkConnect)
         Me.TabPage1.Controls.Add(Me.btnOpenProject)
         Me.TabPage1.Controls.Add(Me.Label5)
@@ -2833,8 +3226,6 @@ Partial Class Main
         Me.TabPage1.Controls.Add(Me.Label38)
         Me.TabPage1.Controls.Add(Me.txtProNetName)
         Me.TabPage1.Controls.Add(Me.btnOpenAppDir)
-        Me.TabPage1.Controls.Add(Me.Label8)
-        Me.TabPage1.Controls.Add(Me.Label6)
         Me.TabPage1.Controls.Add(Me.btnOpenSystem)
         Me.TabPage1.Controls.Add(Me.Label80)
         Me.TabPage1.Controls.Add(Me.txtSystemLocationType)
@@ -2869,10 +3260,49 @@ Partial Class Main
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(839, 514)
+        Me.TabPage1.Size = New System.Drawing.Size(830, 825)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Project Information"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnOpenParentDir
+        '
+        Me.btnOpenParentDir.Location = New System.Drawing.Point(125, 398)
+        Me.btnOpenParentDir.Name = "btnOpenParentDir"
+        Me.btnOpenParentDir.Size = New System.Drawing.Size(125, 22)
+        Me.btnOpenParentDir.TabIndex = 311
+        Me.btnOpenParentDir.Text = "Open Parent Directory"
+        Me.ToolTip1.SetToolTip(Me.btnOpenParentDir, "Open the Parent directory")
+        Me.btnOpenParentDir.UseVisualStyleBackColor = True
+        '
+        'btnOpenArchive
+        '
+        Me.btnOpenArchive.Location = New System.Drawing.Point(354, 398)
+        Me.btnOpenArchive.Name = "btnOpenArchive"
+        Me.btnOpenArchive.Size = New System.Drawing.Size(94, 22)
+        Me.btnOpenArchive.TabIndex = 310
+        Me.btnOpenArchive.Text = "Open Archive"
+        Me.ToolTip1.SetToolTip(Me.btnOpenArchive, "Open a project archive file")
+        Me.btnOpenArchive.UseVisualStyleBackColor = True
+        '
+        'btnCreateArchive
+        '
+        Me.btnCreateArchive.Location = New System.Drawing.Point(256, 398)
+        Me.btnCreateArchive.Name = "btnCreateArchive"
+        Me.btnCreateArchive.Size = New System.Drawing.Size(92, 22)
+        Me.btnCreateArchive.TabIndex = 309
+        Me.btnCreateArchive.Text = "Create Archive"
+        Me.ToolTip1.SetToolTip(Me.btnCreateArchive, "Create a project archive file")
+        Me.btnCreateArchive.UseVisualStyleBackColor = True
+        '
+        'btnShowProjectInfo
+        '
+        Me.btnShowProjectInfo.Location = New System.Drawing.Point(6, 398)
+        Me.btnShowProjectInfo.Name = "btnShowProjectInfo"
+        Me.btnShowProjectInfo.Size = New System.Drawing.Size(113, 22)
+        Me.btnShowProjectInfo.TabIndex = 308
+        Me.btnShowProjectInfo.Text = "Show Project Info"
+        Me.btnShowProjectInfo.UseVisualStyleBackColor = True
         '
         'chkConnect
         '
@@ -2909,7 +3339,7 @@ Partial Class Main
         Me.txtProjectPath.Location = New System.Drawing.Point(138, 162)
         Me.txtProjectPath.Multiline = True
         Me.txtProjectPath.Name = "txtProjectPath"
-        Me.txtProjectPath.Size = New System.Drawing.Size(693, 46)
+        Me.txtProjectPath.Size = New System.Drawing.Size(686, 46)
         Me.txtProjectPath.TabIndex = 304
         '
         'Label38
@@ -2927,7 +3357,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtProNetName.Location = New System.Drawing.Point(275, 34)
         Me.txtProNetName.Name = "txtProNetName"
-        Me.txtProNetName.Size = New System.Drawing.Size(556, 20)
+        Me.txtProNetName.Size = New System.Drawing.Size(549, 20)
         Me.txtProNetName.TabIndex = 302
         '
         'btnOpenAppDir
@@ -2938,24 +3368,6 @@ Partial Class Main
         Me.btnOpenAppDir.TabIndex = 301
         Me.btnOpenAppDir.Text = "Open Application Directory"
         Me.btnOpenAppDir.UseVisualStyleBackColor = True
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(572, 373)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(41, 13)
-        Me.Label8.TabIndex = 300
-        Me.Label8.Text = "d:h:m:s"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(379, 373)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(41, 13)
-        Me.Label6.TabIndex = 299
-        Me.Label6.Text = "d:h:m:s"
         '
         'btnOpenSystem
         '
@@ -2989,7 +3401,7 @@ Partial Class Main
         Me.txtSystemPath.Location = New System.Drawing.Point(138, 318)
         Me.txtSystemPath.Multiline = True
         Me.txtSystemPath.Name = "txtSystemPath"
-        Me.txtSystemPath.Size = New System.Drawing.Size(693, 46)
+        Me.txtSystemPath.Size = New System.Drawing.Size(686, 46)
         Me.txtSystemPath.TabIndex = 295
         '
         'btnOpenData
@@ -3026,7 +3438,7 @@ Partial Class Main
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtParentProject.Location = New System.Drawing.Point(275, 8)
         Me.txtParentProject.Name = "txtParentProject"
-        Me.txtParentProject.Size = New System.Drawing.Size(558, 20)
+        Me.txtParentProject.Size = New System.Drawing.Size(549, 20)
         Me.txtParentProject.TabIndex = 287
         '
         'Label45
@@ -3051,7 +3463,7 @@ Partial Class Main
         '
         Me.txtCurrentDuration.Location = New System.Drawing.Point(481, 370)
         Me.txtCurrentDuration.Name = "txtCurrentDuration"
-        Me.txtCurrentDuration.Size = New System.Drawing.Size(85, 20)
+        Me.txtCurrentDuration.Size = New System.Drawing.Size(120, 20)
         Me.txtCurrentDuration.TabIndex = 78
         '
         'Label41
@@ -3067,7 +3479,7 @@ Partial Class Main
         '
         Me.txtTotalDuration.Location = New System.Drawing.Point(288, 370)
         Me.txtTotalDuration.Name = "txtTotalDuration"
-        Me.txtTotalDuration.Size = New System.Drawing.Size(85, 20)
+        Me.txtTotalDuration.Size = New System.Drawing.Size(120, 20)
         Me.txtTotalDuration.TabIndex = 75
         '
         'Label42
@@ -3127,7 +3539,7 @@ Partial Class Main
         Me.txtDataPath.Location = New System.Drawing.Point(138, 266)
         Me.txtDataPath.Multiline = True
         Me.txtDataPath.Name = "txtDataPath"
-        Me.txtDataPath.Size = New System.Drawing.Size(693, 46)
+        Me.txtDataPath.Size = New System.Drawing.Size(686, 46)
         Me.txtDataPath.TabIndex = 61
         '
         'txtDataLocationType
@@ -3153,7 +3565,7 @@ Partial Class Main
         Me.txtSettingsPath.Location = New System.Drawing.Point(138, 214)
         Me.txtSettingsPath.Multiline = True
         Me.txtSettingsPath.Name = "txtSettingsPath"
-        Me.txtSettingsPath.Size = New System.Drawing.Size(693, 46)
+        Me.txtSettingsPath.Size = New System.Drawing.Size(686, 46)
         Me.txtSettingsPath.TabIndex = 57
         '
         'Label7
@@ -3186,7 +3598,7 @@ Partial Class Main
         Me.txtProjectDescription.Location = New System.Drawing.Point(85, 90)
         Me.txtProjectDescription.Multiline = True
         Me.txtProjectDescription.Name = "txtProjectDescription"
-        Me.txtProjectDescription.Size = New System.Drawing.Size(746, 40)
+        Me.txtProjectDescription.Size = New System.Drawing.Size(739, 40)
         Me.txtProjectDescription.TabIndex = 51
         '
         'Label4
@@ -3230,7 +3642,7 @@ Partial Class Main
         Me.btnOnline.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOnline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnOnline.ForeColor = System.Drawing.Color.Red
-        Me.btnOnline.Location = New System.Drawing.Point(733, 12)
+        Me.btnOnline.Location = New System.Drawing.Point(724, 12)
         Me.btnOnline.Name = "btnOnline"
         Me.btnOnline.Size = New System.Drawing.Size(56, 22)
         Me.btnOnline.TabIndex = 50
@@ -3240,7 +3652,7 @@ Partial Class Main
         'btnMessages
         '
         Me.btnMessages.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnMessages.Location = New System.Drawing.Point(654, 12)
+        Me.btnMessages.Location = New System.Drawing.Point(645, 12)
         Me.btnMessages.Name = "btnMessages"
         Me.btnMessages.Size = New System.Drawing.Size(72, 22)
         Me.btnMessages.TabIndex = 51
@@ -3250,7 +3662,7 @@ Partial Class Main
         'btnAppInfo
         '
         Me.btnAppInfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnAppInfo.Location = New System.Drawing.Point(553, 12)
+        Me.btnAppInfo.Location = New System.Drawing.Point(544, 12)
         Me.btnAppInfo.Name = "btnAppInfo"
         Me.btnAppInfo.Size = New System.Drawing.Size(95, 22)
         Me.btnAppInfo.TabIndex = 52
@@ -3279,7 +3691,7 @@ Partial Class Main
         '
         Me.btnWebPages.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnWebPages.ContextMenuStrip = Me.ContextMenuStrip1
-        Me.btnWebPages.Location = New System.Drawing.Point(479, 12)
+        Me.btnWebPages.Location = New System.Drawing.Point(470, 12)
         Me.btnWebPages.Name = "btnWebPages"
         Me.btnWebPages.Size = New System.Drawing.Size(68, 22)
         Me.btnWebPages.TabIndex = 280
@@ -3290,25 +3702,25 @@ Partial Class Main
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1_EditWorkflowTabPage, Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(249, 48)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(248, 48)
         '
         'ToolStripMenuItem1_EditWorkflowTabPage
         '
         Me.ToolStripMenuItem1_EditWorkflowTabPage.Name = "ToolStripMenuItem1_EditWorkflowTabPage"
-        Me.ToolStripMenuItem1_EditWorkflowTabPage.Size = New System.Drawing.Size(248, 22)
+        Me.ToolStripMenuItem1_EditWorkflowTabPage.Size = New System.Drawing.Size(247, 22)
         Me.ToolStripMenuItem1_EditWorkflowTabPage.Text = "Edit Workflow Tab Page"
         '
         'ToolStripMenuItem1_ShowStartPageInWorkflowTab
         '
         Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Name = "ToolStripMenuItem1_ShowStartPageInWorkflowTab"
-        Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Size = New System.Drawing.Size(248, 22)
+        Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Size = New System.Drawing.Size(247, 22)
         Me.ToolStripMenuItem1_ShowStartPageInWorkflowTab.Text = "Show Start Page In Workflow Tab"
         '
         'Main
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(871, 592)
+        Me.ClientSize = New System.Drawing.Size(862, 903)
         Me.Controls.Add(Me.btnWebPages)
         Me.Controls.Add(Me.btnAndorville)
         Me.Controls.Add(Me.btnAppInfo)
@@ -3325,6 +3737,10 @@ Partial Class Main
         Me.TabPage8.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel1.PerformLayout()
@@ -3552,7 +3968,7 @@ Partial Class Main
     Friend WithEvents Label39 As Label
     Friend WithEvents rbClearValue As RadioButton
     Friend WithEvents Label37 As Label
-    Friend WithEvents txtFixedValue As TextBox
+    Friend WithEvents txtAppendFixedValue As TextBox
     Friend WithEvents rbAppendFixedValue As RadioButton
     Friend WithEvents rbAppendCurrentDate As RadioButton
     Friend WithEvents txtAppendRegExVar As TextBox
@@ -3571,8 +3987,6 @@ Partial Class Main
     Friend WithEvents Label42 As Label
     Friend WithEvents Label43 As Label
     Friend WithEvents btnOpenAppDir As Button
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label6 As Label
     Friend WithEvents btnOpenSystem As Button
     Friend WithEvents Label80 As Label
     Friend WithEvents txtSystemLocationType As TextBox
@@ -3623,4 +4037,41 @@ Partial Class Main
     Friend WithEvents btnAddImportLoopToSequence As Button
     Friend WithEvents btnApplyImportLoopSettings As Button
     Friend WithEvents chkUpdateSettingsTabs As CheckBox
+    Friend WithEvents btnOpenParentDir As Button
+    Friend WithEvents btnOpenArchive As Button
+    Friend WithEvents btnCreateArchive As Button
+    Friend WithEvents btnShowProjectInfo As Button
+    Friend WithEvents Label46 As Label
+    Friend WithEvents txtFileNameMatch As TextBox
+    Friend WithEvents Label8 As Label
+    Friend WithEvents btnTestFileNameRegEx As Button
+    Friend WithEvents txtFileNameRegEx As TextBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents rbApplyFileNameRegEx As RadioButton
+    Friend WithEvents txtFixedVal As TextBox
+    Friend WithEvents rbFixedValue As RadioButton
+    Friend WithEvents Label47 As Label
+    Friend WithEvents txtFileName As TextBox
+    Friend WithEvents rbFileNameMatch As RadioButton
+    Friend WithEvents btnFixXmlText As Button
+    Friend WithEvents txtXmlText As TextBox
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents Label50 As Label
+    Friend WithEvents txtFileSize As TextBox
+    Friend WithEvents Label49 As Label
+    Friend WithEvents btnDeSelectMatch As Button
+    Friend WithEvents btnSelectMatch As Button
+    Friend WithEvents Label48 As Label
+    Friend WithEvents txtContentRegEx As TextBox
+    Friend WithEvents btnSelectNoInputFiles As Button
+    Friend WithEvents btnSelEndsWith As Button
+    Friend WithEvents txtEndsWith As TextBox
+    Friend WithEvents Label51 As Label
+    Friend WithEvents txtFileDate As TextBox
+    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents btnDeselectDateMatch As Button
+    Friend WithEvents btnSelectDateMatch As Button
+    Friend WithEvents rbOlder As RadioButton
+    Friend WithEvents rbNewer As RadioButton
+    Friend WithEvents chkSame As CheckBox
 End Class

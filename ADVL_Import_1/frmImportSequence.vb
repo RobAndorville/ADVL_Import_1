@@ -350,10 +350,265 @@
 
     'End Sub
 
-    Public Sub FormatXmlText()
 
-        XmlHtmDisplay1.Rtf = XmlHtmDisplay1.XmlToRtf(XmlHtmDisplay1.Text, True)
+
+    Public Sub FormatXmlText()
+        'XmlHtmDisplay1.Rtf = XmlHtmDisplay1.XmlToRtf(XmlHtmDisplay1.Text, True)
+        'XmlHtmDisplay1.Rtf = XmlHtmDisplay1.XmlToRtf(XmlHtmDisplay1.FixXmlText(XmlHtmDisplay1.Text), True)
+        'XmlHtmDisplay1.Rtf = XmlHtmDisplay1.XmlToRtf(FixXmlText(XmlHtmDisplay1.Text), True)
+
+        'Main.Message.Add(FixXmlText(XmlHtmDisplay1.Text) & vbCrLf)
+        'Main.Message.Add(XmlHtmDisplay1.Text & vbCrLf)
+        'Main.Message.Add(FixXmlText(XmlHtmDisplay1.Text & vbCrLf) & vbCrLf)
+
+        'XmlHtmDisplay1.Rtf = XmlHtmDisplay1.XmlToRtf(FixXmlText(XmlHtmDisplay1.Text & vbCrLf), True)
+
+        XmlHtmDisplay1.Rtf = XmlHtmDisplay1.XmlToRtf(XmlHtmDisplay1.FixXmlText(XmlHtmDisplay1.Text & vbCrLf), True)
+
+
     End Sub
+
+
+    Public Function FixXmlText(XmlText As String) As String
+        'Fix an XML string so that it can be loaded correcly using the LoadXml method of a System.Xml.XmlDocument
+        'Replace "<" in an element value with "&lt;"
+        'Replace ">" in an element value with "&gt;"
+
+        'XML Terminology:
+        'XML declaration <?xml version="1.0" encoding="UTF-8"?>
+        'Comments begin with <!-- and end with -->.
+        'Start-tag <Element>
+        'End-tag </Element>
+        'Empty-element tag (Element />
+        'Content  The characters between the start-tag and end-tag, if any, are the element's content, and may contain markup, including other elements, which are called child elements.
+        'Predefined entities:
+        '&lt; represents "<";
+        '&gt; represents ">";
+        '&amp; represents "&";
+        '&apos; represents "'";
+        '&quot; represents '"'.
+
+        Dim FixedXmlText As New System.Text.StringBuilder
+        Dim StartPos As Integer
+        Dim EndPos As Integer
+        Dim ScanPos As Integer = 0
+        Dim LastPos As Integer = XmlText.Length
+
+        If XmlText.Trim.StartsWith("<?xml") Then
+            StartPos = XmlText.IndexOf("<?xml")
+            EndPos = XmlText.IndexOf("?>", StartPos)
+            FixedXmlText.Append(XmlText.Substring(StartPos, EndPos - StartPos + 2))
+            ScanPos = EndPos + 2
+        End If
+        FixedXmlText.Append(ProcessContent(XmlText, ScanPos, LastPos))
+        Return FixedXmlText.ToString
+    End Function
+
+    Private Function ProcessContent(ByRef XmlText As String, FromIndex As Integer, ToIndex As Integer) As String
+        'Process the XML content in the XmlText string between FromIndex and ToIndex.
+        'THIS VERSION SEARCHES FOR MATCHING End-Tags
+        '
+        'Content alternatives:
+        'Content only
+        '<!---->                                        One or more comments
+        '<Element />                                    One or more empty element tags
+        '<Element></Element>                            One or more empty elements
+        '<Element>Content</Element>                     One or more elements containing content
+        '<Element>                                      One or more elements containing child elements
+        '  <ChildElement>ChildContent</ChildElement>
+        '</Element>
+
+        Dim StartScan As Integer = FromIndex 'The start of the current content scan
+        Dim ScanIndex As Integer = FromIndex 'The current scan position
+        Dim LtCharIndex As Integer 'The index position of the next < character
+        Dim GtCharIndex As Integer 'The index position of the next > character
+        Dim FixedXmlText As New System.Text.StringBuilder 'This is used to build the fixed XML text for the content if it contains XML tags
+        Dim StartTagText As String = "" 'The text of a found Start-tag. The text may include attributes following the name.
+        Dim EndNameIndex As Integer 'The index position of the end of the StartTagName. If the StartTagText contains attributes, the StartTagName will be followed by a space then the attributes.
+        Dim StartTagName As String = "" 'The name of a found Start-tag
+        Dim EndTagIndex As Integer 'The index of an End-tag
+        Dim StartTagCount As Integer = 1 'The nesting level of the StartTag
+        Dim EndTagCount As Integer = 1 'The nesting level of the EndTag
+        Dim StartSearch As Integer 'StartSearch index used for counting other Start-Tags named StartTagName
+        Dim NextSearch As Integer 'Search for the next Start-Tag named StartTagName
+        Dim SearchIndex As Integer
+        Dim Match As Boolean
+        Dim TagLevelMatch As Boolean 'If True, the Start-Tag and End-Tag have matching levels.
+        Dim SearchEndTagFrom As Integer 'The index to start the End-tag search from
+        Dim ElementFound As Boolean = False 'True if an Element or a Comment was found.
+        Dim EndSearch As Boolean 'If True, End the Search to find the End-Tag
+
+        'While ScanIndex <= ToIndex
+        While ScanIndex < ToIndex
+            'Find the first pair of < > characters
+            LtCharIndex = XmlText.IndexOf("<", ScanIndex) 'Find the start of the next Element
+            If LtCharIndex = -1 Then '< char not found
+                If ToIndex - ScanIndex = 2 Then
+                    If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                        Exit While
+                    End If
+                End If
+                'The characters between FromIndex and ToIndex are Content
+                'NOTE: StartScan and FromIndex should be the same here: StartScan only advances if the Content contains one or more comments or elements.
+                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                FixedXmlText.Append(Content)
+                ScanIndex = ToIndex + 1
+            ElseIf LtCharIndex >= ToIndex Then
+                'Check if the remaining characters are CrLf:
+                If ToIndex - ScanIndex = 2 Then
+                    If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                        Exit While
+                    End If
+                End If
+                'Check if the remaining characters are blank:
+                If XmlText.Substring(ScanIndex, ToIndex - ScanIndex).Trim = "" Then
+                    Exit While
+                End If
+                'Check if the remaining characters with blanks removed are CrLf:
+                'Check if the remaining characters are blank:
+                If XmlText.Substring(ScanIndex, ToIndex - ScanIndex).Trim = vbCrLf Then
+                    Exit While
+                End If
+                'The characters between FromIndex and ToIndex are Content
+                'NOTE: StartScan and FromIndex should be the same here
+                Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                FixedXmlText.Append(Content)
+                ScanIndex = ToIndex + 1
+            Else
+                'The < character is within the Content range
+                'Search for a > character
+                GtCharIndex = XmlText.IndexOf(">", LtCharIndex + 1)
+                If GtCharIndex = -1 Then '> char not found
+                    If ToIndex - ScanIndex = 2 Then
+                        If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                            Exit While
+                        End If
+                    End If
+                    'The characters between FromIndex and ToIndex are Content
+                    'NOTE: StartScan and FromIndex should be the same here
+                    Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                    FixedXmlText.Append(Content)
+                    ScanIndex = ToIndex + 1
+                ElseIf GtCharIndex > ToIndex Then
+                    If ToIndex - ScanIndex = 2 Then
+                        If XmlText.Substring(ScanIndex, 2) = vbCrLf Then
+                            Exit While
+                        End If
+                    End If
+                    'The characters between FromIndex and ToIndex are Content
+                    'NOTE: StartScan and FromIndex should be the same here
+                    Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                    FixedXmlText.Append(Content)
+                    ScanIndex = ToIndex + 1
+                Else
+                    'A start-tagChar and end-tagChar <> pair has been found.
+                    'The <> characters will contain a comment, an element name or be part of the element content.
+                    If XmlText.Substring(LtCharIndex, 4) = "<!--" Then 'This is the start of a comment
+                        If XmlText.Substring(GtCharIndex - 2, 3) = "-->" Then 'This is the end of a comment ---------------------  <--Comment-->  ---------------------------------
+                            FixedXmlText.Append(XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1) & vbCrLf) 'Add the Comment to the Fixed XML Text
+                            ScanIndex = GtCharIndex + 1
+                            StartScan = GtCharIndex + 1
+                        Else
+                            'This is not a comment.
+                            'The whole content must be the content of a single element
+                            'The characters between FromIndex and ToIndex are Content
+                            'NOTE: StartScan and FromIndex should be the same here
+                            Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                            FixedXmlText.Append(Content)
+                            ScanIndex = ToIndex + 1
+                        End If
+                    Else 'This is a start-tag, empty element or content of a single element
+                        If XmlText.Chars(GtCharIndex - 1) = "/" Then 'This is an empty element
+                            FixedXmlText.Append(XmlText.Substring(LtCharIndex, GtCharIndex - LtCharIndex + 1))
+                            ScanIndex = GtCharIndex + 1
+                            StartScan = GtCharIndex + 1
+                        Else
+                            StartTagCount = 1
+                            EndTagCount = 0
+                            StartSearch = GtCharIndex + 1
+                            EndSearch = False
+                            While StartTagCount > EndTagCount And EndSearch = False
+                                'Continue searching for StartTag-EndTag tag pairs with the name StartTagName until matching tags are found (StartTagCount = EndTagCount).
+                                StartTagText = XmlText.Substring(LtCharIndex + 1, GtCharIndex - LtCharIndex - 1) 'This is the text of the Start-tag
+                                EndNameIndex = StartTagText.IndexOf(" ")
+                                If EndNameIndex = -1 Then 'There is no space in StartTagText so it contains no attributes.
+                                    StartTagName = StartTagText
+                                Else
+                                    StartTagName = StartTagText.Substring(0, EndNameIndex)
+                                End If
+                                'Find the matching End-tag - The matching End-tag must have a matching TagName and a matching level.
+                                TagLevelMatch = False
+                                SearchEndTagFrom = GtCharIndex + 1
+                                While TagLevelMatch = False
+                                    EndTagIndex = XmlText.IndexOf("</" & StartTagName & ">", SearchEndTagFrom)
+                                    If EndTagIndex = -1 Then 'There is no matching End-tag
+                                        'This is not an element.
+                                        'The whole content must be the content of a single element
+                                        'The characters between FromIndex and ToIndex are Content
+                                        'NOTE: StartScan and FromIndex should be the same here
+                                        Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                                        FixedXmlText.Append(Content)
+                                        ScanIndex = ToIndex + 1
+                                        EndSearch = True 'End the search for the End-Tag
+                                        Exit While 'There is no matching End-tag!
+                                    ElseIf EndTagIndex > ToIndex - StartTagName.Length - 1 Then 'The matching tag is outside of the Content
+                                        'This is not an element.
+                                        'The whole content must be the content of a single element
+                                        'The characters between FromIndex and ToIndex are Content
+                                        'NOTE: StartScan and FromIndex should be the same here
+                                        Dim Content As String = XmlText.Substring(FromIndex, ToIndex - FromIndex).Replace("<", "&lt;").Replace(">", "&gt;")
+                                        FixedXmlText.Append(Content)
+                                        ScanIndex = ToIndex + 1
+                                        EndSearch = True 'End the search for the End-Tag
+                                        Exit While 'There is no matching End-tag withing the Content range.
+                                    Else 'Matching End-tag found at EndTagIndex. 
+                                        EndTagCount += 1 'Increment the End Tag Count
+                                        'Search for any other Start-Tags named StartTagName between LtCharIndex and EndTagIndex
+                                        Match = True
+                                        NextSearch = StartSearch 'Search for <StartTagName> (without attributes)
+                                        While Match = True 'Search for Start-Tags of the form: <StartTagName>
+                                            SearchIndex = XmlText.IndexOf("<" & StartTagName & ">", NextSearch, EndTagIndex - NextSearch)
+                                            If SearchIndex = -1 Then
+                                                Match = False
+                                            Else
+                                                NextSearch = SearchIndex + StartTagName.Length
+                                                StartTagCount += 1
+                                            End If
+                                        End While
+                                        Match = True
+                                        NextSearch = StartSearch 'Set NextSearch back to StartSearch to search the same chars for <StartTagName ...(with attributes)
+                                        While Match = True 'Search for Start-Tags of the form: <StartTagName ...> (Start-Tag with attributes)
+                                            SearchIndex = XmlText.IndexOf("<" & StartTagName & " ", NextSearch, EndTagIndex - NextSearch)
+                                            If SearchIndex = -1 Then
+                                                Match = False
+                                            Else
+                                                NextSearch = SearchIndex + StartTagName.Length
+                                                StartTagCount += 1
+                                            End If
+                                        End While
+                                        StartSearch = EndTagIndex + 1 'All Start-Tags named StartTagName have been found to EndTagIndex : Update StartSearch - If more searches are needed, they will start from here.
+                                        If StartTagCount = EndTagCount Then
+                                            TagLevelMatch = True
+                                            FixedXmlText.Append("<" & StartTagText & ">" & ProcessContent(XmlText, GtCharIndex + 1, EndTagIndex) & "</" & StartTagName & ">" & vbCrLf)
+                                            ScanIndex = EndTagIndex + StartTagName.Length + 3
+                                            ElementFound = True
+                                        Else
+                                            SearchEndTagFrom = EndTagIndex + StartTagName.Length + 3
+                                        End If
+                                    End If
+                                End While
+                            End While
+                        End If
+                    End If
+                End If
+            End If
+        End While
+        If ElementFound Then
+            Return vbCrLf & FixedXmlText.ToString
+        Else
+            Return FixedXmlText.ToString
+        End If
+    End Function
 
     Private Sub btnOpen_Click(sender As Object, e As EventArgs) Handles btnOpen.Click
         'Open a processing sequence file:
@@ -436,7 +691,8 @@
 
         Try
             'Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Parse(rtbSequence.Text)
-            Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Parse(XmlHtmDisplay1.Text)
+            'Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Parse(XmlHtmDisplay1.Text)
+            Dim xmlSeq As System.Xml.Linq.XDocument = XDocument.Parse(FixXmlText(XmlHtmDisplay1.Text & vbCrLf))
 
             Dim SequenceFileName As String = ""
 
@@ -490,6 +746,14 @@
 
     Private Sub btnFormat_Click(sender As Object, e As EventArgs) Handles btnFormat.Click
         FormatXmlText()
+    End Sub
+
+    Private Sub XmlHtmDisplay1_Message(Msg As String) Handles XmlHtmDisplay1.Message
+        Main.Message.Add(Msg)
+    End Sub
+
+    Private Sub XmlHtmDisplay1_ErrorMessage(Msg As String) Handles XmlHtmDisplay1.ErrorMessage
+        Main.Message.AddWarning(Msg)
     End Sub
 
 #End Region 'Form Methods ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
